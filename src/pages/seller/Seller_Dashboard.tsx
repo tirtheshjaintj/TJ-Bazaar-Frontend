@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Cookie from "universal-cookie";
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Navbar from "../../components/seller/Navbar";
 import Sidebar from '../../components/seller/Sidebar';
 import NewProduct from '../../components/seller/NewProduct';
@@ -10,6 +10,8 @@ import UpdateProfile from '../../components/seller/UpdateProfile';
 import MyProducts from '../../components/seller/MyProducts';
 import { FaArrowLeft } from 'react-icons/fa';
 import MyOrders from '../../components/seller/MyOrders';
+import { addSeller } from '../../store/sellerSlice';
+import axiosInstanceSeller from '../../config/axiosConfigSeller';
 
 function Seller_Dashboard() {
   const cookie = new Cookie();
@@ -18,12 +20,32 @@ function Seller_Dashboard() {
   const seller = useSelector((state: any) => state.seller);
   const [openTab, setOpenTab] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const dispatch=useDispatch();
+
+  const getSeller = async () => {
+    const sellerToken = cookie.get('seller_token');
+    if (!sellerToken) {
+      return;
+    }
+
+    try {
+      const response = await axiosInstanceSeller.get(`/seller/getSeller`);
+      const sellerData = response.data;
+      if (sellerData.status) {
+        dispatch(addSeller(sellerData.data));
+      } else {
+        cookie.remove('seller_token');
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     document.title = `TJ Bazaar🛒 Seller Dashboard`;
     let token = cookie.get('seller_token');
     if (!token) navigate('/seller/login');
-   
+   if(!seller) getSeller();
   }, []);
 
   useEffect(() => {

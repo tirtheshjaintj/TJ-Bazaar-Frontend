@@ -114,8 +114,9 @@ function User_Login() {
                 disabled={isLoading}  // Disable the button during loading
               >
                 {isLoading ? (
-                 <div className="spinner"></div> // Show the spinner here
-                ) : (
+                  <div className="flex items-center justify-center">
+                    <div className="spinner"></div>
+                  </div>) : (
                   'Sign In'  // Default text when not loading
                 )}
               </button>

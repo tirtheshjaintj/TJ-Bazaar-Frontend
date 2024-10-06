@@ -3,13 +3,14 @@ import axiosInstance from '../../config/axiosConfig'; // Import the configured A
 import Cookie from "universal-cookie";
 import Sidebar from "../../components/user/Sidebar";
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Navbar from "../../components/user/Navbar";
 import { FaArrowLeft } from 'react-icons/fa';
 import UpdateProfile from '../../components/user/UpdateProfile';
 import Orders from '../../components/user/Orders';
 import Cart from '../../components/user/Cart';
 import WishList from '../../components/user/WishList';
+import { addUser } from '../../store/userSlice';
 
 function User_Dashboard() {
   const cookie = new Cookie();
@@ -20,6 +21,22 @@ function User_Dashboard() {
   const [openTab, setOpenTab] = useState<boolean>(false);
   const [cartCount,setCartCount] = useState<number>(0);
   const [wishlistCount,setWishlistCount] = useState<number>(0);
+  const dispatch=useDispatch();
+  const getUser = async () => {
+    try {
+      const response = await axiosInstance.get(`/user/getUser`, {
+        withCredentials: true, // Keep this if you need credentials
+      });
+      const userData = response.data;
+      if (userData.status) {
+        dispatch(addUser(userData.user));
+      } else {
+        cookie.remove('user_token');
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
 
   const getCartCount=async()=>{
     try {
@@ -45,6 +62,9 @@ function User_Dashboard() {
 
   useEffect(() => {
     document.title = "TJ Bazaar🛒 User Dashboard";
+    if(!user){
+     getUser();
+    }
     if (!token){
       navigate('../user/login');
     }else{
@@ -52,6 +72,7 @@ function User_Dashboard() {
     getWishlistCount();
     }
   }, []);
+
 
   return (
     <div>
