@@ -1,35 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import EyeToggleSVG from '../../components/Eye';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstanceSeller from '../../config/axiosConfigSeller'; // Import the configured Axios instance
 import toast from 'react-hot-toast';
 import Cookie from "universal-cookie";
-const url = import.meta.env.VITE_BACKEND_URL;
+
 type event = React.ChangeEvent<HTMLInputElement>;
 
 function Seller_Login() {
   useEffect(() => {
-    document.title = "TJ Bazaar🛒 Seller Login ";
+    document.title = "TJ Bazaar🛒 Seller Login";
   }, []);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
   const navigate = useNavigate();
   const cookie = new Cookie();
+
   useEffect(() => {
     let token = cookie.get('seller_token');
     if (token) navigate('/seller/dashboard');
   }, []);
+
   const handleEmailChange = (e: event) => {
     setEmail(e.target.value);
   };
+
   const handlePasswordChange = (e: event) => {
     setPassword(e.target.value);
   };
+
   const handleShowPasswordToggle = () => {
     setShowPassword(!showPassword);
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password.length < 8) {
@@ -38,27 +44,26 @@ function Seller_Login() {
     }
     try {
       setIsLoggingIn(true);
-      const response = await axios.post(`${url}/seller/login`, {
+      const response = await axiosInstanceSeller.post(`/seller/login`, {
         email,
-        password
+        password,
       });
       console.log(response.data);
       toast.success('Logged In Successfully');
       const token = response?.data?.token;
       if (token) {
         cookie.set("seller_token", token, { path: '/', expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) });
-        if (token) navigate('/seller/dashboard');
+        navigate('/seller/dashboard');
       }
-    }
-    catch (error: any) {
+    } catch (error: any) {
       console.log(error);
-      const error_msg = error.response.data?.message;
+      const error_msg = error.response?.data?.message || 'An error occurred';
       toast.error(error_msg);
     } finally {
       setIsLoggingIn(false); // Re-enable the button
     }
-
   };
+  
   return (
     <section className=" min-h-screen pb-8 md:pb-0">
       <div className="flex flex-col items-center justify-center h-screen px-6 py-8 mx-auto lg:py-0">

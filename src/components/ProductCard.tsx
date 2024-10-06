@@ -1,29 +1,62 @@
 import { Card, Carousel, Dropdown } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import axiosInstance from "../config/axiosConfig";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+interface Category {
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
 
-export default function ProductCard({product}: any) {
+interface Product {
+  _id: string;
+  category_id: Category;
+  seller_id: string;
+  name: string;
+  description: string;
+  tags: string[];
+  price: number;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  media: string[];
+}
 
-  // const handleDeleteConfirm = () => {
-  //   Swal.fire({
-  //     title: 'Are you sure?',
-  //     text: "You won't be able to revert this!",
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#3085d6',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Yes, delete it!'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       onDelete(product._id);
-  //       Swal.fire(
-  //         'Deleted!',
-  //         'Your product has been deleted.',
-  //         'success'
-  //       );
-  //     }
-  //   });
-  // };
+interface ProductCardProps {
+  product: Product;
+}
 
+export default function ProductCard({product}: ProductCardProps) {
+  const [inWishlist,setInWishlist]=useState<boolean>(false);
+  const user=useSelector((state:any)=>state.user);
+  const navigate=useNavigate();
+
+  const addToWishlist=async()=>{
+    if(!inWishlist && user){
+       try {
+          const response=await axiosInstance.post("/wishlist/add",{
+            product_id:product._id
+          });
+          if(response.data.status){
+          setInWishlist(true);
+          toast.success(response.data.message);
+          }
+       } catch (error:any) {
+        const error_msg=error.data?.message || "Server Error";
+        toast.error(error_msg);
+       }
+    }else if(!user){
+        navigate("../user/login");
+    }else if(inWishlist){
+      navigate("../user/dashboard");
+    }
+  }
   return (
     <Card className="w-full shadow-lg rounded-3xl z-1 m-0 bg-transparent dark:bg-transparent relative hover:shadow-2xl">
       <div className="flex flex-col w-full h-full pt-2">
@@ -34,7 +67,12 @@ export default function ProductCard({product}: any) {
               <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
           </svg>
           } inline={true} arrowIcon={false}>
-           
+           <Dropdown.Item
+              icon={(inWishlist)?FaHeart:FaRegHeart}
+              onClick={addToWishlist}
+            >
+              {(inWishlist)?"Added":"Wishlist"}
+            </Dropdown.Item>
           </Dropdown>
         </div>
 
@@ -49,7 +87,7 @@ export default function ProductCard({product}: any) {
                   alt={`Product image ${index + 1}`}
                   loading="lazy"
                   onError={(e:any)=>{
-                    e.target.src="/bazaar.gif"
+                    e.target.src="../bazaar.gif"
                   }}
                   className="absolute inset-0 w-full h-full object-contain transition-all duration-700 ease-in-out"
                 />

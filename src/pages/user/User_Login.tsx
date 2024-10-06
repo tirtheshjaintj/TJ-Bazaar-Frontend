@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../config/axiosConfig'; // Import the configured Axios instance
 import toast from 'react-hot-toast';
 import Cookie from "universal-cookie";
-const url=import.meta.env.VITE_BACKEND_URL;
 type event=React.ChangeEvent<HTMLInputElement>;
 
 function User_Login(){

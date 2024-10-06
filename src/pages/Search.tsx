@@ -18,7 +18,7 @@ function Search() {
     try {
       setLoading(true); // Start loading
       const response = await axiosInstance.post(`/product/search?keyword=${searchQuery}`, {
-        keyword: searchQuery
+        keyword: searchQuery?.replace(/[^a-zA-Z0-9\s]/g, ' ' )
       });
       if (response.data.status) {
         setProducts(response.data.data);
@@ -49,7 +49,7 @@ function Search() {
     <>
       <Navbar />
       <div className="p-4 pt-24 md:pt-12">
-        {searchQuery && <p className="text-xl font-semibold mb-4">Results for "{searchQuery}"</p>}
+        {searchQuery?.replace(/[^a-zA-Z0-9\s]/g, ' ' ) && <p className="text-xl font-semibold mb-4">Results for "{searchQuery?.replace(/[^a-zA-Z0-9\s]/g, ' ' )}"</p>}
 
         {/* Show skeletons while loading */}
         {loading ? (

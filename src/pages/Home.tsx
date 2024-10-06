@@ -1,20 +1,34 @@
-// src/pages/Home.tsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Navbar from '../components/user/Navbar';
-import axiosInstance from '../config/axiosConfig'; // Import the configured Axios instance
-import ProductCard from '../components/ProductCard'; // Adjust the path as needed
-import { AiOutlineRight } from 'react-icons/ai'; // Import an arrow icon from react-icons
-import { ProductCardSkeleton } from '../components/ProductCardSkeleton'; // Import the skeleton component
+import axiosInstance from '../config/axiosConfig';
+import ProductCard from '../components/ProductCard';
+import { AiOutlineRight } from 'react-icons/ai';
+import { ProductCardSkeleton } from '../components/ProductCardSkeleton';
 
-// Define types for product and product list
+// src/pages/Home.tsx
+interface Category {
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 interface Product {
   _id: string;
   name: string;
   description: string;
   price: number;
   quantity: number;
-  // Add other fields as necessary
+  media: string[];
+  category_id: Category; // Add category_id
+  seller_id: string;      // Add seller_id
+  tags: string[];         // Add tags
+  createdAt: string;      // Add createdAt
+  updatedAt: string;      // Add updatedAt
+  __v: number;            // Add version key
 }
+
 
 interface ProductsByCategory {
   [categoryName: string]: Product[];
@@ -23,15 +37,17 @@ interface ProductsByCategory {
 function Home() {
   const [products, setProducts] = useState<ProductsByCategory>({});
   const [visibleProducts, setVisibleProducts] = useState<{ [key: string]: number }>({});
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null); // Error state
 
+  // Fetch products from API
   const getProducts = async () => {
     try {
-      setLoading(true); // Start loading
-      const response = await axiosInstance.get(`/product/get/products`); // Use the configured instance
+      setLoading(true);
+      setError(null); // Reset error
+      const response = await axiosInstance.get(`/product/get/products`);
       if (response.data.status) {
         setProducts(response.data.data);
-        // Initialize visible products for each category
         const initialVisible = Object.keys(response.data.data).reduce((acc, category) => {
           acc[category] = 3; // Show 3 products by default
           return acc;
@@ -39,18 +55,20 @@ function Home() {
         setVisibleProducts(initialVisible);
       }
     } catch (error) {
-      console.log("Error fetching products:", error);
+      console.error("Error fetching products:", error);
+      setError("Failed to load products. Please try again later.");
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
   };
 
-  const handleShowMore = (categoryName: string) => {
+  // Show more products per category
+  const handleShowMore = useCallback((categoryName: string) => {
     setVisibleProducts(prev => ({
       ...prev,
-      [categoryName]: prev[categoryName] + 3, // Show 3 more products
+      [categoryName]: prev[categoryName] + 3,
     }));
-  };
+  }, []);
 
   useEffect(() => {
     document.title = `TJ Bazaar🛒 The Online Shop`;
@@ -64,18 +82,21 @@ function Home() {
         <h1 className="p-4 pt-24 md:pt-12 font-bold text-2xl md:text-[36px]">Welcome To TJ Bazaar 🛒</h1>
       </div>
       <div className="p-4">
-        {/* Show skeletons while loading */}
         {loading ? (
+          // Show skeletons while loading
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {Array(3).fill(0).map((_, idx) => (
               <ProductCardSkeleton key={idx} />
             ))}
           </div>
+        ) : error ? (
+          // Show error message if data fetching fails
+          <div className="text-red-500">{error}</div>
         ) : (
           Object.entries(products).map(([categoryName, productList]) => (
             <div key={categoryName} className="mb-8">
               <h2 className="text-3xl font-bold mb-4">
-                {categoryName} &nbsp;<span className='font-normal'>{`(${products[categoryName]?.length || 0})`}</span>
+                {categoryName} &nbsp;<span className='font-normal'>{`(${productList.length || 0})`}</span>
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {productList.slice(0, visibleProducts[categoryName] || 0).map((product: Product) => (
@@ -84,7 +105,7 @@ function Home() {
               </div>
               {visibleProducts[categoryName] < productList.length && (
                 <div className="flex justify-end mt-4">
-                  <button 
+                  <button
                     onClick={() => handleShowMore(categoryName)}
                     className="flex items-center text-blue-600 hover:bg-blue-100 rounded-lg px-4 py-2 transition duration-300"
                   >

@@ -44,7 +44,7 @@ export default function Nav() {
   return (
     <Navbar fluid rounded className="bg-white/50 fixed w-full z-10 lg:relative dark:bg-gray-900/50 backdrop-blur-3xl">
       <Link to="/" className="flex flex-grow">
-        <img src="/bazaar.gif" className="mr-3 h-12" alt="Flowbite React Logo" />
+        <img src="/bazaar.gif" className="mr-3 h-12" alt="TJ Bazaar" />
         <h1 className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white cursor-pointer">
           TJ Bazaar&nbsp;
         </h1>

@@ -1,13 +1,10 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import axios from 'axios';
+import axiosInstanceSeller from '../../config/axiosConfigSeller'; // Update this import
 import TagsInput from 'react-tagsinput';
 import 'react-tagsinput/react-tagsinput.css';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import { FaPencilAlt } from 'react-icons/fa';
-import Cookie from 'universal-cookie';
-
-const url = import.meta.env.VITE_BACKEND_URL;
 
 interface Category {
   _id: string;
@@ -23,21 +20,13 @@ const UpdateProduct: React.FC<{ product: any }> = ({ product }) => {
   const [categoryId, setCategoryId] = useState<string>(product.category_id || '');
   const [categories, setCategories] = useState<Category[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  // Separated images into saved (already uploaded) and new ones (to be uploaded)
   const [savedImages, setSavedImages] = useState<string[]>(product.media || []);
   const [newImages, setNewImages] = useState<File[]>([]);
   const [newImagePreviews, setNewImagePreviews] = useState<string[]>([]);
-  const cookie=new Cookie();
-  const token=cookie.get('seller_token');
 
   useEffect(() => {
     document.title = `Update Product - ${name}`;
-    axios.get(`${url}/product/get/categories`,{
-      headers: {
-        Authorization: `Bearer ${token}`,  // Add token to Authorization header
-      }
-    })
+    axiosInstanceSeller.get('/product/get/categories')
       .then(response => setCategories(response.data.categories))
       .catch(error => {
         toast.error('Error fetching categories: ' + error.message);
@@ -48,7 +37,6 @@ const UpdateProduct: React.FC<{ product: any }> = ({ product }) => {
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
     
-    // Check total image count (saved + new) should not exceed 10
     if (files.length + savedImages.length + newImages.length > 10) {
       toast.error('You can only upload up to 10 images in total.');
       return;
@@ -67,7 +55,7 @@ const UpdateProduct: React.FC<{ product: any }> = ({ product }) => {
   };
 
   const validateImage = (file: File): boolean => {
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif','image/webp'];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     return allowedTypes.includes(file.type);
   };
 
@@ -86,14 +74,10 @@ const UpdateProduct: React.FC<{ product: any }> = ({ product }) => {
 
     if (confirmed.isConfirmed) {
       try {
-        await axios.delete(`${url}/product/removeimg/${product._id}`, {
+        await axiosInstanceSeller.delete(`/product/removeimg/${product._id}`, {
           data: {
             product_id: product._id,
             imageUrl: imageUrl
-          },
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${token}`,  // Add token to Authorization header
           }
         });
         setSavedImages(prevImages => prevImages.filter((_, i) => i !== index));
@@ -113,7 +97,7 @@ const UpdateProduct: React.FC<{ product: any }> = ({ product }) => {
     event.preventDefault();
     setIsSubmitting(true);
     const totalImages = savedImages.length + newImages.length;
-    // Validate minimum image count
+
     if (totalImages < 5) {
       toast.error('You must have at least 5 images.');
       setIsSubmitting(false);  // Reset isSubmitting on error
@@ -145,24 +129,19 @@ const UpdateProduct: React.FC<{ product: any }> = ({ product }) => {
     formData.append('tags', JSON.stringify(tags));
     formData.append('category_id', categoryId);
 
-    // Append new images only
     newImages.forEach(file => {
       formData.append('images', file);
     });
 
     try {
-      const response=await axios.put(`${url}/product/update/${product._id}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,  // Add token to Authorization header
-        },
-        withCredentials: true
-      });
-      if(response.status){
-      toast.success('Product updated successfully.');
-      setIsSubmitting(false);  // Reset isSubmitting on error
+      const response = await axiosInstanceSeller.put(`/product/update/${product._id}`, formData);
+      if (response.status) {
+        toast.success('Product updated successfully.');
+        setIsSubmitting(false);  // Reset isSubmitting on error
       }
     } catch (error: any) {
       toast.error('Error updating product: ' + error.response.data.message);
+      setIsSubmitting(false);  // Reset isSubmitting on error
     }
   };
 
@@ -188,7 +167,7 @@ const UpdateProduct: React.FC<{ product: any }> = ({ product }) => {
             onChange={e => setDescription(e.target.value)}
             className="mt-1 block w-full placeholder-slate-200 dark:bg-gray-600 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="Add Description Here"
-            rows={4}
+            rows={8}
             required
           />
         </div>
@@ -291,19 +270,19 @@ const UpdateProduct: React.FC<{ product: any }> = ({ product }) => {
         </div>
 
         <div className="flex justify-end">
-        <button
-  type="submit"
-  className="py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-  disabled={isSubmitting}
->
-  {!isSubmitting ? (
-    <div className='flex items-center'>Update Product&nbsp;<FaPencilAlt/></div>
-  ) : (
-    <div className="flex items-center justify-center">
-       <div className='flex items-center'>Updating Product&nbsp;</div><div className="spinner border-t-transparent border-solid animate-spin rounded-full border-white border-4 h-6 w-6"></div>
-    </div>
-  )}
-</button>
+          <button
+            type="submit"
+            className="py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            disabled={isSubmitting}
+          >
+            {!isSubmitting ? (
+              <div className='flex items-center'>Update Product&nbsp;<FaPencilAlt/></div>
+            ) : (
+              <div className="flex items-center justify-center">
+                <div className='flex items-center'>Updating Product&nbsp;</div><div className="spinner border-t-transparent border-solid animate-spin rounded-full border-white border-4 h-6 w-6"></div>
+              </div>
+            )}
+          </button>
         </div>
       </form>
     </div>

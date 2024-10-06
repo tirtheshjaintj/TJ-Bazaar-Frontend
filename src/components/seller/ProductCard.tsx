@@ -1,9 +1,10 @@
 import { Card, Carousel, Dropdown } from "flowbite-react";
-import { useEffect } from "react";
-import { FaTrash, FaPencilAlt } from "react-icons/fa";
+import { FaTrash, FaPencilAlt, FaEye } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export default function ProductCard({ product, onUpdate, onDelete }: any) {
+  const navigate=useNavigate();
 
   const handleDeleteConfirm = () => {
     Swal.fire({
@@ -25,6 +26,11 @@ export default function ProductCard({ product, onUpdate, onDelete }: any) {
       }
     });
   };
+
+  const handleView=()=>{
+    navigate(`../product/${product._id}`);
+  }
+
 
   return (
     <Card className="w-full shadow-lg rounded-3xl z-1 m-0 bg-transparent dark:bg-transparent relative hover:shadow-2xl">
@@ -48,6 +54,13 @@ export default function ProductCard({ product, onUpdate, onDelete }: any) {
               className="text-red-600"
             >
               Delete
+            </Dropdown.Item>
+            <Dropdown.Item
+              icon={FaEye}
+              onClick={handleView}
+              className="text-red-600"
+            >
+              View
             </Dropdown.Item>
           </Dropdown>
         </div>

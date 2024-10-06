@@ -1,4 +1,3 @@
-
 type BackgroundProps = {
     children: React.ReactNode;
   };

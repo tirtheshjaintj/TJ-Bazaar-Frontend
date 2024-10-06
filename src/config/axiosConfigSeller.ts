@@ -4,13 +4,13 @@ import axiosRetry from 'axios-retry';
 import Cookie from "universal-cookie";
 
 // Create an Axios instance
-const axiosInstance = axios.create({
+const axiosInstanceSeller = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL, // Set your base URL
   withCredentials: true, // Set withCredentials to true for all requests
 });
 
 // Set up axios-retry on the Axios instance
-axiosRetry(axiosInstance, {
+axiosRetry(axiosInstanceSeller, {
   retries: 3, // Number of retries
   retryDelay: (retryCount) => {
     // Exponential backoff: 1s, 2s, 4s
@@ -20,9 +20,9 @@ axiosRetry(axiosInstance, {
 });
 
 // Add a request interceptor to set the Authorization header
-axiosInstance.interceptors.request.use(config => {
+axiosInstanceSeller.interceptors.request.use(config => {
   const cookie = new Cookie();
-  const token = cookie.get('user_token'); // Retrieve the user token
+  const token = cookie.get('seller_token'); // Retrieve the seller token
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`; // Set token in headers
   }
@@ -32,4 +32,4 @@ axiosInstance.interceptors.request.use(config => {
 });
 
 // Export the configured Axios instance
-export default axiosInstance;
+export default axiosInstanceSeller;

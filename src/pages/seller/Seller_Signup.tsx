@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import Cookie from 'universal-cookie';
 import EyeToggleSVG from '../../components/Eye';
-const url = import.meta.env.VITE_BACKEND_URL;
+import axiosInstanceSeller from '../../config/axiosConfigSeller'; // Adjust the path if necessary
 type event = React.ChangeEvent<HTMLInputElement>;
 
 function User_Signup() {
     const [step, setStep] = useState(1);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
-    const [user, setUser] = useState({
+    const [seller, setUser] = useState({
         name: '',
         email: '',
         phone_number: '',
@@ -22,7 +21,7 @@ function User_Signup() {
     });
 
     const [otp, setOtp] = useState('');
-    const [userId, setUserId] = useState('');
+    const [sellerId, setUserId] = useState('');
     const navigate = useNavigate();
     const cookie = new Cookie();
     const [resendDisabled, setResendDisabled] = useState(false);
@@ -31,8 +30,8 @@ function User_Signup() {
 
     useEffect(() => {
         document.title = 'TJ Bazaar🛒 User Signup ';
-        let token = cookie.get('user_token');
-        if (token) navigate('/user/dashboard');
+        let token = cookie.get('seller_token');
+        if (token) navigate('/seller/dashboard');
     }, []);
 
     const handleShowPasswordToggle = () => {
@@ -44,10 +43,10 @@ function User_Signup() {
     };
 
     const handleChange = (e: event) => {
-        setUser({ ...user, [e.target.name]: e.target.value });
+        setUser({ ...seller, [e.target.name]: e.target.value });
     };
     const handleChangeAddress = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setUser({ ...user, [e.target.name]: e.target.value });
+        setUser({ ...seller, [e.target.name]: e.target.value });
     }
     const handleBack = () => {
         setStep(step - 1);
@@ -56,13 +55,13 @@ function User_Signup() {
     const handleNext = () => {
         // Validation for step 1
         if (step === 1) {
-            if (!user.name.match(/^[a-zA-Z\s]+$/)) {
+            if (!seller.name.match(/^[a-zA-Z\s]+$/)) {
                 toast.error('Name must contain only letters and spaces.');
-            } else if (user.name.length < 3) {
+            } else if (seller.name.length < 3) {
                 toast.error('Name must be at least 3 characters long.');
-            } else if (!user.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+            } else if (!seller.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
                 toast.error('Please enter a valid email address.');
-            } else if (!user.phone_number.match(/^[0-9]{10}$/)) {
+            } else if (!seller.phone_number.match(/^[0-9]{10}$/)) {
                 toast.error('Phone number must contain exactly 10 digits.');
             } else {
                 setStep(step + 1);
@@ -71,10 +70,10 @@ function User_Signup() {
 
         // Validation for step 2
         else if (step === 2) {
-            if (user.address.length < 10) {
+            if (seller.address.length < 10) {
                 toast.error('Address must be at least 10 characters long.');
             } else if (
-                !user.gst_number.match(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/)
+                !seller.gst_number.match(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/)
             ) {
                 toast.error('Invalid GST number format.');
             } else {
@@ -84,9 +83,9 @@ function User_Signup() {
 
         // Validation for step 3
         else if (step === 3) {
-            if (user.password.length < 8) {
+            if (seller.password.length < 8) {
                 toast.error('Password must be at least 8 characters long.');
-            } else if (user.password !== user.confirmPassword) {
+            } else if (seller.password !== seller.confirmPassword) {
                 toast.error('Passwords do not match.');
             } else {
                 setStep(step + 1);
@@ -94,28 +93,25 @@ function User_Signup() {
         }
     };
 
-
-
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (user.password !== user.confirmPassword) {
+        if (seller.password !== seller.confirmPassword) {
             toast.error('Passwords do not match.');
             return;
         }
         setIsSigningUp(true); // Disable the button
         try {
-            const response = await axios.post(`${url}/user/signup`, {
-                name: user.name,
-                email: user.email,
-                phone_number: user.phone_number,
-                address: user.address,
-                gst_number: user.gst_number,
-                password: user.password,
+            const response = await axiosInstanceSeller.post('/seller/signup', {
+                name: seller.name,
+                email: seller.email,
+                phone_number: seller.phone_number,
+                address: seller.address,
+                gst_number: seller.gst_number,
+                password: seller.password,
             });
 
             if (response.data.status) {
-                setUserId(response.data.user._id);
+                setUserId(response.data.seller._id);
                 setStep(4); // Move to OTP verification step
                 toast.success(response.data.message);
             }
@@ -131,7 +127,7 @@ function User_Signup() {
         e.preventDefault();
         setIsSigningUp(true); // Disable the button
         try {
-            const response = await axios.post(`${url}/user/verify-otp/${userId}`, {
+            const response = await axiosInstanceSeller.post(`/seller/verify-otp/${sellerId}`, {
                 otp,
             });
 
@@ -139,8 +135,8 @@ function User_Signup() {
                 toast.success(response.data.message);
                 const token = response?.data?.token;
                 if (token) {
-                    cookie.set("user_token", token, { path: '/', expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) });
-                    navigate('/user/dashboard');
+                    cookie.set("seller_token", token, { path: '/', expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) });
+                    navigate('/seller/dashboard');
                 }
             }
         } catch (error: any) {
@@ -151,10 +147,9 @@ function User_Signup() {
         }
     };
 
-
     const handleResendOtp = async () => {
         try {
-            const response = await axios.post(`${url}/user/resend-otp/${userId}`);
+            const response = await axiosInstanceSeller.post(`/seller/resend-otp/${sellerId}`);
             if (response.data.status) {
                 toast.success(response.data.message);
                 setResendDisabled(true); // Disable button
@@ -209,7 +204,7 @@ function User_Signup() {
                                             type="text"
                                             name="name"
                                             id="name"
-                                            value={user.name}
+                                            value={seller.name}
                                             onChange={handleChange}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="John Doe"
@@ -224,7 +219,7 @@ function User_Signup() {
                                             type="email"
                                             name="email"
                                             id="email"
-                                            value={user.email}
+                                            value={seller.email}
                                             onChange={handleChange}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="name@company.com"
@@ -239,7 +234,7 @@ function User_Signup() {
                                             type="text"
                                             name="phone_number"
                                             id="phone_number"
-                                            value={user.phone_number}
+                                            value={seller.phone_number}
                                             onChange={handleChange}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="1234567890"
@@ -257,7 +252,7 @@ function User_Signup() {
                                         <textarea
                                             name="address"
                                             id="address"
-                                            value={user.address}
+                                            value={seller.address}
                                             onChange={handleChangeAddress}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="123 Main St"
@@ -273,7 +268,7 @@ function User_Signup() {
                                             type="text"
                                             name="gst_number"
                                             id="gst_number"
-                                            value={user.gst_number}
+                                            value={seller.gst_number}
                                             onChange={handleChange}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="22AAAAA0000A1Z5"
@@ -293,7 +288,7 @@ function User_Signup() {
                                                 type={showPassword ? 'text' : 'password'}
                                                 name="password"
                                                 id="password"
-                                                value={user.password}
+                                                value={seller.password}
                                                 onChange={handleChange}
                                                 placeholder="••••••••"
                                                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -315,7 +310,7 @@ function User_Signup() {
                                                 type={showConfirmPassword ? 'text' : 'password'}
                                                 name="confirmPassword"
                                                 id="confirmPassword"
-                                                value={user.confirmPassword}
+                                                value={seller.confirmPassword}
                                                 onChange={handleChange}
                                                 placeholder="••••••••"
                                                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -379,15 +374,15 @@ function User_Signup() {
                             {step < 4 && step > 1 && (
                                 <button
                                     type='button'
-                                    className="w-full dark:text-white bg-gray-600 text-black focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                                    className="w-full  bg-gray-400/60 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                                     onClick={handleBack}
                                 >
                                     Back
                                 </button>
                             )}
                             {step === 4 &&
-                                <p className="text-xs text-gray-500 dark:text-gray-400">
-                                    OTP sent to {user.email}
+                                <p className="text-xs">
+                                    OTP sent to {seller.email}
                                 </p>
                             }
                             {step === 4 && (
