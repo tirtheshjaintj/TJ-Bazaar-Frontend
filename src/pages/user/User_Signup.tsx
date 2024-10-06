@@ -4,7 +4,6 @@ import axiosInstance from '../../config/axiosConfig'; // Import the configured A
 import toast from 'react-hot-toast';
 import Cookie from 'universal-cookie';
 import EyeToggleSVG from '../../components/Eye';
-const url = import.meta.env.VITE_BACKEND_URL;
 type event = React.ChangeEvent<HTMLInputElement>;
 
 function User_Signup() {

@@ -1,10 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import axiosInstanceSeller from '../../config/axiosConfigSeller'; // Import the configured Axios instance
 import toast from 'react-hot-toast';
 import Cookie from "universal-cookie";
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addSeller } from '../../store/sellerSlice';
+import { useSelector } from 'react-redux';
 import Navbar from "../../components/seller/Navbar";
 import Sidebar from '../../components/seller/Sidebar';
 import NewProduct from '../../components/seller/NewProduct';
@@ -20,8 +18,6 @@ function Seller_Dashboard() {
   const seller = useSelector((state: any) => state.seller);
   const [openTab, setOpenTab] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-
 
   useEffect(() => {
     document.title = `TJ Bazaar🛒 Seller Dashboard`;

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 // Define the User interface
 // interface User {
@@ -9,7 +9,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 //   _id: string;
 // }
 
-// Initialize the initial state as User or null
 // const initialState: User | null = null;
 const initialState= null;
 

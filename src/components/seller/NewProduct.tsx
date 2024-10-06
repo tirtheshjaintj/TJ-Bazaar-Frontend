@@ -4,7 +4,6 @@ import TagsInput from 'react-tagsinput';
 import 'react-tagsinput/react-tagsinput.css';
 import toast from 'react-hot-toast';
 import { FaPlusCircle } from 'react-icons/fa';
-import Cookie from 'universal-cookie';
 interface Category {
   _id: string;
   name: string;
@@ -20,8 +19,6 @@ const NewProduct: React.FC = () => {
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const cookie = new Cookie();
-  const token = cookie.get('seller_token');
 
   const validateImage = (file: File): boolean => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
