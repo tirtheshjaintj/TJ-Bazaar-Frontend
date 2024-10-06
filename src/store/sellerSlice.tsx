@@ -18,6 +18,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     addSeller:(state, action) => {
+      console.log(state);
       return action.payload;
     },
     removeSeller: () => {
