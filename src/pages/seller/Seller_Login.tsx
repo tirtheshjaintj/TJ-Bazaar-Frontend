@@ -15,7 +15,7 @@ function Seller_Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const cookie = new Cookie();
 
@@ -43,7 +43,7 @@ function Seller_Login() {
       return;
     }
     try {
-      setIsLoggingIn(true);
+      setLoading(true);
       const response = await axiosInstanceSeller.post(`/seller/login`, {
         email,
         password,
@@ -60,7 +60,7 @@ function Seller_Login() {
       const error_msg = error.response?.data?.message || 'An error occurred';
       toast.error(error_msg);
     } finally {
-      setIsLoggingIn(false); // Re-enable the button
+      setLoading(false); // Re-enable the button
     }
   };
   
@@ -120,7 +120,7 @@ function Seller_Login() {
                 type="submit"
                 className="w-full dark:text-white bg-red-600 text-black focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-        {!isLoggingIn ? (
+        {!loading ? (
                  <> Sign In</>
              ) : (
                 <>

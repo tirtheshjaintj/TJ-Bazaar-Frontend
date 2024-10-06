@@ -26,7 +26,7 @@ function User_Signup() {
     const cookie = new Cookie();
     const [resendDisabled, setResendDisabled] = useState(false);
     const [timer, setTimer] = useState<number>(60); // 60 seconds timer
-    const [isSigningUp, setIsSigningUp] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         document.title = 'TJ Bazaar🛒 User Signup ';
@@ -99,7 +99,7 @@ function User_Signup() {
             toast.error('Passwords do not match.');
             return;
         }
-        setIsSigningUp(true); // Disable the button
+        setLoading(true); // Disable the button
         try {
             const response = await axiosInstanceSeller.post('/seller/signup', {
                 name: seller.name,
@@ -119,13 +119,13 @@ function User_Signup() {
             const error_msg = error.response.data.message;
             toast.error(error_msg);
         } finally {
-            setIsSigningUp(false); // Re-enable the button
+            setLoading(false); // Re-enable the button
         }
     };
 
     const handleOtpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setIsSigningUp(true); // Disable the button
+        setLoading(true); // Disable the button
         try {
             const response = await axiosInstanceSeller.post(`/seller/verify-otp/${sellerId}`, {
                 otp,
@@ -143,7 +143,7 @@ function User_Signup() {
             const error_msg = error.response.data.message;
             toast.error(error_msg);
         } finally {
-            setIsSigningUp(false); // Re-enable the button
+            setLoading(false); // Re-enable the button
         }
     };
 
@@ -360,9 +360,9 @@ function User_Signup() {
                                     type={step === 3 ? 'submit' : 'button'}
                                     className="w-full dark:text-white bg-red-600 text-black focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                                     onClick={step < 3 ? handleNext : undefined}
-                                    disabled={isSigningUp} // Disable the button
+                                    disabled={loading} // Disable the button
                                 >
-                                    {isSigningUp ? (
+                                    {loading ? (
                                         <div className="flex items-center justify-center">
                                             <div className="spinner"></div>
                                         </div>
@@ -389,9 +389,9 @@ function User_Signup() {
                                 <button
                                     type="submit"
                                     className="w-full dark:text-white bg-red-600 text-black focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                                    disabled={isSigningUp} // Disable the button
+                                    disabled={loading} // Disable the button
                                 >
-                                    {isSigningUp ? (
+                                    {loading ? (
                                         <div className="flex items-center justify-center">
                                             <div className="spinner"></div>
                                         </div>
