@@ -13,6 +13,8 @@ import User_Dashboard from './pages/user/User_Dashboard';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import Product from './pages/Product';
+import Category from './pages/Category';
+import Seller from './pages/Seller';
 
 const router=createBrowserRouter(
   createRoutesFromChildren(
@@ -20,12 +22,15 @@ const router=createBrowserRouter(
     <Route path="/" element={<Home/>}/>
     <Route path="/search" element={<Search/>}/>
     <Route path="/product/:id" element={<Product/>}/>
+    <Route path="/category/:id" element={<Category/>}/>
+    <Route path="/seller/:id" element={<Seller/>}/>
     <Route path="/seller/login" element={<Seller_Login/>}/>
     <Route path="/seller/signup" element={<Seller_Signup/>}/>
     <Route path="/seller/dashboard" element={<Seller_Dashboard/>}/>
     <Route path="/user/login" element={<User_Login/>}/>
     <Route path="/user/signup" element={<User_Signup/>}/>
-    <Route path="/user/dashboard" element={<User_Dashboard/>}/>
+    <Route path="/user/dashboard" element={<User_Dashboard/>}
+    />
     </Route>
   )
 );

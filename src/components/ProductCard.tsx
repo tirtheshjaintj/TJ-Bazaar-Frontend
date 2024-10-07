@@ -61,7 +61,7 @@ export default function ProductCard({product}: ProductCardProps) {
     <Card className="w-full shadow-lg rounded-3xl z-1 m-0 bg-transparent dark:bg-transparent relative hover:shadow-2xl">
       <div className="flex flex-col w-full h-full pt-2">
         {/* Dropdown at top-right corner */}
-        <div className="absolute top-0 right-0 z-10 shadow-2xl rounded-full p-2">
+        <div className="absolute top-0 right-0 shadow-2xl rounded-full p-2">
           <Dropdown label={
               <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
               <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>

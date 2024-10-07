@@ -46,6 +46,7 @@ function Seller_Dashboard() {
     let token = cookie.get('seller_token');
     if (!token) navigate('/seller/login');
    if(!seller) getSeller();
+   window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {

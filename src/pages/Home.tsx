@@ -4,6 +4,7 @@ import axiosInstance from '../config/axiosConfig';
 import ProductCard from '../components/ProductCard';
 import { AiOutlineRight } from 'react-icons/ai';
 import { ProductCardSkeleton } from '../components/ProductCardSkeleton';
+import { Link } from 'react-router-dom';
 
 // src/pages/Home.tsx
 interface Category {
@@ -79,7 +80,7 @@ function Home() {
     <>
       <Navbar />
       <div className="flex justify-end w-full">
-        <h1 className="p-4 pt-24 md:pt-12 font-bold text-2xl md:text-[36px]">Welcome To TJ Bazaar 🛒</h1>
+        <h1 className="p-4 pt-24 font-bold text-2xl md:text-[36px]">Welcome To TJ Bazaar 🛒</h1>
       </div>
       <div className="p-4">
         {loading ? (
@@ -96,9 +97,12 @@ function Home() {
           Object.entries(products).map(([categoryName, productList]) => (
             <div key={categoryName} className="mb-8">
               <h2 className="text-3xl font-bold mb-4">
-                {categoryName} &nbsp;<span className='font-normal'>{`(${productList.length || 0})`}</span>
+                <Link to={`/category/${productList[0].category_id._id}`} className="hover:underline">
+                  {categoryName}
+                &nbsp;<span className='font-normal'>{`(${productList.length || 0})`}</span>
+                </Link>
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {productList.slice(0, visibleProducts[categoryName] || 0).map((product: Product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}

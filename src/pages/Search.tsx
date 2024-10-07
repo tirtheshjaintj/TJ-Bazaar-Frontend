@@ -6,6 +6,7 @@ import axiosInstance from '../config/axiosConfig'; // Import the configured Axio
 import toast from 'react-hot-toast';
 import ProductCard from '../components/ProductCard'; // Import the ProductCard component
 import { ProductCardSkeleton } from '../components/ProductCardSkeleton'; // Import the skeleton component
+import { AiFillHeart } from 'react-icons/ai';
 
 function Search() {
   const [searchParams] = useSearchParams();
@@ -42,15 +43,14 @@ function Search() {
   useEffect(() => {
     if (searchQuery) {
       search();
+      window.scrollTo(0, 0);
     }
   }, [searchQuery]);
 
   return (
     <>
       <Navbar />
-      <div className="p-4 pt-24 md:pt-12">
-        {searchQuery?.replace(/[^a-zA-Z0-9\s]/g, ' ' ) && <p className="text-xl font-semibold mb-4">Results for "{searchQuery?.replace(/[^a-zA-Z0-9\s]/g, ' ' )}"</p>}
-
+      <div className="p-4 pt-24">
         {/* Show skeletons while loading */}
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -62,7 +62,10 @@ function Search() {
           <>
             {/* If there are no products, show a message */}
             {products.length === 0 ? (
-              <p>No products found matching "{searchQuery}"</p>
+               <div className="flex flex-col justify-center items-center min-h-screen text-center">
+               <AiFillHeart className="text-red-500 w-16 h-16 animate-bounce" />
+               <h2 className="text-2xl font-bold">No products found matching "{searchQuery}"</h2>
+             </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {products.map((product: any) => (

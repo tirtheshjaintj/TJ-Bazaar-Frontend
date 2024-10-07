@@ -14,7 +14,7 @@ const StarRating: React.FC<StarRatingProps> = ({ rating, setRating }) => {
       {stars.map((star) => (
         <FaStar
           key={star}
-          className={`cursor-pointer ${star <= rating ? 'text-yellow-300' : ''}`}
+          className={`cursor-pointer ${star <= rating ? 'text-yellow-300' : 'text-gray-300'}`}
           onClick={() => setRating && setRating(star)} // Set rating on click
         />
       ))}

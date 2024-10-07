@@ -11,11 +11,9 @@ export default function Nav() {
   const cookie = new Cookies();
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user);
-
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("keyword") || ""; // Get search keyword from URL params
   const [searchKeyword, setSearchKeyword] = useState(searchQuery); // Initialize state with query param
-
   const [isSearchOpen, setIsSearchOpen] = useState(false); // State for toggling search bar
 
   const signOut = () => {
@@ -42,7 +40,7 @@ export default function Nav() {
   }, [searchQuery]);
 
   return (
-    <Navbar fluid rounded className="bg-white/50 fixed w-full z-10 lg:relative dark:bg-gray-900/50 backdrop-blur-3xl">
+    <Navbar className="bg-white/50 fixed w-full z-10   dark:bg-gray-900/50 backdrop-blur-3xl">
       <Link to="/" className="flex flex-grow">
         <img src="/bazaar.gif" className="mr-3 h-12" alt="TJ Bazaar" />
         <h1 className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white cursor-pointer">
@@ -71,7 +69,7 @@ export default function Nav() {
       </form>
 
       {/* Mobile Search Icon */}
-      <div className="flex lg:hidden items-center">
+      <div className="flex lg:hidden  items-center">
         <button
           onClick={toggleSearch}
           className="p-2 text-gray-700 dark:text-white"
@@ -124,7 +122,7 @@ export default function Nav() {
       {isSearchOpen && (
         <form
           onSubmit={handleSearch}
-          className="flex lg:hidden items-center w-full mx-4 relative"
+          className="flex mt-5 lg:hidden items-center w-full mx-4 relative"
         >
           <input
             type="text"

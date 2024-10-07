@@ -16,6 +16,7 @@ const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_API_KEY;
 
 interface Category {
   name: string;
+  _id:string;
 }
 
 
@@ -43,7 +44,8 @@ const Product: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<ProductData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isloading,setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [quantity, setQuantity] = useState<number>(1);
   const [showMore, setShowMore] = useState<boolean>(false);
@@ -54,7 +56,6 @@ const Product: React.FC = () => {
   const [inWishlist, setInWishlist] = useState<boolean>(false);
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState<number>(0);
-
   // Ref for the media preview strip
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -136,11 +137,11 @@ const Product: React.FC = () => {
   
 
   const getProduct = async () => {
+    setLoading(true);
     try {
       const response = await axiosInstance.get(`/product/${id}`);
       setProduct(response.data.data);
     } catch (error) {
-      ////console.log(error);
       setError(true);
       toast.error("Product Not Found");
     } finally {
@@ -149,6 +150,7 @@ const Product: React.FC = () => {
   };
 
   const addToCart = async () => {
+    setIsLoading(true);
     if (user) {
       try {
         if (!inCart) {
@@ -168,6 +170,8 @@ const Product: React.FC = () => {
       } catch (error) {
         ////console.log("error: ", error);
         toast.error("Cannot add Product to Cart");
+      }finally{
+        setIsLoading(false);
       }
     } else {
       navigate("../user/login");
@@ -175,6 +179,7 @@ const Product: React.FC = () => {
   };
 
   const buyNow = async () => {
+    setIsLoading(true);
     if (user) {
       try {
         const instance = async () => {
@@ -186,6 +191,8 @@ const Product: React.FC = () => {
             return response.data.paymentInit;
           } catch (error) {
             ////console.log("error: ", error);
+          }finally{
+            setIsLoading(false);
           }
         };
 
@@ -193,7 +200,6 @@ const Product: React.FC = () => {
         const key = RAZORPAY_KEY;
         const options = {
           key,
-          amount: Math.ceil(order.amount / 100),
           currency: "INR",
           name: "TJ Bazaar",
           description: "RazorPay",
@@ -356,8 +362,8 @@ const Product: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="p-4 pt-24 md:p-0 md:pt-0 min-w-screen">
-        <div className="flex flex-col md:flex-row items-center min-h-screen w-full">
+      <div className="p-4 md:p-0 md:pt-0 min-w-screen">
+        <div className="flex pt-12 flex-col md:flex-row items-center min-h-screen w-full">
           <div className="md:w-1/2">
             <div className="flex-grow h-full backdrop-blur-3xl rounded-xl">
               <div className="absolute top-14 right-2 text-red-500 rounded-full bg-gray-50/20 h-12 w-12 flex justify-center items-center text-3xl cursor-pointer z-10"
@@ -479,29 +485,29 @@ const Product: React.FC = () => {
             </div>
 
             {product?.quantity === 0 && (
-              <span className="flex items-center text-red-600 text-3xl font-bold ml-4">Out of Stock&nbsp;<FaBoxOpen /></span>
+              <span className="flex items-center text-red-600 text-4xl font-bold ml-4">Out of Stock&nbsp;<FaBoxOpen /></span>
             )}
 
             <div className="mt-4 flex space-x-2 text-xl text-center w-full md:pt-10">
               <button className="flex items-center py-4  justify-center w-full  bg-blue-600 text-white px-4  rounded hover:bg-blue-700 transition"
-                disabled={(product?.quantity === 0)}
+                disabled={(product?.quantity === 0) || isloading}
                 onClick={addToCart}
               >
-                {(inCart) ? <Link to={"../user/dashboard"}>Go To Cart</Link> : <span>Add Cart</span>} <AiOutlineShoppingCart className="ml-2" />
+                {(inCart) ? <Link to={"../user/dashboard"}>Go To Cart</Link> : <span>Add Cart</span>} <AiOutlineShoppingCart className="ml-2" /> {isloading && <span className='spinner'></span>}
               </button>
               <button
                 className="flex items-center w-full justify-center  bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-                disabled={product?.quantity === 0}
+                disabled={product?.quantity === 0 || isloading}
                 onClick={buyNow}
               >
-                Buy Now <FaBagShopping className="ml-2" />
+                Buy Now <FaBagShopping className="ml-2" /> {isloading && <span className='spinner'></span>}
               </button>
             </div>
 
             {/* Seller and Category Details */}
             <div className="mt-4 pt-10">
-              <h3 className="text-lg font-semibold">Category: {product?.category_id.name}</h3>
-              <h3 className="text-lg font-semibold">Seller: {product?.seller_id.name}</h3>
+              <h3 className="text-xl font-semibold">Category: <Link to={`../category/${product?.category_id._id}`}  className="hover:underline">{product?.category_id.name}</Link> </h3>
+              <h3 className="text-xl font-semibold">Seller: <Link to={`../seller/${product?.seller_id._id}`}  className="hover:underline">{product?.seller_id.name}</Link></h3>
             </div>
 
             {/* Description */}

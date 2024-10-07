@@ -71,13 +71,13 @@ function User_Dashboard() {
     getCartCount();
     getWishlistCount();
     }
+    window.scrollTo(0, 0);
   }, []);
-
 
   return (
     <div>
     <Navbar />
-    <div className='flex justify-center items-center min-w-screen'>
+    <div className='flex justify-center items-center lg:pt-12 min-w-screen'>
       <div className="shadow-xl shadow-slate-50/10 border-2 pt-10 lg:pt-0 dark:border-slate-50/20 mt-10 md:w-[95vw] min-h-sceen flex flex-col md:flex-row justify-between rounded-3xl">
         <div className={`${!openTab ? "block" : "hidden"} md:block`}>
           <Sidebar setTab={setTab} tab={tab} setOpenTab={setOpenTab} cartCount={cartCount} wishlistCount={wishlistCount} />
