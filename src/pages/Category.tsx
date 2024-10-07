@@ -27,7 +27,7 @@ interface Category {
     updatedAt: string;      // Add updatedAt
     __v: number;            // Add version key
   }
-  
+
 function Category() {
     const { id } = useParams<{ id: string }>();
     const [products, setProducts] = useState<Product[]>([]);
@@ -54,9 +54,14 @@ function Category() {
     };
 
     useEffect(() => {
-        document.title = `TJ Bazaar - ${category && category.name} Products`;
         getProductsByCategory();
     }, [id]);
+
+    useEffect(()=>{
+        if(category && category.name){
+        document.title = `TJ Bazaar - ${category && category.name} Products`;
+        }
+    },[category]);
 
     useEffect(() => {
         window.scrollTo(0, 0);

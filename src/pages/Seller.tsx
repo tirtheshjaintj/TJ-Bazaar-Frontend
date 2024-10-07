@@ -63,9 +63,17 @@ function Seller() {
         getProductsBySeller();
     }, [id]);
 
+    useEffect(()=>{
+        if(seller && seller.name){
+            document.title = `TJ Bazaar - ${seller && seller.name} Products`;
+        }
+    },[seller]);
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    
 
     return (
         <>
