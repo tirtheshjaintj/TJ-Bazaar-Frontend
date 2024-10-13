@@ -40,7 +40,7 @@ export default function Nav() {
   }, [searchQuery]);
 
   return (
-    <Navbar className="bg-white/50 fixed w-full z-10   dark:bg-gray-900/50 backdrop-blur-3xl">
+    <Navbar className="bg-white/50 fixed w-[90vw] z-10   dark:bg-gray-900/50 backdrop-blur-3xl">
       <Link to="/" className="flex flex-grow">
         <img src="/bazaar.gif" className="mr-3 h-12" alt="TJ Bazaar" />
         <h1 className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white cursor-pointer">

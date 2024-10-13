@@ -111,7 +111,7 @@ function Home() {
                 <div className="flex justify-end mt-4">
                   <button
                     onClick={() => handleShowMore(categoryName)}
-                    className="flex items-center text-blue-600 hover:bg-blue-100 rounded-lg px-4 py-2 transition duration-300"
+                    className="flex items-center text-blue-600 bg-blue-100 rounded-lg px-4 py-2 transition duration-300"
                   >
                     <span className="mr-2">Show More</span>
                     <AiOutlineRight className="w-5 h-5" />

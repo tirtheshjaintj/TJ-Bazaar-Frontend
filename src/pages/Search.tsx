@@ -51,6 +51,7 @@ function Search() {
     <>
       <Navbar />
       <div className="p-4 pt-24">
+
         {/* Show skeletons while loading */}
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
