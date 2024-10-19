@@ -3,7 +3,8 @@ import axiosInstance from '../../config/axiosConfig'; // Update this import as n
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../../store/userSlice'; // Update with your actual action
-import { FaPencilAlt } from 'react-icons/fa';
+import { FaLock, FaPencilAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 interface User {
   name: string;
@@ -128,7 +129,7 @@ function UpdateProfile({ user_data }: Prop) {
           />
           {errors.address && <p className="text-red-600 text-sm mt-1">{errors.address}</p>}
         </div>
-
+       
         <div className="flex justify-end">
           <button
             type="submit"
@@ -145,6 +146,15 @@ function UpdateProfile({ user_data }: Prop) {
           </button>
         </div>
       </form>
+      <br />
+      <Link to={"../user/forgot"} className="flex">
+          <button
+            type="submit"
+            className="py-2 px-4 bg-red-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+          >
+          <span className="flex items-center justify-center">Change Password&nbsp;<FaLock/></span>
+          </button>
+        </Link>
     </div>
   );
 }

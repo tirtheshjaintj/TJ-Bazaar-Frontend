@@ -3,7 +3,8 @@ import axiosInstanceSeller from '../../config/axiosConfigSeller'; // Update this
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { addSeller } from '../../store/sellerSlice';
-import { FaPencilAlt } from 'react-icons/fa';
+import { FaLock, FaPencilAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 interface Seller {
   name: string;
@@ -163,6 +164,15 @@ function UpdateProfile({ seller_data }: Prop) {
           </button>
         </div>
       </form>
+      <br />
+      <Link to={"../seller/forgot"} className="flex">
+          <button
+            type="submit"
+            className="py-2 px-4 bg-red-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+          >
+          <span className="flex items-center justify-center">Change Password&nbsp;<FaLock/></span>
+          </button>
+        </Link>
     </div>
   );
 }

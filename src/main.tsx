@@ -15,6 +15,7 @@ import Search from './pages/Search';
 import Product from './pages/Product';
 import Category from './pages/Category';
 import Seller from './pages/Seller';
+import Forgot_Password from './pages/Forgot_Password';
 
 const router=createBrowserRouter(
   createRoutesFromChildren(
@@ -24,11 +25,15 @@ const router=createBrowserRouter(
     <Route path="/product/:id" element={<Product/>}/>
     <Route path="/category/:id" element={<Category/>}/>
     <Route path="/seller/:id" element={<Seller/>}/>
+
     <Route path="/seller/login" element={<Seller_Login/>}/>
     <Route path="/seller/signup" element={<Seller_Signup/>}/>
+    <Route path="/seller/forgot" element={<Forgot_Password type="seller"/>}/>
     <Route path="/seller/dashboard" element={<Seller_Dashboard/>}/>
+    
     <Route path="/user/login" element={<User_Login/>}/>
     <Route path="/user/signup" element={<User_Signup/>}/>
+    <Route path="/user/forgot" element={<Forgot_Password type="user"/>}/>
     <Route path="/user/dashboard" element={<User_Dashboard/>}
     />
     </Route>

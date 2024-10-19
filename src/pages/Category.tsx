@@ -71,7 +71,10 @@ function Category() {
   }, []);
 
   const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    product.price.toString().includes(searchTerm) // Convert price to string for comparison
   );
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -96,7 +99,7 @@ function Category() {
         <div className="flex w-full gap-2 items-center">
           <input
             type="text"
-            placeholder="Search by product name"
+            placeholder="Search any Product"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="p-3 w-full border border-gray-300 rounded-md shadow-sm lg:w-1/3 dark:bg-gray-700 dark:text-white focus:ring focus:ring-blue-300"

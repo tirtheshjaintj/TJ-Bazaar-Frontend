@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import Cookie from 'universal-cookie';
 import EyeToggleSVG from '../../components/Eye';
 type event = React.ChangeEvent<HTMLInputElement>;
+import Navbar from "../../components/user/Navbar";
 
 function User_Signup() {
     const [step, setStep] = useState(1);
@@ -181,6 +182,8 @@ function User_Signup() {
 
 
     return (
+        <>
+        <Navbar/>
         <section className="min-h-screen pb-8 md:pb-0">
             <div className="flex flex-col items-center justify-center h-screen px-6 py-8 mx-auto lg:py-0">
                 <h1 className="flex items-center mb-6 text-4xl font-semibold text-gray-900 dark:text-white">
@@ -386,10 +389,10 @@ function User_Signup() {
                                 </button>
                             )}
 
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                Already have an account?{' '}
+                            <p className="text-sm">
+                            <span className="text-gray-500 dark:text-gray-400"> Already have an account?{' '}</span>
                                 <Link to="/user/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
-                                    Login here
+                                    Login
                                 </Link>
                             </p>
                         </form>
@@ -397,6 +400,7 @@ function User_Signup() {
                 </div>
             </div>
         </section>
+        </>
     );
 }
 

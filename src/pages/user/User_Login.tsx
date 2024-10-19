@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../config/axiosConfig'; // Import the configured Axios instance
 import toast from 'react-hot-toast';
 import Cookie from "universal-cookie";
+import Navbar from "../../components/user/Navbar";
 type event = React.ChangeEvent<HTMLInputElement>;
 
 function User_Login() {
@@ -58,6 +59,8 @@ function User_Login() {
 
 
   return (
+    <>
+    <Navbar/>
     <section className="min-h-screen pb-8 md:pb-0">
       <div className="flex flex-col items-center justify-center h-screen px-6 py-8 mx-auto lg:py-0">
         <h1 className="flex items-center mb-6 text-4xl font-semibold text-gray-900 dark:text-white">
@@ -120,19 +123,23 @@ function User_Login() {
                   'Sign In'  // Default text when not loading
                 )}
               </button>
-
-              <p className="text-sm  text-gray-500 dark:text-gray-400">
-                Don’t have an account yet?{' '}
+         
+              <p className="text-sm  ">
+               <span className="text-gray-500 dark:text-gray-400">Don’t have an account yet?{' '}</span> 
                 <Link to="/user/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
-                  Sign Up
+                  SignUp
                 </Link>
               </p>
+              <Link to="/user/forgot" className="text-sm  font-medium text-primary-600 hover:underline dark:text-primary-500">
+                Forgot Password?{' '}
+              </Link>
             </form>
           </div>
         </div>
 
       </div>
     </section>
+    </>
   )
 }
 
