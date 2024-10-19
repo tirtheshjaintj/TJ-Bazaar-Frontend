@@ -130,11 +130,7 @@ const Forgot_Password: React.FC<Prop> = ({ type }) => {
     document.title = `TJ Bazaar🛒: Change ${type} Password`;
     window.scrollTo(0, 0);
   }, []);
-  // Create a mock FormEvent object
-  const mockEvent = {
-    preventDefault: () => { },
-    target: {},
-  } as React.FormEvent; // Cast as React.FormEvent
+
 
   useEffect(() => {
     if (type === "user" && user && user.email) {
