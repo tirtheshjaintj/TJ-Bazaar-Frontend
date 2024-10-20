@@ -28,7 +28,7 @@ function UpdateProfile({ user_data }: Prop) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
-    document.title = `Your App - User Update Profile`;
+    document.title = `TJ Bazaar🛒: User Update Profile`;
   }, []);
 
   const [user, setUser] = useState<User>({

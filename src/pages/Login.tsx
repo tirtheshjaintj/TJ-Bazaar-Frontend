@@ -1,38 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import EyeToggleSVG from '../../components/Eye';
-import { Link, useNavigate } from 'react-router-dom';
-import axiosInstanceSeller from '../../config/axiosConfigSeller'; // Import the configured Axios instance
+import React, { useEffect, useState } from "react";
+import EyeToggleSVG from "../components/Eye";
+import { Link, useNavigate } from "react-router-dom";
+import axiosInstance from '../config/axiosConfig'; // Import the configured Axios instance
 import toast from 'react-hot-toast';
 import Cookie from "universal-cookie";
-import Navbar from "../../components/user/Navbar";
-
+import Navbar from "../components/user/Navbar";
 type event = React.ChangeEvent<HTMLInputElement>;
 
-function Seller_Login() {
-  useEffect(() => {
-    document.title = "TJ Bazaar🛒 Seller Login";
-  }, []);
+interface Prop{
+    type:`user`|`seller`;
+}
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+function Login({type}:Prop) {
+  const [email, setEmail] = useState(``);
+  const [password, setPassword] = useState(``);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
   const cookie = new Cookie();
-
   useEffect(() => {
-    let token = cookie.get('seller_token');
-    if (token) navigate('/seller/dashboard');
+    document.title = "TJ Bazaar🛒 User Login";
+    let token = cookie.get(`${type}_token`);
+    console.log(token);
+    if (token) navigate(`/${type}/dashboard`);
   }, []);
-
   const handleEmailChange = (e: event) => {
     setEmail(e.target.value);
   };
-
   const handlePasswordChange = (e: event) => {
     setPassword(e.target.value);
   };
-
   const handleShowPasswordToggle = () => {
     setShowPassword(!showPassword);
   };
@@ -44,34 +42,33 @@ function Seller_Login() {
       return;
     }
     try {
-      setLoading(true);
-      const response = await axiosInstanceSeller.post(`/seller/login`, {
+      setIsLoading(true);
+      const response = await axiosInstance.post(`/${type}/login`, {
         email,
-        password,
+        password
       });
-      console.log(response.data);
-      toast.success('Logged In Successfully');
+      toast.success(`Logged In Successfully`);
       const token = response?.data?.token;
       if (token) {
-        cookie.set("seller_token", token, { path: '/', expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) });
-        navigate('/seller/dashboard');
+        cookie.set(`${type}_token`, token, { path: `/`, expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) });
+        navigate(`/${type}/dashboard`);
       }
     } catch (error: any) {
-      console.log(error);
-      const error_msg = error.response?.data?.message || 'An error occurred';
+      const error_msg = error.response?.data?.message || "An error occurred";
       toast.error(error_msg);
     } finally {
-      setLoading(false); // Re-enable the button
+      setIsLoading(false);
     }
   };
-  
+
+
   return (
     <>
     <Navbar/>
-    <section className=" min-h-screen pb-8 md:pb-0">
+    <section className="min-h-screen pb-8 md:pb-0">
       <div className="flex flex-col items-center justify-center h-screen px-6 py-8 mx-auto lg:py-0">
         <h1 className="flex items-center mb-6 text-4xl font-semibold text-gray-900 dark:text-white">
-          TJ Bazaar🛒 Seller
+          TJ Bazaar🛒 {type.charAt(0).toUpperCase()+type.slice(1)}
         </h1>
 
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -101,7 +98,7 @@ function Seller_Login() {
                 </label>
                 <div className="relative">
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? `text` : `password`}
                     name="password"
                     id="password"
                     value={password}
@@ -118,31 +115,27 @@ function Seller_Login() {
                   </button>
                 </div>
               </div>
-
-             <button
+              <button
                 type="submit"
                 className="w-full dark:text-white bg-red-600 text-black focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                disabled={isLoading}  // Disable the button during loading
               >
-        {!loading ? (
-                 <> Sign In</>
-             ) : (
-                <>
+                {isLoading ? (
                   <div className="flex items-center justify-center">
                     <div className="spinner"></div>
-                  </div>
-                  
-                </>
-              )
-              }
+                  </div>) : (
+                  `Sign In`  // Default text when not loading
+                )}
               </button>
+         
               <p className="text-sm  ">
-               <span className="text-gray-500 dark:text-gray-400">Don’t have an account yet?{' '}</span> 
-                <Link to="/seller/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
+               <span className="text-gray-500 dark:text-gray-400">Don’t have an account yet?{` `}</span> 
+                <Link to={`/${type}/signup`} className="font-medium text-primary-600 hover:underline dark:text-primary-500">
                   SignUp
                 </Link>
               </p>
-              <Link to="/seller/forgot" className="text-sm  font-medium text-primary-600 hover:underline dark:text-primary-500">
-                Forgot Password?{' '}
+              <Link to={`/${type}/forgot`} className="text-sm  font-medium text-primary-600 hover:underline dark:text-primary-500">
+                Forgot Password?{` `}
               </Link>
             </form>
           </div>
@@ -154,4 +147,4 @@ function Seller_Login() {
   )
 }
 
-export default Seller_Login;
+export default Login;

@@ -1,12 +1,12 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense, lazy } from 'react';
 import Navbar from '../components/user/Navbar';
 import axiosInstance from '../config/axiosConfig';
-import ProductCard from '../components/ProductCard';
 import { AiOutlineRight } from 'react-icons/ai';
 import { ProductCardSkeleton } from '../components/ProductCardSkeleton';
 import { Link } from 'react-router-dom';
 
-// src/pages/Home.tsx
+const ProductCard = lazy(() => import('../components/ProductCard')); // Lazy loading ProductCard
+
 interface Category {
   _id: string;
   name: string;
@@ -29,7 +29,6 @@ interface Product {
   updatedAt: string;      // Add updatedAt
   __v: number;            // Add version key
 }
-
 
 interface ProductsByCategory {
   [categoryName: string]: Product[];
@@ -73,6 +72,7 @@ function Home() {
 
   useEffect(() => {
     document.title = `TJ Bazaar🛒 The Online Shop`;
+    window.scrollTo(0, 0);
     getProducts();
   }, []);
 
@@ -99,13 +99,15 @@ function Home() {
               <h2 className="text-3xl font-bold mb-4">
                 <Link to={`/category/${productList[0].category_id._id}`} className="hover:underline">
                   {categoryName}
-                &nbsp;<span className='font-normal'>{`(${productList.length || 0})`}</span>
+                  &nbsp;<span className='font-normal'>{`(${productList.length || 0})`}</span>
                 </Link>
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {productList.slice(0, visibleProducts[categoryName] || 0).map((product: Product) => (
-                  <ProductCard key={product._id} product={product} />
-                ))}
+                <Suspense fallback={<ProductCardSkeleton />}>
+                  {productList.slice(0, visibleProducts[categoryName] || 0).map((product: Product) => (
+                    <ProductCard key={product._id} product={product} />
+                  ))}
+                </Suspense>
               </div>
               {visibleProducts[categoryName] < productList.length && (
                 <div className="flex justify-end mt-4">

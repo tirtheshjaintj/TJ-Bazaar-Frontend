@@ -28,6 +28,9 @@ function App() {
         cookie.remove('user_token');
       }
     } catch (error: any) {
+      if(!error?.response?.data?.status){
+        cookie.remove('user_token');
+      }
       //console.log(error);
     }
   };
@@ -35,10 +38,8 @@ function App() {
   const getSeller = async () => {
     const sellerToken = cookie.get('seller_token');
     if (!sellerToken) {
-      //console.log("Seller token not found.");
       return; // Exit if the seller token is not available
     }
-
     try {
       const response = await axiosInstanceSeller.get(`/seller/getSeller`);
       const sellerData = response.data;
@@ -48,6 +49,9 @@ function App() {
         cookie.remove('seller_token');
       }
     } catch (error: any) {
+      if(!error?.response?.data?.status){
+        cookie.remove('seller_token');
+      }
       //console.log(error);
     }
   };

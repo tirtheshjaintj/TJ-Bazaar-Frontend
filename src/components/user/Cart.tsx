@@ -179,6 +179,10 @@ const sortedCart = [...filteredCart].sort((a, b) => {
     return 'Just now';
   };
 
+  useEffect(() => {
+    document.title = `TJ Bazaar🛒: User Cart`;
+  }, []);
+
   if (loading) {
     return (
       <div className="py-5 min-h-screen">
@@ -195,6 +199,7 @@ const sortedCart = [...filteredCart].sort((a, b) => {
       </div>
     );
   }
+
 
   return (
     <div className="pt-6 min-h-screen">

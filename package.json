@@ -15,6 +15,7 @@
     "axios": "^1.7.7",
     "axios-retry": "^4.5.0",
     "flowbite-react": "^0.10.1",
+    "framer-motion": "^11.11.9",
     "install": "^0.13.0",
     "npm": "^10.8.3",
     "prop-types": "^15.8.1",

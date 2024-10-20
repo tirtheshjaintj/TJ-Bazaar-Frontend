@@ -1,62 +1,66 @@
-import { useEffect, useState } from 'react';
+// MyProducts.tsx
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import ProductCard from './ProductCard';
-import axiosInstanceSeller from '../../config/axiosConfigSeller'; // Import axiosInstanceSeller
+import axiosInstanceSeller from '../../config/axiosConfigSeller';
 import { FaSortAmountDown, FaSortAmountUp, FaCalendarAlt, FaCalendarDay } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import UpdateProduct from './updateProduct';
 
 function MyProducts({ selectedProduct, setSelectedProduct }: any) {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('priceAsc');
-  const [loading, setLoading] = useState(true); // Added loading state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const getProducts = async () => {
-    setLoading(true); // Set loading to true when fetching
+  const getProducts = useCallback(async () => {
+    setLoading(true);
+    setError(null);
     try {
       const response = await axiosInstanceSeller.get(`/seller/getproducts`, {
         withCredentials: true,
       });
       if (response.data.status) {
         setProducts(response.data.data);
-        setFilteredProducts(response.data.data);
+      } else {
+        setError("Failed to fetch products");
       }
     } catch (error) {
       console.error("Error fetching products:", error);
+      setError("Not able to fetch products");
       toast.error("Not able to fetch products");
     } finally {
-      setLoading(false); // Set loading to false after fetching is done
+      setLoading(false);
     }
-  };
-
-  const onDelete = async (productId: any) => {
-    try {
-      const response = await axiosInstanceSeller.delete(`/product/delete/${productId}`, { withCredentials: true });
-      if (response.data.status) {
-        const newProducts = products.filter((p: any) => p._id !== productId);
-        setProducts(newProducts);
-        toast.success(response.data.message);
-      }
-    } catch (error) {
-      toast.error("Not able to delete product");
-    }
-  };
-
-  const handleUpdate = (productId: string) => {
-    const productToUpdate: any = products.find((product: any) => product._id === productId);
-    setSelectedProduct(productToUpdate);
-  };
-
-  useEffect(() => {
-    getProducts();
   }, []);
 
-  useEffect(() => {
-    let filtered = products.filter((product: any) => {
-      return product.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-             product.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    });
+  const onDelete = useCallback(async (productId: any) => {
+    try {
+      const response = await axiosInstanceSeller.delete(`/product/delete/${productId}`, {
+        withCredentials: true,
+      });
+      if (response.data.status) {
+        setProducts((prevProducts) => prevProducts.filter((p: any) => p._id !== productId));
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message || "Failed to delete product");
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      toast.error("Not able to delete product");
+    }
+  }, []);
+
+  const handleUpdate = useCallback((productId: string) => {
+    const productToUpdate: any = products.find((product: any) => product._id === productId);
+    setSelectedProduct(productToUpdate);
+  }, [products, setSelectedProduct]);
+
+  const filteredAndSortedProducts = useMemo(() => {
+    let filtered = products.filter((product: any) =>
+      product.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     filtered.sort((a: any, b: any) => {
       switch (sortBy) {
@@ -73,11 +77,20 @@ function MyProducts({ selectedProduct, setSelectedProduct }: any) {
       }
     });
 
-    setFilteredProducts(filtered);
-  }, [searchTerm, sortBy, products]);
+    return filtered;
+  }, [products, searchTerm, sortBy]);
+
+  useEffect(() => {
+    getProducts();
+  }, [getProducts]);
+
+  useEffect(() => {
+    document.title = `TJ Bazaar🛒: Seller Products`;
+  }, []);
 
   return (
     <div className="py-5">
+      {error && <p className="text-red-500">{error}</p>}
       { !selectedProduct && (
         <>
           <div className="flex w-full flex-col lg:flex-row gap-4 justify-between items-center mb-6">
@@ -113,8 +126,8 @@ function MyProducts({ selectedProduct, setSelectedProduct }: any) {
                   <div className="h-4 bg-gray-300 rounded mb-2"></div>
                 </div>
               ))
-            ) : filteredProducts.length > 0 ? (
-              filteredProducts.map((product: any) => (
+            ) : filteredAndSortedProducts.length > 0 ? (
+              filteredAndSortedProducts.map((product: any) => (
                 <ProductCard 
                   key={product._id} 
                   product={product} 
@@ -129,10 +142,7 @@ function MyProducts({ selectedProduct, setSelectedProduct }: any) {
         </>
       )}
       
-      {/* Render update form/modal */}
-      {selectedProduct && (
-        <UpdateProduct product={selectedProduct} />
-      )}
+      {selectedProduct && <UpdateProduct product={selectedProduct} />}
     </div>
   );
 }

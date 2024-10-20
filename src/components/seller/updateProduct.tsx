@@ -145,6 +145,10 @@ const UpdateProduct: React.FC<{ product: any }> = ({ product }) => {
     }
   };
 
+  useEffect(() => {
+    document.title = `TJ Bazaar🛒: Seller Update Product`;
+  }, []);
+
   return (
     <div className="w-full p-4 min-h-screen">
       <form onSubmit={handleSubmit} className="space-y-4 flex flex-col w-full placeholder-slate-200">

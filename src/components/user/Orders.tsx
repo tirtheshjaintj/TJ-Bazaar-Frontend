@@ -93,6 +93,10 @@ function Orders() {
     return 'Just now';
   };
 
+  useEffect(() => {
+    document.title = `TJ Bazaar🛒: User Orders`;
+  }, []);
+
   return (
     <div className="py-5 min-h-screen">
       <div className='flex w-full flex-col lg:flex-row gap-4 justify-between items-center mb-6'>

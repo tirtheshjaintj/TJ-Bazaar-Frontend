@@ -1,16 +1,16 @@
 import { createSlice} from "@reduxjs/toolkit";
 
-// interface Seller{
-//   address: string;
-//   email: string;
-//   name: string;
-//   phone_number: string;
-//   _id: string;
-//   gst_number:string;
-// }
+interface Seller{
+  address: string;
+  email: string;
+  name: string;
+  phone_number: string;
+  _id: string;
+  gst_number:string;
+}
 
 // Initialize the initial state as Seller or null
-const initialState = null;
+const initialState: Seller | null = null;
 
 // Create the user slice with reducers
 const userSlice = createSlice({
@@ -18,7 +18,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     addSeller:(state, action) => {
-      console.log(state);
       return action.payload;
     },
     removeSeller: () => {

@@ -120,6 +120,10 @@ function WishList({getWishlistCount}:any) {
     return 'Just now';
   };
 
+  useEffect(() => {
+    document.title = `TJ Bazaar🛒: User Wishlist`;
+  }, []);
+
   if (loading) {
     return (    <div className="flex flex-col space-y-4">
       {Array.from({ length: 3 }).map((_, index) => (
@@ -133,6 +137,8 @@ function WishList({getWishlistCount}:any) {
       ))}
   </div>);
   }
+
+
 
   if (wishlist.length === 0) {
     return <>

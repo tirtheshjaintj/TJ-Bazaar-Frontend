@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // Define the User interface
-// interface User {
-//   address: string;
-//   email: string;
-//   name: string;
-//   phone_number: string;
-//   _id: string;
-// }
+interface User {
+  address: string;
+  email: string;
+  name: string;
+  phone_number: string;
+  _id: string;
+}
 
 // const initialState: User | null = null;
-const initialState= null;
+const initialState:User|null= null;
 
 // Create the user slice with reducers
 const userSlice = createSlice({

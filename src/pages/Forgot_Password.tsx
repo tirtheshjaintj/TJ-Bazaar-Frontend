@@ -127,7 +127,7 @@ const Forgot_Password: React.FC<Prop> = ({ type }) => {
   }, [resendDisabled]);
 
   useEffect(() => {
-    document.title = `TJ Bazaar🛒: Change ${type} Password`;
+    document.title = `TJ Bazaar🛒: Change ${type.charAt(0).toUpperCase()+type.slice(1)} Password`;
     window.scrollTo(0, 0);
   }, []);
 
