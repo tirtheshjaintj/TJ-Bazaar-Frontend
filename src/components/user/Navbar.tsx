@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from "react"; // Import useRef
+import { useState, useEffect, useCallback, useRef } from "react"; // Import useRef
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
