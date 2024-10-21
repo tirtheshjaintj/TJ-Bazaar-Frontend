@@ -23,6 +23,10 @@ function User_Dashboard() {
   const [wishlistCount,setWishlistCount] = useState<number>(0);
   const dispatch=useDispatch();
   const getUser = async () => {
+    const userToken = cookie.get('user_token');
+    if (!userToken) {
+      return; 
+    }
     try {
       const response = await axiosInstance.get(`/user/getUser`, {
         withCredentials: true, // Keep this if you need credentials
