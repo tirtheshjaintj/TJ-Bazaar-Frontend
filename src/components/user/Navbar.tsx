@@ -27,6 +27,7 @@ export default function Nav() {
     navigate("/user/login");
     dispatch(addUser(null));
   };
+  
   let deferredPrompt:any = null;
   window.addEventListener("beforeinstallprompt", (e) => {
     deferredPrompt = e;
