@@ -3,6 +3,7 @@ import axiosInstance from '../../config/axiosConfig';
 import { FaSearch, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { AiFillHeart } from 'react-icons/ai';
+import Cookie from "universal-cookie";
 
 interface Product {
   id: string;
@@ -29,6 +30,9 @@ function Orders() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 6;
+  const cookie = new Cookie();
+  const token = cookie.get('user_token');
+
 
   const getOrders = async () => {
     setLoading(true);
@@ -43,7 +47,9 @@ function Orders() {
   };
 
   useEffect(() => {
+    if(token){
     getOrders();
+    }
   }, []);
 
   const filteredOrders = orders.filter(order => {

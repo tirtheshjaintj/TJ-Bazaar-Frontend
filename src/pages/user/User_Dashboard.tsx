@@ -23,8 +23,7 @@ function User_Dashboard() {
   const [wishlistCount,setWishlistCount] = useState<number>(0);
   const dispatch=useDispatch();
   const getUser = async () => {
-    const userToken = cookie.get('user_token');
-    if (!userToken) {
+    if (!token) {
       return; 
     }
     try {
@@ -72,8 +71,10 @@ function User_Dashboard() {
     if (!token){
       navigate('../user/login');
     }else{
+    if(user){
     getCartCount();
     getWishlistCount();
+    }
     }
     window.scrollTo(0, 0);
   }, []);
