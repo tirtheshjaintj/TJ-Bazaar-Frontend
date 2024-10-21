@@ -46,11 +46,15 @@ createRoot(document.getElementById('root')!).render(
   </Provider>
 )
 
-if ('serviceWorkers' in navigator) {
-  window.addEventListener('load', function() {
-  navigator.serviceWorker.register('serviceWorker.js').then(function(registration) {
-  }, function(err:any) {
-      console.log(err);
-});
-});
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('serviceWorker.js')
+      .then(registration => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch(err => {
+        console.error('Service Worker registration failed:', err);
+      });
+  });
 }
+
