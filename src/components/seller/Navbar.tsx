@@ -14,9 +14,29 @@ export default function Nav() {
       navigate("/seller/login");
       dispatch(addSeller(null));
   }
+
+  let deferredPrompt:any = null;
+  window.addEventListener("beforeinstallprompt", (e) => {
+    deferredPrompt = e;
+  });
+
+ const install=async()=>{
+    try {
+      if (deferredPrompt !== null) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === "accepted") {
+          deferredPrompt = null;
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <Navbar fluid rounded className="bg-white/50 fixed w-full z-10 lg:relative dark:bg-gray-900/50 backdrop-blur-3xl">
-      <Link to="/" className="flex">
+      <Link to="/" className="flex" onClick={install}>
       <img src="/bazaar.gif" className="mr-3 h-12" alt="Flowbite React Logo" />
         <h1 className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white cursor-pointer">
         TJ Bazaar&nbsp;

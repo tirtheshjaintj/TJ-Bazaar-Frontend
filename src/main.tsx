@@ -45,3 +45,12 @@ createRoot(document.getElementById('root')!).render(
   <RouterProvider router={router}/>
   </Provider>
 )
+
+if ('serviceWorkers' in navigator) {
+  window.addEventListener('load', function() {
+  navigator.serviceWorker.register('serviceWorker.js').then(function(registration) {
+  }, function(err:any) {
+      console.log(err);
+});
+});
+}

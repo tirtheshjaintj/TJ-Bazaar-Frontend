@@ -27,6 +27,24 @@ export default function Nav() {
     navigate("/user/login");
     dispatch(addUser(null));
   };
+  let deferredPrompt:any = null;
+  window.addEventListener("beforeinstallprompt", (e) => {
+    deferredPrompt = e;
+  });
+
+ const install=async()=>{
+    try {
+      if (deferredPrompt !== null) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === "accepted") {
+          deferredPrompt = null;
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,7 +124,7 @@ export default function Nav() {
   return (
     <>
       <Navbar className="bg-white/50 fixed w-[100vw] lg:w-[90vw] z-10 dark:bg-gray-900/50 backdrop-blur-3xl">
-        <Link to="/" className="flex flex-grow">
+        <Link to="/" className="flex flex-grow" onClick={install}>
           <img src="/bazaar.gif" className="mr-3 h-12" alt="TJ Bazaar" />
           <h1 className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white cursor-pointer">
             TJ Bazaar&nbsp;
