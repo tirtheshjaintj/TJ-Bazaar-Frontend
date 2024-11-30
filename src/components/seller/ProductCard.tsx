@@ -3,29 +3,29 @@ import { FaTrash, FaPencilAlt, FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-export default function ProductCard({ product, onUpdate, onDelete }: any) {
+export default function ProductCard({ product, onUpdate}: any) {
   const navigate=useNavigate();
 
-  const handleDeleteConfirm = () => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        onDelete(product._id);
-        Swal.fire(
-          'Deleted!',
-          'Your product has been deleted.',
-          'success'
-        );
-      }
-    });
-  };
+  // const handleDeleteConfirm = () => {
+  //   Swal.fire({
+  //     title: 'Are you sure?',
+  //     text: "You won't be able to revert this!",
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Yes, delete it!'
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       onDelete(product._id);
+  //       Swal.fire(
+  //         'Deleted!',
+  //         'Your product has been deleted.',
+  //         'success'
+  //       );
+  //     }
+  //   });
+  // };
 
   const handleView=()=>{
     navigate(`../product/${product._id}`);
@@ -47,13 +47,6 @@ export default function ProductCard({ product, onUpdate, onDelete }: any) {
               onClick={() => onUpdate(product._id)}
             >
               Update
-            </Dropdown.Item>
-            <Dropdown.Item
-              icon={FaTrash}
-              onClick={handleDeleteConfirm}
-              className="text-red-600"
-            >
-              Delete
             </Dropdown.Item>
             <Dropdown.Item
               icon={FaEye}

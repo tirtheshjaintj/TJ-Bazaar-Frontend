@@ -5,7 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import Background from './components/Background';
 import ModeBall from './components/modeBall';
 import Cookie from "universal-cookie";
-import axiosInstance from './config/axiosConfig'; // Adjust the path according to your project structure
+import axiosInstance from './config/axiosConfig';
 import axiosInstanceSeller from './config/axiosConfigSeller';
 import { addUser } from './store/userSlice';
 import { addSeller } from './store/sellerSlice';
@@ -35,7 +35,6 @@ function App() {
       if(!error?.response?.data?.status){
         cookie.remove('user_token');
       }
-      //console.log(error);
     }
   };
 
@@ -56,7 +55,6 @@ function App() {
       if(!error?.response?.data?.status){
         cookie.remove('seller_token');
       }
-      //console.log(error);
     }
   };
 

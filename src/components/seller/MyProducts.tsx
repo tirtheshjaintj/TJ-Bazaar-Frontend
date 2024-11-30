@@ -34,22 +34,22 @@ function MyProducts({ selectedProduct, setSelectedProduct }: any) {
     }
   }, []);
 
-  const onDelete = useCallback(async (productId: any) => {
-    try {
-      const response = await axiosInstanceSeller.delete(`/product/delete/${productId}`, {
-        withCredentials: true,
-      });
-      if (response.data.status) {
-        setProducts((prevProducts) => prevProducts.filter((p: any) => p._id !== productId));
-        toast.success(response.data.message);
-      } else {
-        toast.error(response.data.message || "Failed to delete product");
-      }
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      toast.error("Not able to delete product");
-    }
-  }, []);
+  // const onDelete = useCallback(async (productId: any) => {
+  //   try {
+  //     const response = await axiosInstanceSeller.delete(`/product/delete/${productId}`, {
+  //       withCredentials: true,
+  //     });
+  //     if (response.data.status) {
+  //       setProducts((prevProducts) => prevProducts.filter((p: any) => p._id !== productId));
+  //       toast.success(response.data.message);
+  //     } else {
+  //       toast.error(response.data.message || "Failed to delete product");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting product:", error);
+  //     toast.error("Not able to delete product");
+  //   }
+  // }, []);
 
   const handleUpdate = useCallback((productId: string) => {
     const productToUpdate: any = products.find((product: any) => product._id === productId);
@@ -132,7 +132,6 @@ function MyProducts({ selectedProduct, setSelectedProduct }: any) {
                   key={product._id} 
                   product={product} 
                   onUpdate={handleUpdate}
-                  onDelete={onDelete}
                 />
               ))
             ) : (

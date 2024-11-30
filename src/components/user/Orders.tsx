@@ -103,6 +103,13 @@ function Orders() {
     document.title = `TJ Bazaar🛒: User Orders`;
   }, []);
 
+  if(orders.length===0){
+    return  <div className="flex flex-col justify-center items-center min-h-screen text-center">
+    <AiFillHeart className="text-red-500 w-16 h-16 animate-bounce" />
+    <h2 className="text-2xl font-bold">No orders match your search criteria.</h2>
+  </div>
+  }
+
   return (
     <div className="py-5 min-h-screen">
       <div className='flex w-full flex-col lg:flex-row gap-4 justify-between items-center mb-6'>
@@ -179,7 +186,7 @@ function Orders() {
             </Link>
           ))
         ) : (
-        <div className="flex flex-col justify-center items-center min-h-screen text-center">
+          <div className="flex flex-col justify-center items-center min-h-screen text-center">
           <AiFillHeart className="text-red-500 w-16 h-16 animate-bounce" />
           <h2 className="text-2xl font-bold">No orders match your search criteria.</h2>
         </div>

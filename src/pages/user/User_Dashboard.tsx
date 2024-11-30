@@ -22,8 +22,10 @@ function User_Dashboard() {
   const [cartCount,setCartCount] = useState<number>(0);
   const [wishlistCount,setWishlistCount] = useState<number>(0);
   const dispatch=useDispatch();
+
   const getUser = async () => {
     if (!token) {
+      navigate("/");
       return; 
     }
     try {
@@ -31,6 +33,7 @@ function User_Dashboard() {
         withCredentials: true, // Keep this if you need credentials
       });
       const userData = response.data;
+      console.log(userData);
       if (userData.status) {
         dispatch(addUser(userData.user));
       } else {
@@ -38,6 +41,8 @@ function User_Dashboard() {
       }
     } catch (error: any) {
       console.log(error);
+      cookie.remove('user_token');
+      navigate("/");
     }
   };
 
@@ -77,10 +82,10 @@ function User_Dashboard() {
     }
     }
     window.scrollTo(0, 0);
-  }, []);
+  }, [user,getUser]);
 
   return (
-    <div>
+    user && <div>
     <Navbar />
     <div className='flex justify-center items-center lg:pt-12 min-w-screen'>
       <div className="shadow-xl shadow-slate-50/10 border-2 pt-10 lg:pt-0 dark:border-slate-50/20 mt-10 md:w-[95vw] min-h-sceen flex flex-col md:flex-row justify-between rounded-3xl">

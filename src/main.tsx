@@ -15,6 +15,7 @@ import Category from './pages/Category';
 import Seller from './pages/Seller';
 import Forgot_Password from './pages/Forgot_Password';
 import Login from './pages/Login';
+import { GoogleOAuthProvider } from "@react-oauth/google"
 
 const router=createBrowserRouter(
   createRoutesFromChildren(
@@ -41,9 +42,11 @@ const router=createBrowserRouter(
 );
 
 createRoot(document.getElementById('root')!).render(
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_ID}>
   <Provider store={store}>
   <RouterProvider router={router}/>
   </Provider>
+  </GoogleOAuthProvider>
 )
 
 if ('serviceWorker' in navigator) {

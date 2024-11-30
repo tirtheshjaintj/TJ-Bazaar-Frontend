@@ -5,6 +5,7 @@ import axiosInstance from '../config/axiosConfig'; // Import the configured Axio
 import toast from 'react-hot-toast';
 import Cookie from "universal-cookie";
 import Navbar from "../components/user/Navbar";
+import GoogleBox from "../components/GoogleBox";
 type event = React.ChangeEvent<HTMLInputElement>;
 
 interface Prop{
@@ -21,7 +22,7 @@ function Login({type}:Prop) {
   const cookie = new Cookie();
   useEffect(() => {
     document.title = "TJ Bazaar🛒 User Login";
-    let token = cookie.get(`${type}_token`);
+    const token = cookie.get(`${type}_token`);
     console.log(token);
     if (token) navigate(`/${type}/dashboard`);
   }, []);
@@ -67,7 +68,7 @@ function Login({type}:Prop) {
     <Navbar/>
     <section className="min-h-screen pb-8 md:pb-0">
       <div className="flex flex-col items-center justify-center h-screen px-6 py-8 mx-auto lg:py-0">
-        <h1 className="flex items-center mb-6 text-4xl font-semibold text-gray-900 dark:text-white">
+        <h1 className="flex items-center pt-10 mb-6 text-4xl font-semibold text-gray-900 dark:text-white">
           TJ Bazaar🛒 {type.charAt(0).toUpperCase()+type.slice(1)}
         </h1>
 
@@ -127,7 +128,7 @@ function Login({type}:Prop) {
                   `Sign In`  // Default text when not loading
                 )}
               </button>
-         
+              <GoogleBox setIsLoading={setIsLoading} type={type}/>
               <p className="text-sm  ">
                <span className="text-gray-500 dark:text-gray-400">Don’t have an account yet?{` `}</span> 
                 <Link to={`/${type}/signup`} className="font-medium text-primary-600 hover:underline dark:text-primary-500">

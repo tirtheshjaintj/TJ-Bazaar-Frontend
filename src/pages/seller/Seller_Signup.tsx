@@ -6,6 +6,7 @@ import EyeToggleSVG from '../../components/Eye';
 import axiosInstanceSeller from '../../config/axiosConfigSeller'; // Adjust the path if necessary
 type event = React.ChangeEvent<HTMLInputElement>;
 import Navbar from "../../components/user/Navbar";
+import GoogleBox from '../../components/GoogleBox';
 
 function User_Signup() {
     const [step, setStep] = useState(1);
@@ -186,7 +187,7 @@ function User_Signup() {
         <Navbar/>
         <section className="min-h-screen pb-8 md:pb-0">
             <div className="flex flex-col items-center justify-center h-screen px-6 py-8 mx-auto lg:py-0">
-                <h1 className="flex items-center mb-6 text-4xl font-semibold text-gray-900 dark:text-white">
+                <h1 className="flex items-center pt-10 mb-6 text-4xl font-semibold text-gray-900 dark:text-white">
                     TJ Bazaar🛒 Seller
                 </h1>
                 <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -403,7 +404,7 @@ function User_Signup() {
                                     )}
                                 </button>
                             )}
-
+                            <GoogleBox setIsLoading={setLoading} type={"seller"}/>
                             <p className="text-sm">
                                 <span className="text-gray-500 dark:text-gray-400"> Already have an account?{' '}</span>
                                 <Link to="/seller/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
