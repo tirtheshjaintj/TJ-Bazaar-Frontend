@@ -1,7 +1,7 @@
 import { Card, Carousel, Dropdown } from "flowbite-react";
-import { FaTrash, FaPencilAlt, FaEye } from "react-icons/fa";
+import {FaPencilAlt, FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 
 export default function ProductCard({ product, onUpdate}: any) {
   const navigate=useNavigate();
