@@ -31,7 +31,7 @@ function User_Signup() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        document.title = 'TJ Bazaar🛒 User Signup ';
+        document.title = 'TJ Bazaar🛒 Seller Signup ';
         let token = cookie.get('seller_token');
         if (token) navigate('/seller/dashboard');
     }, []);
