@@ -21,7 +21,7 @@ function Login({type}:Prop) {
   const navigate = useNavigate();
   const cookie = new Cookie();
   useEffect(() => {
-    document.title = "TJ Bazaar🛒 User Login";
+    document.title = `TJ Bazaar🛒 ${type.charAt(0).toUpperCase()+type.slice(1)} Login`;
     const token = cookie.get(`${type}_token`);
     console.log(token);
     if (token) navigate(`/${type}/dashboard`);
