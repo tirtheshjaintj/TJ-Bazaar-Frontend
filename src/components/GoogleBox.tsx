@@ -1,5 +1,5 @@
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
-import {jwtDecode} from 'jwt-decode'; // Adjusted import for correct TS usage
+import { jwtDecode } from 'jwt-decode'; // Adjusted import for correct TS usage
 import Cookie from "universal-cookie";
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +7,7 @@ import axiosInstance from '../config/axiosConfig';
 
 interface GoogleBoxProps {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  type:`user`|`seller`;
+  type: `user` | `seller`;
 
 }
 
@@ -17,7 +17,7 @@ interface DecodedToken {
   sub: string; // Represents the Google user ID
 }
 
-const GoogleBox: React.FC<GoogleBoxProps> = ({ setIsLoading,type}) => {
+const GoogleBox: React.FC<GoogleBoxProps> = ({ setIsLoading, type }) => {
   const cookie = new Cookie();
   const navigate = useNavigate();
 
@@ -33,12 +33,15 @@ const GoogleBox: React.FC<GoogleBoxProps> = ({ setIsLoading,type}) => {
       // Destructure the necessary fields with a default for the name
       const { name = "Anonymous", email, sub: google_id } = decodedToken;
 
+      // Remove all special characters and numbers from the name
+      const sanitized_name = name.replace(/[^a-zA-Z\s]/g, "").trim();
+
       setIsLoading(true); // Set loading state
 
       // Send POST request to the backend
       const response = await axiosInstance.post(`/${type}/google_login`, {
         email,
-        name,
+        name: sanitized_name,
         google_id,
       });
 
