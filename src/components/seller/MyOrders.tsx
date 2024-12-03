@@ -90,8 +90,6 @@ function MyOrders() {
 
   return (
     <div className="py-5 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">My Orders</h1>
-
       <div className='flex w-full flex-col lg:flex-row gap-4 justify-between items-center mb-6'>
         <div className="flex w-full gap-2 items-center justify-start">
           <input

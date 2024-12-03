@@ -57,7 +57,7 @@ function MyProducts({ selectedProduct, setSelectedProduct }: any) {
   }, [products, setSelectedProduct]);
 
   const filteredAndSortedProducts = useMemo(() => {
-    let filtered = products.filter((product: any) =>
+    const filtered = products.filter((product: any) =>
       product.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.description?.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -91,7 +91,7 @@ function MyProducts({ selectedProduct, setSelectedProduct }: any) {
   return (
     <div className="py-5">
       {error && <p className="text-red-500">{error}</p>}
-      { !selectedProduct && (
+      {!selectedProduct && (
         <>
           <div className="flex w-full flex-col lg:flex-row gap-4 justify-between items-center mb-6">
             <div className="flex w-full gap-2 items-center justify-start">
@@ -128,9 +128,9 @@ function MyProducts({ selectedProduct, setSelectedProduct }: any) {
               ))
             ) : filteredAndSortedProducts.length > 0 ? (
               filteredAndSortedProducts.map((product: any) => (
-                <ProductCard 
-                  key={product._id} 
-                  product={product} 
+                <ProductCard
+                  key={product._id}
+                  product={product}
                   onUpdate={handleUpdate}
                 />
               ))
@@ -140,7 +140,7 @@ function MyProducts({ selectedProduct, setSelectedProduct }: any) {
           </div>
         </>
       )}
-      
+
       {selectedProduct && <UpdateProduct product={selectedProduct} />}
     </div>
   );
