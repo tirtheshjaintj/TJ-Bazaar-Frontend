@@ -106,7 +106,7 @@ function Orders() {
   if(orders.length===0){
     return  <div className="flex flex-col justify-center items-center min-h-screen text-center">
     <AiFillHeart className="text-red-500 w-16 h-16 animate-bounce" />
-    <h2 className="text-2xl font-bold">No orders match your search criteria.</h2>
+    <h2 className="text-2xl font-bold">No Orders Found.</h2>
   </div>
   }
 
