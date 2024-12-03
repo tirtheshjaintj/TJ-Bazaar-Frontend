@@ -14,7 +14,7 @@ const NewProduct: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [price, setPrice] = useState<string>('');
-  const [quantity, setQuantity] = useState<string>('');
+  const [quantity, setQuantity] = useState<number>(1);
   const [tags, setTags] = useState<string[]>([]);
   const [categoryId, setCategoryId] = useState<string>('');
   const [categories, setCategories] = useState<Category[]>([]);
@@ -76,7 +76,7 @@ const NewProduct: React.FC = () => {
     event.preventDefault();
     setIsSubmitting(true);
 
-    if (!name || !description || !price || !quantity || !tags.length || !categoryId) {
+    if (!name || !description || !price || quantity<0 || !tags.length || !categoryId) {
       setErrorMessage('All fields are required');
       setIsSubmitting(false);
       return;
@@ -90,7 +90,7 @@ const NewProduct: React.FC = () => {
     }
 
     const numericQuantity = Number(quantity);
-    if (isNaN(numericQuantity) || numericQuantity <= 0) {
+    if (isNaN(numericQuantity) || numericQuantity < 0) {
       setErrorMessage('Quantity must be a positive number');
       setIsSubmitting(false);
       return;
@@ -106,7 +106,7 @@ const NewProduct: React.FC = () => {
     formData.append('name', name);
     formData.append('description', description);
     formData.append('price', price);
-    formData.append('quantity', quantity);
+    formData.append('quantity', quantity.toString());
     formData.append('tags', JSON.stringify(tags));
     formData.append('category_id', categoryId);
     images.forEach(image => formData.append('images', image));
@@ -127,7 +127,7 @@ const NewProduct: React.FC = () => {
     setName('');
     setDescription('');
     setPrice('');
-    setQuantity('');
+    setQuantity(1);
     setTags([]);
     setCategoryId('');
     setImages([]);
@@ -183,7 +183,7 @@ const NewProduct: React.FC = () => {
               type="number"
               value={quantity}
               min={0}
-              onChange={(e) => setQuantity(e.target.value)}
+              onChange={(e) => setQuantity(Number(e.target.value))}
               className="mt-1 block w-full placeholder-slate-200 dark:bg-gray-600 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Add Quantity"
               required

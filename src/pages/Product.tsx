@@ -324,7 +324,14 @@ const Product: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    if(product){
+      document.title=product.name;
+    }
+  }, [product]);
+
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  })
 
   if (loading) {
     return (
