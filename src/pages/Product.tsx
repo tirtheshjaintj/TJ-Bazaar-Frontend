@@ -46,6 +46,7 @@ const Product: React.FC = () => {
   const [product, setProduct] = useState<ProductData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isloading,setIsLoading] = useState<boolean>(false);
+  const [isCartloading,setIsCartLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [quantity, setQuantity] = useState<number>(1);
   const [showMore, setShowMore] = useState<boolean>(false);
@@ -150,7 +151,7 @@ const Product: React.FC = () => {
   };
 
   const addToCart = async () => {
-    setIsLoading(true);
+    setIsCartLoading(true);
     if (user) {
       try {
         if (!inCart) {
@@ -171,7 +172,7 @@ const Product: React.FC = () => {
         ////console.log("error: ", error);
         toast.error("Cannot add Product to Cart");
       }finally{
-        setIsLoading(false);
+        setIsCartLoading(false);
       }
     } else {
       navigate("../user/login");
@@ -500,7 +501,7 @@ const Product: React.FC = () => {
                 disabled={(product?.quantity === 0) || isloading}
                 onClick={addToCart}
               >
-                {(inCart) ? <Link to={"../user/dashboard"}>Go To Cart</Link> : <span>Add Cart</span>} <AiOutlineShoppingCart className="ml-2" /> {isloading && <span className='spinner'></span>}
+                {(inCart) ? <Link to={"../user/dashboard"}>Go To Cart</Link> : <span>Add Cart</span>} <AiOutlineShoppingCart className="ml-2" /> {isCartloading && <span className='spinner'></span>}
               </button>
               <button
                 className="flex items-center w-full justify-center  bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"

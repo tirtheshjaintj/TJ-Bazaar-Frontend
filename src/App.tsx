@@ -74,7 +74,6 @@ function App() {
 
   return (
     <Background>
-      {/* <Loader/> */}
       <Toaster position="bottom-right" />
       <ModeBall />
       <Outlet />
