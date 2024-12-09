@@ -45,15 +45,16 @@ const ReviewList: React.FC<ReviewListProps> = ({ reviews }) => {
   });
 
   return (
-    <div className="mt-4 p-4">
-      <h2 className="text-xl font-semibold mb-4">Reviews ({reviews.length})</h2>
-      
+    <div className="p-4 mt-4">
+
+      <h2 className="mb-4 text-xl font-semibold">Reviews ({reviews.length})</h2>
+
       {/* Sorting Controls */}
-      <div className="flex items-center  mb-4 space-x-4">
+      <div className="flex items-center mb-4 space-x-4">
         <select
           value={sortCriteria}
           onChange={(e) => setSortCriteria(e.target.value)}
-          className="border text-black border-gray-400 p-2 rounded"
+          className="p-2 text-black border border-gray-400 rounded"
         >
           <option value="time">Time</option>
           <option value="rating">Rating</option>
@@ -71,8 +72,8 @@ const ReviewList: React.FC<ReviewListProps> = ({ reviews }) => {
         <p>No reviews yet.</p>
       ) : (
         sortedReviews.map((review) => (
-          <div key={review._id} className="p-4 border-b border-gray-300 rounded-lg mb-4">
-            <div className="flex justify-between items-center">
+          <div key={review._id} className="p-4 mb-4 border-b border-gray-300 rounded-lg">
+            <div className="flex items-center justify-between">
               <span className="font-semibold text-gray-800">{review.username}</span>
               <span className="text-sm">{timeAgo(review.createdAt)}</span>
             </div>

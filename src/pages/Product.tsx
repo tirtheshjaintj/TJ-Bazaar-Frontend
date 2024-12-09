@@ -16,7 +16,7 @@ const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_API_KEY;
 
 interface Category {
   name: string;
-  _id:string;
+  _id: string;
 }
 
 
@@ -45,8 +45,8 @@ const Product: React.FC = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState<ProductData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [isloading,setIsLoading] = useState<boolean>(false);
-  const [isCartloading,setIsCartLoading] = useState<boolean>(false);
+  const [isloading, setIsLoading] = useState<boolean>(false);
+  const [isCartloading, setIsCartLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [quantity, setQuantity] = useState<number>(1);
   const [showMore, setShowMore] = useState<boolean>(false);
@@ -66,7 +66,7 @@ const Product: React.FC = () => {
       const response = await axiosInstance.get(`/review/${id}`);
       //console.log(response.data);
       if (response.data.status) {
-      setReviews(response.data.data);
+        setReviews(response.data.data);
       }
     } catch (error) {
       //console.error("Error fetching reviews:", error);
@@ -76,66 +76,66 @@ const Product: React.FC = () => {
   useEffect(() => {
     if (reviews.length > 0) {
       //console.log(reviews);
-      const total = reviews.reduce((acc, review:any) => acc + review.rating, 0);
+      const total = reviews.reduce((acc, review: any) => acc + review.rating, 0);
       const average = total / reviews.length;
       //console.log(average);
       setAverageRating(average);
     }
   }, [reviews]);
-  
 
-  const addToWishlist=async()=>{
-    if(!inWishlist && user && product){
-       try {
-          const response=await axiosInstance.post("/wishlist/add",{
-            product_id:product?._id
-          });
-          if(response.data.status){
+
+  const addToWishlist = async () => {
+    if (!inWishlist && user && product) {
+      try {
+        const response = await axiosInstance.post("/wishlist/add", {
+          product_id: product?._id
+        });
+        if (response.data.status) {
           setInWishlist(true);
           toast.success(response.data.message);
-          }
-       } catch (error:any) {
-        const error_msg=error.data?.message || "Server Error";
+        }
+      } catch (error: any) {
+        const error_msg = error.data?.message || "Server Error";
         toast.error(error_msg);
-       }
-    }else if(!user){
-        navigate("../user/login");
+      }
+    } else if (!user) {
+      navigate("../user/login");
     }
   }
 
-  const removeFromWishlist=async()=>{
-    if(inWishlist && user && product){
-       try {
-          const response=await axiosInstance.delete(`/wishlist/remove/${product?._id}`);
-          if(response.data.status){
+  const removeFromWishlist = async () => {
+    if (inWishlist && user && product) {
+      try {
+        const response = await axiosInstance.delete(`/wishlist/remove/${product?._id}`);
+        if (response.data.status) {
           setInWishlist(false);
           toast.success(response.data.message);
-          }
-       } catch (error:any) {
-        const error_msg=error.data?.message || "Server Error";
+        }
+      } catch (error: any) {
+        const error_msg = error.data?.message || "Server Error";
         //console.log(error);
         toast.error(error_msg);
-       }
-    }else if(!user){
-        navigate("../user/login");
+      }
+    } else if (!user) {
+      navigate("../user/login");
     }
   }
 
-  const checkInWishList=async()=>{
-    if(!inWishlist && user && product){
-       try {
-          const response=await axiosInstance.get(`/wishlist/check/${product?._id}`);
-          if(response.data.status){
+  const checkInWishList = async () => {
+    if (!inWishlist && user && product) {
+      try {
+        const response = await axiosInstance.get(`/wishlist/check/${product?._id}`);
+        if (response.data.status) {
           setInWishlist(true);
           toast.success(response.data.message);
-          }
-       } catch (error:any) {
+        }
+      } catch (error: any) {
         setInWishlist(false);
-       }
+      }
     }
   }
 
-  
+
 
   const getProduct = async () => {
     setLoading(true);
@@ -171,7 +171,7 @@ const Product: React.FC = () => {
       } catch (error) {
         ////console.log("error: ", error);
         toast.error("Cannot add Product to Cart");
-      }finally{
+      } finally {
         setIsCartLoading(false);
       }
     } else {
@@ -192,7 +192,7 @@ const Product: React.FC = () => {
             return response.data.paymentInit;
           } catch (error) {
             ////console.log("error: ", error);
-          }finally{
+          } finally {
             setIsLoading(false);
           }
         };
@@ -325,12 +325,12 @@ const Product: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if(product){
-      document.title=product.name;
+    if (product) {
+      document.title = product.name;
     }
   }, [product]);
 
-  useEffect(()=>{
+  useEffect(() => {
     window.scrollTo(0, 0);
   })
 
@@ -339,7 +339,7 @@ const Product: React.FC = () => {
       <>
         <Navbar />
         <div className="flex flex-col items-center justify-center min-h-screen">
-          <div className="w-full md:w-1/2 animate-pulse space-y-4">
+          <div className="w-full space-y-4 md:w-1/2 animate-pulse">
             <div className="h-64 bg-gray-200 rounded-md"></div>
             <div className="h-4 bg-gray-200 rounded-md"></div>
             <div className="h-4 bg-gray-200 rounded-md"></div>
@@ -359,8 +359,8 @@ const Product: React.FC = () => {
     return (
       <>
         <Navbar />
-        <div className="flex flex-col justify-center items-center h-screen text-center">
-          <AiFillHeart className="text-red-500 w-16 h-16 animate-bounce" />
+        <div className="flex flex-col items-center justify-center h-screen text-center">
+          <AiFillHeart className="w-16 h-16 text-red-500 animate-bounce" />
           <h2 className="text-2xl font-bold">Product Not Found</h2>
         </div>
       </>
@@ -371,13 +371,13 @@ const Product: React.FC = () => {
     <>
       <Navbar />
       <div className="p-4 md:p-0 md:pt-0 min-w-screen">
-        <div className="flex pt-12 flex-col md:flex-row items-center min-h-screen w-full">
+        <div className="flex flex-col items-center w-full min-h-screen pt-12 md:flex-row">
           <div className="md:w-1/2">
             <div className="flex-grow h-full backdrop-blur-3xl rounded-xl">
-              <div className="absolute top-14 right-2 text-red-500 rounded-full bg-gray-50/20 h-12 w-12 flex justify-center items-center text-3xl cursor-pointer z-10"
-              onClick={(inWishlist)?removeFromWishlist:addToWishlist}
+              <div className="absolute z-10 flex items-center justify-center w-12 h-12 text-3xl text-red-500 rounded-full cursor-pointer top-14 right-2 bg-gray-50/20"
+                onClick={(inWishlist) ? removeFromWishlist : addToWishlist}
               >
-               {(inWishlist)?<FaHeart/>:<FaRegHeart/>}
+                {(inWishlist) ? <FaHeart /> : <FaRegHeart />}
               </div>
               <Carousel slideInterval={3000} className="h-[30em] p-0 transition-all duration-700 ease-in-out">
                 {product?.media.map((image, index) => (
@@ -390,7 +390,7 @@ const Product: React.FC = () => {
                         onError={(e: any) => {
                           e.target.src = "/bazaar.gif";
                         }}
-                        className="absolute inset-0 w-full h-full object-contain transition-all duration-700 ease-in-out cursor-pointer"
+                        className="absolute inset-0 object-contain w-full h-full transition-all duration-700 ease-in-out cursor-pointer"
                         onClick={() => openModal(index)} // Open modal with the index
                       />
                     </Link>
@@ -404,16 +404,16 @@ const Product: React.FC = () => {
               <button onClick={() => scrollPreview('left')} className="p-2 bg-gray-300 rounded-l-md hover:bg-gray-400">
                 <FaArrowAltCircleLeft className='text-black' />
               </button>
-              <div ref={previewRef} className="flex overflow-hidden space-x-2 scrollbar-hide snap-x snap-mandatory">
+              <div ref={previewRef} className="flex space-x-2 overflow-hidden scrollbar-hide snap-x snap-mandatory">
                 {product?.media.map((image, index) => (
                   <img
                     key={index}
                     src={image}
                     alt={`Thumbnail ${index + 1}`}
-                    className="w-24 h-24 object-contain cursor-pointer rounded-md"
+                    className="object-contain w-24 h-24 rounded-md cursor-pointer"
                     onClick={() => openModal(index)} // Open modal with the index
                     onError={(e: any) => {
-                      e.target.src = "/bazaar.gif";
+                      e.target.src = "../bazaar.gif";
                     }}
                   />
                 ))}
@@ -427,11 +427,11 @@ const Product: React.FC = () => {
             <Modal
               isOpen={modalOpen}
               onRequestClose={closeModal}
-              className="flex justify-center items-center"
+              className="flex items-center justify-center"
               overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
               contentLabel="Image Preview"
             >
-              <button onClick={goToPreviousImage} className="absolute left-4 text-white text-3xl">
+              <button onClick={goToPreviousImage} className="absolute text-3xl text-white left-4">
                 <FaArrowAltCircleLeft />
               </button>
               {product?.media[selectedImageIndex] && (
@@ -441,34 +441,34 @@ const Product: React.FC = () => {
                   className="max-w-screen min-w-screen min-h-max md:min-h-[90vh] object-contain"
                 />
               )}
-              <button onClick={goToNextImage} className="absolute right-4 text-white text-3xl">
+              <button onClick={goToNextImage} className="absolute text-3xl text-white right-4">
                 <FaArrowAltCircleRight />
               </button>
             </Modal>
           </div>
 
-          <div className="md:w-1/2 md:pl-4 mt-4 pt-10 md:pt-20 md:mt-0 flex flex-col justify-start h-full min-h-screen">
+          <div className="flex flex-col justify-start h-full min-h-screen pt-10 mt-4 md:w-1/2 md:pl-4 md:pt-20 md:mt-0">
             <h1 className="text-3xl font-bold">{product?.name}</h1>
 
             {/* Tags Display */}
             <div className="mt-4 text-white">
               <div className="flex flex-wrap">
                 {product?.tags.map((tag, index) => (
-                  <span key={index} className="inline-block bg-blue-600  text-xs px-3 py-1 m-1 rounded-full ">
+                  <span key={index} className="inline-block px-3 py-1 m-1 text-xs bg-blue-600 rounded-full ">
                     {tag}
                   </span>
                 ))}
               </div>
             </div>
-            <AverageRating averageRating={averageRating} totalReviews={reviews.length}/>
-            <div className="flex justify-between items-center mt-4">
-              <div className="flex justify-between items-center mt-4">
+            <AverageRating averageRating={averageRating} totalReviews={reviews.length} />
+            <div className="flex items-center justify-between mt-4">
+              <div className="flex items-center justify-between mt-4">
                 <span className="text-4xl font-semibold">₹{product?.price}</span>
 
               </div>
 
               {/* Quantity Selector */}
-              {!(product?.quantity === 0) && <div className="flex items-center justify-center mt-4 border-gray-500/50 rounded-lg border-2 w-min">
+              {!(product?.quantity === 0) && <div className="flex items-center justify-center mt-4 border-2 rounded-lg border-gray-500/50 w-min">
                 <button
                   onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
                   className="p-2 border-r-2 border-gray-500/50"
@@ -480,7 +480,7 @@ const Product: React.FC = () => {
                   type="number"
                   value={quantity}
                   readOnly
-                  className="w-10 text-center m-0  p-0 bg-transparent border-none"
+                  className="w-10 p-0 m-0 text-center bg-transparent border-none"
                 />
                 <button
                   onClick={() => setQuantity((prev) => Math.min(product!.quantity, prev + 1))}
@@ -493,18 +493,18 @@ const Product: React.FC = () => {
             </div>
 
             {product?.quantity === 0 && (
-              <span className="flex items-center text-red-600 text-4xl font-bold ml-4">Out of Stock&nbsp;<FaBoxOpen /></span>
+              <span className="flex items-center ml-4 text-4xl font-bold text-red-600">Out of Stock&nbsp;<FaBoxOpen /></span>
             )}
 
-            <div className="mt-4 flex space-x-2 text-xl text-center w-full md:pt-10">
-              <button className="flex items-center py-4  justify-center w-full  bg-blue-600 text-white px-4  rounded hover:bg-blue-700 transition"
+            <div className="flex w-full mt-4 space-x-2 text-xl text-center md:pt-10">
+              <button className="flex items-center justify-center w-full px-4 py-4 text-white transition bg-blue-600 rounded hover:bg-blue-700"
                 disabled={(product?.quantity === 0) || isloading}
                 onClick={addToCart}
               >
                 {(inCart) ? <Link to={"../user/dashboard"}>Go To Cart</Link> : <span>Add Cart</span>} <AiOutlineShoppingCart className="ml-2" /> {isCartloading && <span className='spinner'></span>}
               </button>
               <button
-                className="flex items-center w-full justify-center  bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+                className="flex items-center justify-center w-full px-4 py-2 text-white transition bg-green-600 rounded hover:bg-green-700"
                 disabled={product?.quantity === 0 || isloading}
                 onClick={buyNow}
               >
@@ -513,26 +513,26 @@ const Product: React.FC = () => {
             </div>
 
             {/* Seller and Category Details */}
-            <div className="mt-4 pt-10">
-              <h3 className="text-xl font-semibold">Category: <Link to={`../category/${product?.category_id._id}`}  className="hover:underline">{product?.category_id.name}</Link> </h3>
-              <h3 className="text-xl font-semibold">Seller: <Link to={`../seller/${product?.seller_id._id}`}  className="hover:underline">{product?.seller_id.name}</Link></h3>
+            <div className="pt-10 mt-4">
+              <h3 className="text-xl font-semibold">Category: <Link to={`../category/${product?.category_id._id}`} className="hover:underline">{product?.category_id.name}</Link> </h3>
+              <h3 className="text-xl font-semibold">Seller: <Link to={`../seller/${product?.seller_id._id}`} className="hover:underline">{product?.seller_id.name}</Link></h3>
             </div>
 
             {/* Description */}
-            <p className="text-md mt-2 pt-5">
+            <p className="pt-5 mt-2 text-md">
               <span className='font-semibold'>Description:</span><br />
               {showMore ? product?.description : `${product?.description.substring(0, 200)}...`}
               <button
                 onClick={() => setShowMore(!showMore)}
-                className="text-blue-500 hover:underline ml-2"
+                className="ml-2 text-blue-500 hover:underline"
               >
                 {showMore ? 'Show Less' : 'Show More'}
               </button>
             </p>
           </div>
         </div>
-       {user && <ReviewForm productId={product?._id || ""} fetchReviews={fetchReviews} />}
-       <ReviewList reviews={reviews}/>
+        {user && <ReviewForm productId={product?._id || ""} fetchReviews={fetchReviews} />}
+        <ReviewList reviews={reviews} />
       </div>
     </>
   );

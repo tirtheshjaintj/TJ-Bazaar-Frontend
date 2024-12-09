@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 const ReviewForm = ({ productId, fetchReviews }: any) => {
   const [rating, setRating] = useState<number>(0);
   const [review, setReview] = useState<string>('');
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (rating === 0 || !review.trim()) {
@@ -35,20 +35,21 @@ const ReviewForm = ({ productId, fetchReviews }: any) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 mt-10 min-w-screen border border-gray-300/20 rounded-lg shadow-md">
-      <h2 className="text-lg font-semibold mb-2">Leave a Review</h2>
+    <form onSubmit={handleSubmit} className="p-4 mt-10 border rounded-lg shadow-md min-w-screen border-gray-300/20">
+      <a id="reviews"></a>
+      <h2 className="mb-2 text-lg font-semibold">Leave a Review</h2>
       <StarRating rating={rating} setRating={setRating} />
       <textarea
         value={review}
         onChange={(e) => setReview(e.target.value)}
         rows={4}
-        className="mt-2 w-full p-2 rounded text-black"
+        className="w-full p-2 mt-2 text-black rounded"
         placeholder="Write your review here..."
       />
       <div className="flex justify-end">
         <button
           type="submit"
-          className="mt-2 min-w-min p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          className="p-2 mt-2 text-white transition bg-blue-600 rounded min-w-min hover:bg-blue-700"
         >
           Submit Review
         </button>

@@ -9,10 +9,10 @@ interface AverageRatingProps {
 
 const AverageRating: React.FC<AverageRatingProps> = ({ averageRating, totalReviews }) => {
   return (
-    <div className="flex items-center justify-end my-4">
+    <a href="#reviews" className="flex items-center justify-end my-4" >
       <StarRating rating={averageRating} />
       <span className="ml-2">({totalReviews})</span>
-    </div>
+    </a>
   );
 };
 
