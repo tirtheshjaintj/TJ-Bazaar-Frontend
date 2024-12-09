@@ -202,7 +202,7 @@ const UpdateProduct: React.FC<{ product: any }> = ({ product }) => {
               type="number"
               value={quantity}
               min={0}
-              onChange={e => setQuantity(e.target.value)}
+              onChange={e => setQuantity(Number(e.target.value))}
               className="block w-full mt-1 border-gray-300 rounded-md shadow-sm placeholder-slate-200 dark:bg-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Add Quantity"
               required
