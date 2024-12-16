@@ -8,6 +8,7 @@ interface Review {
   review: string;
   createdAt: string;
   username: string;
+  updatedAt: string;
 }
 
 interface ReviewListProps {
@@ -20,9 +21,13 @@ const timeAgo = (dateString: string) => {
   const diffInSeconds = Math.floor((now.getTime() - then.getTime()) / 1000);
 
   const minutes = Math.floor(diffInSeconds / 60);
-  const hours = Math.floor(diffInSeconds / 3600);
-  const days = Math.floor(diffInSeconds / 86400);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  const months = Math.floor(days / 30);
+  const years = Math.floor(days / 365);
 
+  if (years > 0) return `${years} year${years > 1 ? "s" : ""} ago`;
+  else if (months > 0) return `${months} month${months > 1 ? "s" : ""} ago`;
   if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
   if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
   if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
@@ -75,7 +80,7 @@ const ReviewList: React.FC<ReviewListProps> = ({ reviews }) => {
           <div key={review._id} className="p-4 mb-4 border-b border-gray-300 rounded-lg">
             <div className="flex items-center justify-between">
               <span className="font-semibold text-gray-800">{review.username}</span>
-              <span className="text-sm">{timeAgo(review.createdAt)}</span>
+              <span className="text-sm">{timeAgo(review.updatedAt)}</span>
             </div>
             <div className="flex items-center mt-2">
               <StarRating rating={review.rating} />
