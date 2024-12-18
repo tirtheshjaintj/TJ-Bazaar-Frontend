@@ -14,7 +14,7 @@ axiosRetry(axiosInstance, {
   retries: 3, // Number of retries
   retryDelay: (retryCount) => {
     // Exponential backoff: 1s, 2s, 4s
-    return Math.pow(2, retryCount) * 1000; 
+    return Math.pow(2, retryCount) * 1000;
   },
   shouldResetTimeout: true, // Reset timeout on retry
 });

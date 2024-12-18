@@ -1,12 +1,12 @@
-import { createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-interface Seller{
+interface Seller {
   address: string;
   email: string;
   name: string;
   phone_number: string;
   _id: string;
-  gst_number:string;
+  gst_number: string;
 }
 
 // Initialize the initial state as Seller or null
@@ -17,12 +17,12 @@ const userSlice = createSlice({
   name: 'seller',
   initialState,
   reducers: {
-    addSeller:(_state, action) => {
+    addSeller: (_state, action) => {
       return action.payload;
     },
     removeSeller: () => {
       return null;
-    },
+    }
   },
 });
 

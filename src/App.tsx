@@ -9,6 +9,7 @@ import axiosInstance from './config/axiosConfig';
 import axiosInstanceSeller from './config/axiosConfigSeller';
 import { addUser } from './store/userSlice';
 import { addSeller } from './store/sellerSlice';
+import Chatbot from './components/ChatBot';
 
 function App() {
   const user = useSelector((state: any) => state.user);
@@ -32,7 +33,7 @@ function App() {
         cookie.remove('user_token');
       }
     } catch (error: any) {
-      if(!error?.response?.data?.status){
+      if (!error?.response?.data?.status) {
         cookie.remove('user_token');
       }
     }
@@ -52,7 +53,7 @@ function App() {
         cookie.remove('seller_token');
       }
     } catch (error: any) {
-      if(!error?.response?.data?.status){
+      if (!error?.response?.data?.status) {
         cookie.remove('seller_token');
       }
     }
@@ -77,6 +78,8 @@ function App() {
       <Toaster position="bottom-right" />
       <ModeBall />
       <Outlet />
+      <Chatbot />
+
     </Background>
   );
 }

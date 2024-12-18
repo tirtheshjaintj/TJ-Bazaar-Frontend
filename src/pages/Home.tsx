@@ -85,7 +85,7 @@ function Home() {
       <div className="p-4">
         {loading ? (
           // Show skeletons while loading
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
             {Array(3).fill(0).map((_, idx) => (
               <ProductCardSkeleton key={idx} />
             ))}
@@ -96,13 +96,13 @@ function Home() {
         ) : (
           Object.entries(products).map(([categoryName, productList]) => (
             <div key={categoryName} className="mb-8">
-              <h2 className="text-3xl font-bold mb-4">
+              <h2 className="mb-4 text-3xl font-bold">
                 <Link to={`/category/${productList[0].category_id._id}`} className="hover:underline">
                   {categoryName}
                   &nbsp;<span className='font-normal'>{`(${productList.length || 0})`}</span>
                 </Link>
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <Suspense fallback={<ProductCardSkeleton />}>
                   {productList.slice(0, visibleProducts[categoryName] || 0).map((product: Product) => (
                     <ProductCard key={product._id} product={product} />
@@ -113,7 +113,7 @@ function Home() {
                 <div className="flex justify-end mt-4">
                   <button
                     onClick={() => handleShowMore(categoryName)}
-                    className="flex items-center text-blue-600 bg-blue-100 rounded-lg px-4 py-2 transition duration-300"
+                    className="flex items-center px-4 py-2 text-blue-600 transition duration-300 bg-blue-100 rounded-lg"
                   >
                     <span className="mr-2">Show More</span>
                     <AiOutlineRight className="w-5 h-5" />
