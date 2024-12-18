@@ -47,8 +47,8 @@ function Orders() {
   };
 
   useEffect(() => {
-    if(token){
-    getOrders();
+    if (token) {
+      getOrders();
     }
   }, []);
 
@@ -103,64 +103,64 @@ function Orders() {
     document.title = `TJ Bazaar🛒: User Orders`;
   }, []);
 
-  if(orders.length===0){
-    return  <div className="flex flex-col justify-center items-center min-h-screen text-center">
-    <AiFillHeart className="text-red-500 w-16 h-16 animate-bounce" />
-    <h2 className="text-2xl font-bold">No Orders Found.</h2>
-  </div>
+  if (!loading && orders.length === 0) {
+    return <div className="flex flex-col items-center justify-center min-h-screen text-center">
+      <AiFillHeart className="w-16 h-16 text-red-500 animate-bounce" />
+      <h2 className="text-2xl font-bold">No Orders Found.</h2>
+    </div>
   }
 
   return (
-    <div className="py-5 min-h-screen">
-      <div className='flex w-full flex-col lg:flex-row gap-4 justify-between items-center mb-6'>
-        <div className="flex w-full gap-2 items-center justify-start">
+    <div className="min-h-screen py-5">
+      <div className='flex flex-col items-center justify-between w-full gap-4 mb-6 lg:flex-row'>
+        <div className="flex items-center justify-start w-full gap-2">
           <input
             type="text"
             placeholder="Search by product name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="p-3 w-full border border-gray-300 rounded-md shadow-sm lg:w-1/3 dark:bg-gray-700 dark:text-white focus:ring focus:ring-blue-300"
+            className="w-full p-3 border border-gray-300 rounded-md shadow-sm lg:w-1/3 dark:bg-gray-700 dark:text-white focus:ring focus:ring-blue-300"
           />
           <FaSearch className="text-gray-600 dark:text-gray-300" />
         </div>
 
-        <div className="flex gap-4 items-center">
+        <div className="flex items-center gap-4">
           <div>
-            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as 'all' | 'pending' | 'completed')} className="border text-black border-gray-300 rounded-lg p-2 shadow-sm">
+            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as 'all' | 'pending' | 'completed')} className="p-2 text-black border border-gray-300 rounded-lg shadow-sm">
               <option value="all">All</option>
               <option value="pending">Failed</option>
               <option value="completed">Completed</option>
             </select>
           </div>
           <div className="flex items-center">
-            <select value={sortField} onChange={(e) => setSortField(e.target.value as 'date' | 'amount')} className="border text-black border-gray-300 rounded-lg p-2 shadow-sm">
+            <select value={sortField} onChange={(e) => setSortField(e.target.value as 'date' | 'amount')} className="p-2 text-black border border-gray-300 rounded-lg shadow-sm">
               <option value="date">Date</option>
               <option value="amount">Amount</option>
             </select>
-            <button onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')} className="flex items-center border border-gray-300 rounded-lg p-2 ml-2 shadow-sm hover:bg-blue-500 hover:text-white transition-colors duration-300">
+            <button onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')} className="flex items-center p-2 ml-2 transition-colors duration-300 border border-gray-300 rounded-lg shadow-sm hover:bg-blue-500 hover:text-white">
               {sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />}
             </button>
           </div>
         </div>
       </div>
 
-      <div className="grid gap-6 justify-items-center pt-5 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mx-auto">
+      <div className="grid grid-cols-1 gap-6 pt-5 mx-auto justify-items-center lg:grid-cols-2 xl:grid-cols-3">
         {loading ? (
           Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className="border w-full rounded-lg shadow-lg p-4 animate-pulse">
-              <div className="h-32 bg-gray-300 rounded-md mb-2"></div>
-              <div className="h-4 bg-gray-300 rounded mb-2"></div>
-              <div className="h-4 bg-gray-300 rounded mb-2"></div>
-              <div className="h-4 bg-gray-300 rounded mb-2"></div>
-              <div className="h-4 bg-gray-300 rounded mb-2"></div>
+            <div key={index} className="w-full p-4 border rounded-lg shadow-lg animate-pulse">
+              <div className="h-32 mb-2 bg-gray-300 rounded-md"></div>
+              <div className="h-4 mb-2 bg-gray-300 rounded"></div>
+              <div className="h-4 mb-2 bg-gray-300 rounded"></div>
+              <div className="h-4 mb-2 bg-gray-300 rounded"></div>
+              <div className="h-4 mb-2 bg-gray-300 rounded"></div>
             </div>
           ))
         ) : currentOrders.length > 0 ? (
           currentOrders.map((order) => (
             <Link className='w-full' key={order.order_id} to={`../product/${order.product.id}`}>
-              <div className="border border-gray-300/20 w-full S rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105 hover:shadow-xl">
-                <img src={order.product.image} alt={order.product.name} className="w-full h-32 object-cover rounded-md" />
-                <h2 className="font-bold text-lg mt-2">{order.product.name.slice(0, 30) + "..."}</h2>
+              <div className="w-full p-4 transition-transform transform border rounded-lg shadow-lg border-gray-300/20 S hover:scale-105 hover:shadow-xl">
+                <img src={order.product.image} alt={order.product.name} className="object-cover w-full h-32 rounded-md" />
+                <h2 className="mt-2 text-lg font-bold">{order.product.name.slice(0, 30) + "..."}</h2>
                 <p className="mt-2">
                   <span className="font-semibold">Price:</span> ₹{order.product.price}
                 </p>
@@ -186,15 +186,15 @@ function Orders() {
             </Link>
           ))
         ) : (
-          <div className="flex flex-col justify-center items-center min-h-screen text-center">
-          <AiFillHeart className="text-red-500 w-16 h-16 animate-bounce" />
-          <h2 className="text-2xl font-bold">No orders match your search criteria.</h2>
-        </div>
-              )}
+          <div className="flex flex-col items-center justify-center min-h-screen text-center">
+            <AiFillHeart className="w-16 h-16 text-red-500 animate-bounce" />
+            <h2 className="text-2xl font-bold">No orders match your search criteria.</h2>
+          </div>
+        )}
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center items-center mt-6">
+      <div className="flex items-center justify-center mt-6">
         {Array.from({ length: Math.ceil(sortedOrders.length / ordersPerPage) }, (_, index) => (
           <button
             key={index}
