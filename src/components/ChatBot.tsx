@@ -94,7 +94,7 @@ const Chatbot: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: '100%' }}
             transition={{ duration: 0.5 }}
-            className="fixed bottom-0 right-0 w-full sm:w-[440px] h-[100vh] sm:h-[634px] bg-gray-50/30 dark:bg-gray-900/30 backdrop-blur-lg p-6 pb-0 rounded-t-lg sm:rounded-lg border border-gray-300 dark:border-gray-700 shadow-lg z-50"
+            className="fixed bottom-0 right-0 w-full sm:w-[440px] h-[100dvh] sm:h-[634px] bg-gray-50/30 dark:bg-gray-900/30 backdrop-blur-lg p-6 pb-0 rounded-t-lg sm:rounded-lg border border-gray-300 dark:border-gray-700 shadow-lg z-50"
           >
             <div className="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center">
