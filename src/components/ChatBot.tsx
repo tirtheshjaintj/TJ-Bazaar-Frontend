@@ -31,7 +31,6 @@ const Chatbot: React.FC = () => {
       setMessages(updatedMessages);
       setInput('');
       localStorage.setItem('chatMessages', JSON.stringify(updatedMessages));
-
       try {
         const response = await axiosInstance.post<{ data: string }>(`/groq`, {
           prompt: input,
@@ -136,6 +135,7 @@ const Chatbot: React.FC = () => {
                 placeholder="Type your message here..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                required
               />
               <button
                 type="submit"
