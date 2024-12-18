@@ -4,7 +4,6 @@ import Swal from 'sweetalert2';
 import { FaHistory, FaPaperPlane } from "react-icons/fa";
 import axiosInstance from '../config/axiosConfig';
 
-// Define the message type
 type Message = {
   sender: 'AI' | 'You';
   text: string;
@@ -94,11 +93,11 @@ const Chatbot: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: '100%' }}
             transition={{ duration: 0.5 }}
-            className="fixed bottom-0 right-0 w-full sm:w-[440px] h-[100dvh] sm:h-[634px] bg-gray-50/30 dark:bg-gray-900/30 backdrop-blur-lg p-6 pb-0 rounded-t-lg sm:rounded-lg border border-gray-300 dark:border-gray-700 shadow-lg z-50"
+            className="fixed bottom-0 right-0 flex flex-col justify-between w-full sm:w-[90%] md:w-[440px] h-[100dvh] sm:h-[80vh] bg-gray-50/30 dark:bg-gray-900/30 backdrop-blur-lg p-2 pt-6 md:p-6 pb-0 rounded-t-lg sm:rounded-lg border border-gray-300 dark:border-gray-700 shadow-lg z-50"
           >
             <div className="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center">
-                <h2 className="pr-2 text-xl font-semibold">BazaarAI</h2>
+                <h2 className="pr-2 text-lg font-semibold md:text-xl">BazaarAI</h2>
                 <button onClick={clearChatHistory} className="text-gray-600 hover:text-gray-900 dark:text-white dark:hover:text-gray-200">
                   <FaHistory className="text-xl" />
                 </button>
@@ -108,7 +107,7 @@ const Chatbot: React.FC = () => {
               </button>
             </div>
 
-            <div ref={chatContainerRef} className="flex flex-col space-y-4 overflow-y-auto h-[calc(100vh-180px)] sm:h-[474px] pr-4">
+            <div ref={chatContainerRef} className="flex flex-col space-y-4 overflow-y-auto h-[calc(100vh-220px)] sm:h-[calc(100vh-180px)] md:h-[474px] pr-4">
               {messages.map((msg, index) => (
                 <div key={index} className={`flex ${msg.sender === 'AI' ? 'justify-start' : 'justify-end'}`}>
                   <div
@@ -128,7 +127,7 @@ const Chatbot: React.FC = () => {
 
             <form
               onSubmit={handleSubmit}
-              className="flex items-center w-full px-4 py-2 mt-6 bg-white border border-gray-200 shadow-md dark:bg-gray-900 lg:mt-4 rounded-xl dark:border-gray-700"
+              className="flex items-center w-[100%] px-4 py-2 mt-6 bg-white border border-gray-200 shadow-md dark:bg-gray-900 lg:mt-4 rounded-xl dark:border-gray-700"
             >
               <input
                 type="text"
