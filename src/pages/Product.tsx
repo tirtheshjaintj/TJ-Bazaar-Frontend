@@ -306,9 +306,9 @@ const Product: React.FC = () => {
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (modalOpen) {
-      if (event.key === "ArrowLeft") {
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
         goToPreviousImage();
-      } else if (event.key === "ArrowRight") {
+      } else if (event.key === "ArrowRight" || event.key === "ArrowDown") {
         goToNextImage();
       }
     }
