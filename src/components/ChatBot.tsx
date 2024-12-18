@@ -128,7 +128,7 @@ const Chatbot: React.FC = () => {
 
             <form
               onSubmit={handleSubmit}
-              className="flex items-center w-full px-4 py-2 mt-6 border border-gray-200 shadow-md lg:mt-4 rounded-xl dark:border-gray-70"
+              className="flex items-center w-full px-4 py-2 mt-6 bg-white border border-gray-200 shadow-md dark:bg-gray-900 lg:mt-4 rounded-xl dark:border-gray-700"
             >
               <input
                 type="text"
