@@ -118,7 +118,7 @@ const Chatbot: React.FC = () => {
                   >
                     <div className="text-sm">
                       <span className="block font-bold">{msg.sender}</span>
-                      <pre className="w-full text-base whitespace-pre-wrap">{msg.text}</pre>
+                      <pre className="w-full whitespace-pre-wrap text-md md:text-base">{msg.text}</pre>
                     </div>
                   </div>
                 </div>
