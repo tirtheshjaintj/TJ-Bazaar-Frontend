@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Swal from 'sweetalert2';
-import { FaHistory, FaPlane } from "react-icons/fa";
+import { FaHistory, FaPaperPlane } from "react-icons/fa";
 import axiosInstance from '../config/axiosConfig';
 
 // Define the message type
@@ -94,7 +94,7 @@ const Chatbot: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: '100%' }}
             transition={{ duration: 0.5 }}
-            className="fixed bottom-0 right-0 w-full sm:w-[440px] h-[100vh] sm:h-[634px] bg-gray-50 dark:bg-gray-900/50 backdrop-blur-lg p-6 pb-0 rounded-t-lg sm:rounded-lg border border-gray-300 dark:border-gray-700 shadow-lg z-50"
+            className="fixed bottom-0 right-0 w-full sm:w-[440px] h-[100vh] sm:h-[634px] bg-gray-50/30 dark:bg-gray-900/30 backdrop-blur-lg p-6 pb-0 rounded-t-lg sm:rounded-lg border border-gray-300 dark:border-gray-700 shadow-lg z-50"
           >
             <div className="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center">
@@ -126,19 +126,25 @@ const Chatbot: React.FC = () => {
               ))}
             </div>
 
-            <form onSubmit={handleSubmit} className="flex items-center mt-4 space-x-2">
+            <form
+              onSubmit={handleSubmit}
+              className="flex items-center w-full px-4 py-2 mt-6 border border-gray-200 shadow-md lg:mt-4 rounded-xl dark:border-gray-70"
+            >
               <input
                 type="text"
-                className="flex-grow p-2 text-gray-900 bg-gray-100 border border-gray-300 rounded-md dark:text-gray-100 dark:bg-gray-800 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400"
-                placeholder="Type your message"
+                style={{ outline: 'none' }}
+                className="flex-grow p-3 text-base text-gray-900 placeholder-gray-500 bg-transparent border-none rounded-lg outline-none focus:outline-none dark:placeholder-gray-400 dark:text-gray-100"
+                placeholder="Type your message here..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
               />
               <button
                 type="submit"
-                className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600"
+                className="px-4 py-2 ml-2 text-white transition bg-blue-600 rounded-lg hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-500"
               >
-                <span className="flex items-center justify-around "> <span>Send</span>&nbsp;<FaPlane /></span>
+                <span className="flex items-center space-x-1 text-xl">
+                  <FaPaperPlane />
+                </span>
               </button>
             </form>
           </motion.div>
