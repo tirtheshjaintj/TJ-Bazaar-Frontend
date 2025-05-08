@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useCallback, useRef } from "react"; // Import useRef
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { addUser } from "../../store/userSlice";
-import { FaSearch, FaTimes } from "react-icons/fa"; 
-import axiosInstance from "../../config/axiosConfig"; 
+import { FaSearch, FaTimes } from "react-icons/fa";
+import axiosInstance from "../../config/axiosConfig";
 import toast from "react-hot-toast";
-let deferredPrompt:any = null;
+let deferredPrompt: any = null;
 
 export default function Nav() {
   const navigate = useNavigate();
@@ -15,12 +16,12 @@ export default function Nav() {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user);
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchQuery = searchParams.get("keyword") || ""; 
-  const [searchKeyword, setSearchKeyword] = useState(searchQuery); 
-  const [isSearchOpen, setIsSearchOpen] = useState(false); 
-  const [suggestions, setSuggestions] = useState<any[]>([]); 
+  const searchQuery = searchParams.get("keyword") || "";
+  const [searchKeyword, setSearchKeyword] = useState(searchQuery);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [suggestions, setSuggestions] = useState<any[]>([]);
   const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
-  const [debounceTimer, setDebounceTimer] = useState<any>(null); 
+  const [debounceTimer, setDebounceTimer] = useState<any>(null);
   const inputRef = useRef<HTMLInputElement | null>(null); // Create a ref for the input
 
   const signOut = () => {
@@ -28,11 +29,11 @@ export default function Nav() {
     navigate("/user/login");
     dispatch(addUser(null));
   };
-  
+
   const [isInstallable, setIsInstallable] = useState(false);
 
   useEffect(() => {
-    const handleBeforeInstallPrompt = (e:any) => {
+    const handleBeforeInstallPrompt = (e: any) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
       // Store the event for triggering later
@@ -70,7 +71,7 @@ export default function Nav() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchKeyword.trim()) {
-      setSearchParams({ keyword: searchKeyword.trim() }); 
+      setSearchParams({ keyword: searchKeyword.trim() });
       navigate(`/search?keyword=${encodeURIComponent(searchKeyword.trim())}`);
     }
   };
@@ -93,7 +94,7 @@ export default function Nav() {
         toast.error("Failed to fetch suggestions");
       }
     } else {
-      setSuggestions([]); 
+      setSuggestions([]);
     }
   }, []);
 
@@ -105,7 +106,7 @@ export default function Nav() {
     const timer = setTimeout(() => {
       fetchSuggestions(searchKeyword);
       setShowSuggestion(true);
-    }, 300); 
+    }, 300);
 
     setDebounceTimer(timer);
 
@@ -144,10 +145,10 @@ export default function Nav() {
 
   return (
     <>
-      <Navbar className="bg-white/50 fixed w-[100vw] lg:w-[90vw] z-10 dark:bg-gray-900/50 backdrop-blur-3xl">
+      <Navbar className="bg-white/50 fixed top-0 left-0 w-[100vw] lg:w-[100vw] z-10 dark:bg-gray-900/50 backdrop-blur-3xl">
         <Link to="/" className="flex flex-grow" onClick={isInstallable ? install : undefined}>
-          <img src="/bazaar.gif" className="mr-3 h-12" alt="TJ Bazaar" />
-          <h1 className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white cursor-pointer">
+          <img src="/bazaar.gif" className="h-12 mr-3" alt="TJ Bazaar" />
+          <h1 className="self-center text-2xl font-semibold cursor-pointer whitespace-nowrap dark:text-white">
             TJ Bazaar&nbsp;
           </h1>
         </Link>
@@ -161,7 +162,7 @@ export default function Nav() {
             <input
               type="text"
               ref={inputRef} // Attach the ref here
-              className="w-full px-6 py-4 rounded-full bg-white/70 border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md backdrop-blur-md transition-all"
+              className="w-full px-6 py-4 transition-all border border-gray-300 rounded-full shadow-md bg-white/70 dark:bg-gray-800 dark:border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 backdrop-blur-md"
               placeholder="Search..."
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
@@ -170,7 +171,7 @@ export default function Nav() {
             />
             <button
               type="submit"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-all"
+              className="absolute px-6 py-3 text-white transition-all transform -translate-y-1/2 bg-blue-600 rounded-full right-3 top-1/2 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
             >
               <FaSearch />
             </button>
@@ -178,14 +179,14 @@ export default function Nav() {
           {/* Suggestions Dropdown */}
           {showSuggestion && suggestions.length > 0 && (
             <div className="w-full">
-              <div className="absolute p-2 hidden lg:block top-14 bg-white dark:bg-gray-800 rounded-lg shadow-lg z-10 mt-2 w-full">
+              <div className="absolute z-10 hidden w-full p-2 mt-2 bg-white rounded-lg shadow-lg lg:block top-14 dark:bg-gray-800">
                 {suggestions.map((suggestion) => (
-                  <div 
-                    key={suggestion._id} 
-                    className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
+                  <div
+                    key={suggestion._id}
+                    className="p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
                     onMouseDown={() => handleSuggestionClick(suggestion)} // Use onMouseDown instead of onClick
                   >
-                    <h4 className="text-sm pt-1 text-clip w-full">{suggestion.name.substr(0,70)}</h4>
+                    <h4 className="w-full pt-1 text-sm text-clip">{suggestion.name.substr(0, 70)}</h4>
                   </div>
                 ))}
               </div>
@@ -194,7 +195,7 @@ export default function Nav() {
         </form>
 
         {/* Mobile Search Icon */}
-        <div className="flex lg:hidden items-center">
+        <div className="flex items-center lg:hidden">
           <button
             onClick={toggleSearch}
             className="p-2 text-gray-700 dark:text-white"
@@ -204,17 +205,17 @@ export default function Nav() {
         </div>
 
         {/* Search Bar for Mobile */}
-        <div className="flex md:order-2 flex-grow justify-end ">
+        <div className="flex justify-end flex-grow md:order-2 ">
           <Dropdown
             arrowIcon={false}
             inline
             label={<Avatar alt={`${user?.name}`} img="" rounded />}
           >
-            { user ? (
+            {user ? (
               <>
                 <Dropdown.Header>
                   <span className="block text-sm">{`${user?.name}`}</span>
-                  <span className="block truncate text-sm font-medium">{`${user?.email}`}</span>
+                  <span className="block text-sm font-medium truncate">{`${user?.email}`}</span>
                 </Dropdown.Header>
                 <Link to={"../user/dashboard"}>
                   <Dropdown.Item>
@@ -249,12 +250,12 @@ export default function Nav() {
         {isSearchOpen && (
           <form
             onSubmit={handleSearch}
-            className="flex mt-5 lg:hidden items-center w-full mx-4 relative"
+            className="relative flex items-center w-full mx-4 mt-5 lg:hidden"
           >
             <input
               type="text"
               ref={inputRef} // Attach the ref here for mobile search
-              className="w-full px-5 py-5 pl-10 rounded-full bg-white/70 border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md backdrop-blur-md transition-all"
+              className="w-full px-5 py-5 pl-10 transition-all border border-gray-300 rounded-full shadow-md bg-white/70 dark:bg-gray-800 dark:border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 backdrop-blur-md"
               placeholder="Search..."
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
@@ -263,21 +264,21 @@ export default function Nav() {
             />
             <button
               type="submit"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-all"
+              className="absolute px-4 py-2 text-white transition-all transform -translate-y-1/2 bg-blue-600 rounded-full right-3 top-1/2 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
             >
               <FaSearch />
             </button>
 
             {/* Suggestions Dropdown for Mobile */}
             {showSuggestion && suggestions.length > 0 && (
-            <div className="absolute top-16 p-2  bg-white dark:bg-gray-800 rounded-lg shadow-lg z-10 mt-2 w-full">
-                      {suggestions.map((suggestion) => (
-                  <div 
-                    key={suggestion._id} 
-                    className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
+              <div className="absolute z-10 w-full p-2 mt-2 bg-white rounded-lg shadow-lg top-16 dark:bg-gray-800">
+                {suggestions.map((suggestion) => (
+                  <div
+                    key={suggestion._id}
+                    className="p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
                     onMouseDown={() => handleSuggestionClick(suggestion)} // Use onMouseDown instead of onClick
                   >
-                    <h4 className="text-sm pt-1 text-clip w-full">{suggestion.name.substr(0,70)}</h4>
+                    <h4 className="w-full pt-1 text-sm text-clip">{suggestion.name.substr(0, 70)}</h4>
                   </div>
                 ))}
               </div>

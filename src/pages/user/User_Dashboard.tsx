@@ -19,14 +19,14 @@ function User_Dashboard() {
   const token = cookie.get('user_token');
   const [tab, setTab] = useState<number>(0);
   const [openTab, setOpenTab] = useState<boolean>(false);
-  const [cartCount,setCartCount] = useState<number>(0);
-  const [wishlistCount,setWishlistCount] = useState<number>(0);
-  const dispatch=useDispatch();
+  const [cartCount, setCartCount] = useState<number>(0);
+  const [wishlistCount, setWishlistCount] = useState<number>(0);
+  const dispatch = useDispatch();
 
   const getUser = async () => {
     if (!token) {
       navigate("/");
-      return; 
+      return;
     }
     try {
       const response = await axiosInstance.get(`/user/getUser`, {
@@ -46,22 +46,22 @@ function User_Dashboard() {
     }
   };
 
-  const getCartCount=async()=>{
+  const getCartCount = async () => {
     try {
-      const response=await axiosInstance.get("/cart/count");
-      if(response.data.status){
-      setCartCount(response.data.count);
+      const response = await axiosInstance.get("/cart/count");
+      if (response.data.status) {
+        setCartCount(response.data.count);
       }
     } catch (error) {
       console.log(error);
     }
   }
 
-  const getWishlistCount=async()=>{
+  const getWishlistCount = async () => {
     try {
-      const response=await axiosInstance.get("/wishlist/count");
-      if(response.data.status){
-      setWishlistCount(response.data.count);
+      const response = await axiosInstance.get("/wishlist/count");
+      if (response.data.status) {
+        setWishlistCount(response.data.count);
       }
     } catch (error) {
       console.log(error);
@@ -70,40 +70,40 @@ function User_Dashboard() {
 
   useEffect(() => {
     document.title = "TJ Bazaar🛒 User Dashboard";
-    if(!user){
-     getUser();
+    if (!user) {
+      getUser();
     }
-    if (!token){
+    if (!token) {
       navigate('../user/login');
-    }else{
-    if(user){
-    getCartCount();
-    getWishlistCount();
-    }
+    } else {
+      if (user) {
+        getCartCount();
+        getWishlistCount();
+      }
     }
     window.scrollTo(0, 0);
-  }, [user,getUser]);
+  }, [user, getUser]);
 
   return (
     user && <div>
-    <Navbar />
-    <div className='flex justify-center items-center lg:pt-12 min-w-screen'>
-      <div className="shadow-xl shadow-slate-50/10 border-2 pt-10 lg:pt-0 dark:border-slate-50/20 mt-10 md:w-[95vw] min-h-sceen flex flex-col md:flex-row justify-between rounded-3xl">
-        <div className={`${!openTab ? "block" : "hidden"} md:block`}>
-          <Sidebar setTab={setTab} tab={tab} setOpenTab={setOpenTab} cartCount={cartCount} wishlistCount={wishlistCount} />
-        </div>
-        <div className={`flex-grow min-h-screen w-[95vw] md:w-full ${openTab ? "block" : "hidden"} relative md:block p-5 border-2 md:border-b-2 md:border-r-2 md:border-t-2 rounded-3xl md:rounded-l-none dark:border-slate-50/20`}>
-          <div onClick={() => setOpenTab(false)} className="absolute top-0 left-0 p-3">
-            <FaArrowLeft className='text-xl block md:hidden' />
+      <Navbar />
+      <div className='flex justify-center items-center lg:pt-12 min-w-screen'>
+        <div className="shadow-xl shadow-slate-50/10 border-2 pt-10 lg:pt-0 dark:border-slate-50/20 mt-10 md:w-[95vw] min-h-sceen flex flex-col md:flex-row justify-between rounded-3xl">
+          <div className={`${!openTab ? "block" : "hidden"} md:block`}>
+            <Sidebar setTab={setTab} tab={tab} setOpenTab={setOpenTab} cartCount={cartCount} wishlistCount={wishlistCount} />
           </div>
-          {tab === 0 && <Orders />}
-          {tab === 1 && <Cart getCartCount={getCartCount}/>}
-          {tab === 2 && <WishList getWishlistCount={getWishlistCount}/>}
-          {tab === 3 && <UpdateProfile user_data={user} />}
+          <div className={`flex-grow min-h-screen w-[95vw] md:w-full ${openTab ? "block" : "hidden"} relative md:block p-5 border-2 md:border-b-2 md:border-r-2 md:border-t-2 rounded-3xl md:rounded-l-none dark:border-slate-50/20`}>
+            <div onClick={() => setOpenTab(false)} className="absolute top-0 left-0 p-3">
+              <FaArrowLeft className='text-xl block md:hidden' />
+            </div>
+            {tab === 0 && <Orders />}
+            {tab === 1 && <Cart getCartCount={getCartCount} />}
+            {tab === 2 && <WishList getWishlistCount={getWishlistCount} />}
+            {tab === 3 && <UpdateProfile user_data={user} />}
+          </div>
         </div>
       </div>
     </div>
-  </div>
   );
 }
 

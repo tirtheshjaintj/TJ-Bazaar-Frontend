@@ -4,10 +4,10 @@ import axiosInstance from '../config/axiosConfig';
 import { AiOutlineRight } from 'react-icons/ai';
 import { ProductCardSkeleton } from '../components/ProductCardSkeleton';
 import { Link } from 'react-router-dom';
-
+import { useProductContext } from '../context/ProductContext';
 const ProductCard = lazy(() => import('../components/ProductCard')); // Lazy loading ProductCard
 
-interface Category {
+export interface Category {
   _id: string;
   name: string;
   createdAt: string;
@@ -15,7 +15,7 @@ interface Category {
   __v: number;
 }
 
-interface Product {
+export interface Product {
   _id: string;
   name: string;
   description: string;
@@ -27,32 +27,26 @@ interface Product {
   tags: string[];         // Add tags
   createdAt: string;      // Add createdAt
   updatedAt: string;      // Add updatedAt
-  __v: number;            // Add version key
+  _v: string;
 }
 
-interface ProductsByCategory {
+export interface ProductsByCategory {
   [categoryName: string]: Product[];
 }
 
 function Home() {
-  const [products, setProducts] = useState<ProductsByCategory>({});
   const [visibleProducts, setVisibleProducts] = useState<{ [key: string]: number }>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null); // Error state
-
+  const { products, setProducts } = useProductContext();
   // Fetch products from API
   const getProducts = async () => {
     try {
-      setLoading(true);
-      setError(null); // Reset error
-      const response = await axiosInstance.get(`/product/get/products`);
-      if (response.data.status) {
+      if (Object.keys(products).length == 0) {
+        setLoading(true);
+        setError(null); // Reset error
+        const response = await axiosInstance.get(`/product/get/products`);
         setProducts(response.data.data);
-        const initialVisible = Object.keys(response.data.data).reduce((acc, category) => {
-          acc[category] = 3; // Show 3 products by default
-          return acc;
-        }, {} as { [key: string]: number });
-        setVisibleProducts(initialVisible);
       }
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -76,8 +70,17 @@ function Home() {
     getProducts();
   }, []);
 
+  useEffect(() => {
+    const initialVisible = Object.keys(products).reduce((acc, category) => {
+      acc[category] = 3; // Show 3 products by default
+      return acc;
+    }, {} as { [key: string]: number });
+    setVisibleProducts(initialVisible);
+  }, [products]);
+
   return (
     <>
+
       <Navbar />
       <div className="flex justify-end w-full">
         <h1 className="p-4 pt-24 font-bold text-2xl md:text-[36px]">Welcome To TJ Bazaar 🛒</h1>
@@ -93,23 +96,29 @@ function Home() {
         ) : error ? (
           // Show error message if data fetching fails
           <div className="text-red-500">{error}</div>
-        ) : (
-          Object.entries(products).map(([categoryName, productList]) => (
+        ) : <>{Object.entries(products).map(([categoryName, productList]) => {
+          if (!Array.isArray(productList) || productList.length === 0) return null;
+
+          const categoryId = productList[0].category_id?._id ?? '';
+
+          return (
             <div key={categoryName} className="mb-8">
               <h2 className="mb-4 text-3xl font-bold">
-                <Link to={`/category/${productList[0].category_id._id}`} className="hover:underline">
+                <Link to={`/category/${categoryId}`} className="hover:underline">
                   {categoryName}
-                  &nbsp;<span className='font-normal'>{`(${productList.length || 0})`}</span>
+                  &nbsp;<span className='font-normal'>{`(${productList.length})`}</span>
                 </Link>
               </h2>
+
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <Suspense fallback={<ProductCardSkeleton />}>
-                  {productList.slice(0, visibleProducts[categoryName] || 0).map((product: Product) => (
-                    <ProductCard key={product._id} product={product} />
+                  {productList.slice(0, visibleProducts[categoryName] || 0).map((product: Product, index: number) => (
+                    <ProductCard key={product._id} product={product} index={index} />
                   ))}
                 </Suspense>
               </div>
-              {visibleProducts[categoryName] < productList.length && (
+
+              {(visibleProducts[categoryName] ?? 0) < productList.length && (
                 <div className="flex justify-end mt-4">
                   <button
                     onClick={() => handleShowMore(categoryName)}
@@ -121,8 +130,9 @@ function Home() {
                 </div>
               )}
             </div>
-          ))
-        )}
+          );
+        })}
+        </>}
       </div>
     </>
   );

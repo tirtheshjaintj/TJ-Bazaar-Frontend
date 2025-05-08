@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import './index.css'
-import { createBrowserRouter, createRoutesFromChildren, Route, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import Seller_Signup from './pages/seller/Seller_Signup';
@@ -16,36 +16,37 @@ import Seller from './pages/Seller';
 import Forgot_Password from './pages/Forgot_Password';
 import Login from './pages/Login';
 import { GoogleOAuthProvider } from "@react-oauth/google"
+import { ProductContextProvider } from './context/ProductContext';
 
-const router=createBrowserRouter(
-  createRoutesFromChildren(
-    <Route path="" element={<App/>}>
-    
-    <Route path="/" element={<Home/>}/>
-    <Route path="/search" element={<Search/>}/>
-    <Route path="/product/:id" element={<Product/>}/>
-    <Route path="/category/:id" element={<Category/>}/>
-    <Route path="/seller/:id" element={<Seller/>}/>
-
-    <Route path="/seller/login" element={<Login type="seller"/>}/>
-    <Route path="/seller/signup" element={<Seller_Signup/>}/>
-    <Route path="/seller/forgot" element={<Forgot_Password type="seller"/>}/>
-    <Route path="/seller/dashboard" element={<Seller_Dashboard/>}/>
-    
-    <Route path="/user/login" element={<Login type="user"/>}/>
-    <Route path="/user/signup" element={<User_Signup/>}/>
-    <Route path="/user/forgot" element={<Forgot_Password type="user"/>}/>
-    <Route path="/user/dashboard" element={<User_Dashboard/>}
-    />
-    </Route>
-  )
-);
+const router = createBrowserRouter([
+  {
+    path: "",
+    element: <App />,
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/search", element: <Search /> },
+      { path: "/product/:id", element: <Product /> },
+      { path: "/category/:id", element: <Category /> },
+      { path: "/seller/:id", element: <Seller /> },
+      { path: "/seller/login", element: <Login type="seller" /> },
+      { path: "/seller/signup", element: <Seller_Signup /> },
+      { path: "/seller/forgot", element: <Forgot_Password type="seller" /> },
+      { path: "/seller/dashboard", element: <Seller_Dashboard /> },
+      { path: "/user/login", element: <Login type="user" /> },
+      { path: "/user/signup", element: <User_Signup /> },
+      { path: "/user/forgot", element: <Forgot_Password type="user" /> },
+      { path: "/user/dashboard", element: <User_Dashboard /> },
+    ],
+  },
+]);
 
 createRoot(document.getElementById('root')!).render(
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_ID}>
-  <Provider store={store}>
-  <RouterProvider router={router}/>
-  </Provider>
+    <ProductContextProvider>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </ProductContextProvider>
   </GoogleOAuthProvider>
 )
 

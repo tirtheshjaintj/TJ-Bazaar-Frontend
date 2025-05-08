@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,9 +11,11 @@ import axiosInstanceSeller from './config/axiosConfigSeller';
 import { addUser } from './store/userSlice';
 import { addSeller } from './store/sellerSlice';
 import Chatbot from './components/ChatBot';
+import ReactConfetti from 'react-confetti';
 
 function App() {
   const user = useSelector((state: any) => state.user);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const seller = useSelector((state: any) => state.seller);
   const cookie = new Cookie();
   const dispatch = useDispatch();
@@ -75,11 +78,26 @@ function App() {
 
   return (
     <Background>
+      <ReactConfetti
+        width={window.innerWidth}
+        height={document.documentElement.scrollHeight}
+        numberOfPieces={20}
+        gravity={0.05}
+        colors={[
+          '#f44336', '#e91e63', '#9c27b0', '#673ab7',
+          '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4',
+          '#009688', '#4caf50', '#8bc34a', '#cddc39',
+          '#ffeb3b', '#ffc107', '#ff9800', '#ff5722'
+        ]}
+        recycle={true}
+        style={{ position: 'fixed', top: 0, left: 0, zIndex: -199 }}
+
+      />
+
       <Toaster position="bottom-right" />
       <ModeBall />
       <Outlet />
       <Chatbot />
-
     </Background>
   );
 }

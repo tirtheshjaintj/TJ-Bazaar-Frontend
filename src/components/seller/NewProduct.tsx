@@ -37,7 +37,9 @@ const NewProduct: React.FC = () => {
   }, []);
 
   const handleImageChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    
     const files = Array.from(event.target.files || []);
+
     if (files.length + images.length > 10) {
       toast.error('You can only upload up to 10 images');
       return;
@@ -58,11 +60,9 @@ const NewProduct: React.FC = () => {
 
   const imagePreviews = useMemo(
     () => images.map(image => URL.createObjectURL(image)),
-    [images]
-  );
+    [images]);
 
   useEffect(() => {
-    // Clean up object URLs when images change to prevent memory leaks
     return () => {
       imagePreviews.forEach(url => URL.revokeObjectURL(url));
     };
@@ -76,7 +76,7 @@ const NewProduct: React.FC = () => {
     event.preventDefault();
     setIsSubmitting(true);
 
-    if (!name || !description || !price || quantity<0 || !tags.length || !categoryId) {
+    if (!name || !description || !price || quantity < 0 || !tags.length || !categoryId) {
       setErrorMessage('All fields are required');
       setIsSubmitting(false);
       return;
@@ -135,17 +135,17 @@ const NewProduct: React.FC = () => {
   };
 
   return (
-    <div className="w-full p-4 min-h-screen">
-      <form onSubmit={handleSubmit} className="space-y-4 flex flex-col w-full placeholder-slate-200">
+    <div className="w-full min-h-screen p-4">
+      <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-4 placeholder-slate-200">
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-        
+
         <div>
           <label className="block text-sm font-medium">Title</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="mt-1 block w-full placeholder-slate-200 dark:bg-gray-600 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="block w-full mt-1 border-gray-300 rounded-md shadow-sm placeholder-slate-200 dark:bg-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="Add Title Here"
             required
           />
@@ -156,14 +156,14 @@ const NewProduct: React.FC = () => {
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="mt-1 block w-full placeholder-slate-200 dark:bg-gray-600 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="block w-full mt-1 border-gray-300 rounded-md shadow-sm placeholder-slate-200 dark:bg-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="Add Description Here"
             rows={8}
             required
           />
         </div>
 
-        <div className='flex flex-col md:flex-row gap-5'>
+        <div className='flex flex-col gap-5 md:flex-row'>
           <div>
             <label className="block text-sm font-medium">Price</label>
             <input
@@ -172,7 +172,7 @@ const NewProduct: React.FC = () => {
               min={10}
               max={100000}
               onChange={(e) => setPrice(e.target.value)}
-              className="mt-1 block w-full placeholder-slate-200 dark:bg-gray-600 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm placeholder-slate-200 dark:bg-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Add Price"
               required
             />
@@ -184,7 +184,7 @@ const NewProduct: React.FC = () => {
               value={quantity}
               min={0}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className="mt-1 block w-full placeholder-slate-200 dark:bg-gray-600 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm placeholder-slate-200 dark:bg-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Add Quantity"
               required
             />
@@ -194,7 +194,7 @@ const NewProduct: React.FC = () => {
             <select
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
-              className="mt-1 block w-full placeholder-slate-200 dark:bg-gray-600 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm placeholder-slate-200 dark:bg-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               required
             >
               <option value="" disabled>Select a category</option>
@@ -213,27 +213,29 @@ const NewProduct: React.FC = () => {
               const uniqueTags = Array.from(new Set(newTags.map(tag => tag.toLowerCase())));
               setTags(uniqueTags);
             }}
-            className="mt-1 block w-full bg-white p-2 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="block w-full p-2 mt-1 bg-white border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium">Images</label>
+
           <input
             type="file"
             multiple
             accept="image/*"
             onChange={handleImageChange}
-            className="mt-1 block w-full placeholder-slate-200 dark:bg-gray-600 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="block w-full mt-1 border-gray-300 rounded-md shadow-sm placeholder-slate-200 dark:bg-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
-          <div className="mt-2 grid grid-cols-4 gap-10">
+
+          <div className="grid grid-cols-4 gap-10 mt-2">
             {imagePreviews.map((preview, index) => (
               <div key={index} className="relative">
-                <img src={preview} alt="Preview" className="w-full h-40 object-contain rounded-md" />
+                <img src={preview} alt="Preview" className="object-contain w-full h-40 rounded-md" />
                 <button
                   type="button"
                   onClick={() => removeImage(index)}
-                  className="absolute top-0 right-0 p-1 text-lg bg-black/50 text-white rounded-full mr-1"
+                  className="absolute top-0 right-0 p-1 mr-1 text-lg text-white rounded-full bg-black/50"
                   title="Remove image"
                 >
                   X
@@ -246,13 +248,13 @@ const NewProduct: React.FC = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700"
+            className="px-4 py-2 font-semibold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-700"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
               <div className="flex items-center justify-center">
                 <span className="flex items-center">Creating Product&nbsp;</span>
-                <div className="spinner border-t-transparent border-solid animate-spin rounded-full border-white border-4 h-6 w-6"></div>
+                <div className="w-6 h-6 border-4 border-white border-solid rounded-full spinner border-t-transparent animate-spin"></div>
               </div>
             ) : (
               <div className="flex items-center">Create Product&nbsp;<FaPlusCircle /></div>

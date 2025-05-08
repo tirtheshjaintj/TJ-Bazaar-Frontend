@@ -10,18 +10,18 @@ interface User {
 }
 
 // const initialState: User | null = null;
-const initialState:User|null= null;
+const initialState: User | null = null;
 
 // Create the user slice with reducers
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    addUser:(_state, action) => {
+    addUser: (_state, action) => {
       return action.payload;
     },
     removeUser: () => {
-      return null; // Return null to reset the state
+      return null;
     },
   },
 });
