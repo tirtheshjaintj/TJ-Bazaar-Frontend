@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import axiosInstance from "../../config/axiosConfig";
 import { FaTrash, FaShoppingCart, FaBoxOpen, FaSearch, FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
@@ -6,22 +7,11 @@ import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import Swal from 'sweetalert2';
 import { AiFillHeart } from "react-icons/ai";
+import { Product } from "../../pages/Home";
 
 const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_API_KEY;
 
-interface Product {
-  _id: string;
-  category_id: string;
-  seller_id: string;
-  name: string;
-  description: string;
-  tags: string[];
-  price: number;
-  quantity: number;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
+
 
 interface CartItem {
   _id: string;
@@ -121,6 +111,7 @@ function Cart({ getCartCount }: any) {
                 toast.error("Payment verification failed.");
               }
             } catch (error) {
+              console.log(error);
               toast.error("Error during payment verification.");
             }
           },
@@ -152,27 +143,27 @@ function Cart({ getCartCount }: any) {
       (statusFilter === 'in-stock' && item.product_id.quantity > 0) ||
       (statusFilter === 'out-of-stock' && item.product_id.quantity === 0));
     return matchesSearch && matchesStatus;
-});
+  });
 
-const sortedCart = [...filteredCart].sort((a, b) => {
-  let comparison = 0;
-  if (sortField === 'price') {
+  const sortedCart = [...filteredCart].sort((a, b) => {
+    let comparison = 0;
+    if (sortField === 'price') {
       comparison = a.product_id.price - b.product_id.price;
-  } else if (sortField === 'date') {
+    } else if (sortField === 'date') {
       comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-  }
-  return sortOrder === 'asc' ? comparison : -comparison;
-});
+    }
+    return sortOrder === 'asc' ? comparison : -comparison;
+  });
 
   const timeAgo = (dateString: string) => {
     const now = new Date();
     const then = new Date(dateString);
     const diffInSeconds = Math.floor((now.getTime() - then.getTime()) / 1000);
-    
+
     const minutes = Math.floor(diffInSeconds / 60);
     const hours = Math.floor(diffInSeconds / 3600);
     const days = Math.floor(diffInSeconds / 86400);
-    
+
     if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
     if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
     if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
@@ -185,14 +176,14 @@ const sortedCart = [...filteredCart].sort((a, b) => {
 
   if (loading) {
     return (
-      <div className="py-5 min-h-screen">
-        <div className="grid gap-6 justify-items-center pt-5 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mx-auto">
+      <div className="min-h-screen py-5">
+        <div className="grid grid-cols-1 gap-6 pt-5 mx-auto justify-items-center lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className="border w-full rounded-lg shadow-lg p-4 animate-pulse">
-              <div className="h-32 bg-gray-300 rounded-md mb-2"></div>
-              <div className="h-4 bg-gray-300 rounded mb-2"></div>
-              <div className="h-4 bg-gray-300 rounded mb-2"></div>
-              <div className="h-4 bg-gray-300 rounded mb-2"></div>
+            <div key={index} className="w-full p-4 border rounded-lg shadow-lg animate-pulse">
+              <div className="h-32 mb-2 bg-gray-300 rounded-md"></div>
+              <div className="h-4 mb-2 bg-gray-300 rounded"></div>
+              <div className="h-4 mb-2 bg-gray-300 rounded"></div>
+              <div className="h-4 mb-2 bg-gray-300 rounded"></div>
             </div>
           ))}
         </div>
@@ -202,88 +193,88 @@ const sortedCart = [...filteredCart].sort((a, b) => {
 
 
   return (
-    <div className="pt-6 min-h-screen">
-  
+    <div className="min-h-screen pt-6">
+
       {cart.length === 0 ? (
-        <div className="flex flex-col justify-center items-center min-h-screen text-center">
-          <AiFillHeart className="text-red-500 w-16 h-16 animate-bounce" />
+        <div className="flex flex-col items-center justify-center min-h-screen text-center">
+          <AiFillHeart className="w-16 h-16 text-red-500 animate-bounce" />
           <h2 className="text-2xl font-bold">Your cart is empty</h2>
         </div>) : (
-    <>
-        <div className='flex w-full flex-col lg:flex-row gap-4 justify-between items-center mb-6'>
-        <div className="flex w-full gap-2 items-center justify-start">
-          <input
-            type="text"
-            placeholder="Search by product name"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="p-3 w-full border border-gray-300 rounded-md shadow-sm lg:w-1/3 dark:bg-gray-700 dark:text-white focus:ring focus:ring-blue-300"
-          />
-          <FaSearch className="text-gray-600 dark:text-gray-300" />
-        </div>
-        
-        <div className="flex gap-4 items-center">
-          <div>
-            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as 'all' | 'in-stock' | 'out-of-stock')} className="border text-black border-gray-300 rounded-lg p-2 shadow-sm">
-              <option value="all">All</option>
-              <option value="in-stock">In Stock</option>
-              <option value="out-of-stock">Out of Stock</option>
-            </select>
+        <>
+          <div className='flex flex-col items-center justify-between w-full gap-4 mb-6 lg:flex-row'>
+            <div className="flex items-center justify-start w-full gap-2">
+              <input
+                type="text"
+                placeholder="Search by product name"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md shadow-sm lg:w-1/3 dark:bg-gray-700 dark:text-white focus:ring focus:ring-blue-300"
+              />
+              <FaSearch className="text-gray-600 dark:text-gray-300" />
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div>
+                <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as 'all' | 'in-stock' | 'out-of-stock')} className="p-2 text-black border border-gray-300 rounded-lg shadow-sm">
+                  <option value="all">All</option>
+                  <option value="in-stock">In Stock</option>
+                  <option value="out-of-stock">Out of Stock</option>
+                </select>
+              </div>
+              <div className="flex items-center">
+                <select value={sortField} onChange={(e) => setSortField(e.target.value as 'date' | 'price')} className="p-2 text-black border border-gray-300 rounded-lg shadow-sm">
+                  <option value="date">Date</option>
+                  <option value="price">Price</option>
+                </select>
+                <button onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')} className="flex items-center p-2 ml-2 transition-colors duration-300 border border-gray-300 rounded-lg shadow-sm hover:bg-blue-500 hover:text-white">
+                  {sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />}
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center">
-            <select value={sortField} onChange={(e) => setSortField(e.target.value as 'date' | 'price')} className="border text-black border-gray-300 rounded-lg p-2 shadow-sm">
-              <option value="date">Date</option>
-              <option value="price">Price</option>
-            </select>
-            <button onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')} className="flex items-center border border-gray-300 rounded-lg p-2 ml-2 shadow-sm hover:bg-blue-500 hover:text-white transition-colors duration-300">
-              {sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />}
-            </button>
-          </div>
-        </div>
-      </div>
-    <div className="grid gap-6 justify-items-center pt-5 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mx-auto">
-        {sortedCart.map((item) => {
-            const isOutOfStock = item.product_id.quantity < item.quantity;
-            return (
-                <div key={item._id} className="border w-full border-gray-300/20 rounded-lg shadow-lg p-4 transition-transform transform hover:shadow-xl">
-                    <Link className='w-full' to={`../product/${item.product_id._id}`}>
-                        <img
-                            src={item.image || '../bazaar.gif'}
-                            alt={item.product_id.name}
-                            className="w-full h-32 object-cover rounded mb-2"
-                        />
-                        <h3 className="font-bold text-lg">{item.product_id.name.length > 30 ? item.product_id.name.substr(0, 30) + "..." : item.product_id.name}</h3>
-                        <p className="mt-2"><span className="font-semibold">Price:</span> ₹{item.product_id.price}</p>
-                        <p className="mt-2"><span className="font-semibold">Quantity:</span> {item.quantity}</p>
-                        <p className="mt-2">
-                            <span className="font-semibold">Total Payable:</span> ₹{item.product_id.price * item.quantity}
-                        </p>
-                        <p className="mt-2"><span className="font-semibold">Added:</span> {timeAgo(item.createdAt)}</p>
-                        {isOutOfStock && (
-                            <p className="mt-2 text-red-600 text-xl font-bold"><span className="flex items-center">Out of Stock&nbsp;<FaBoxOpen /></span></p>
-                        )}
-                    </Link>
-                    <div className="flex justify-end mt-4 space-x-2">
-                        <button
-                            onClick={() => removeFromCart(item._id)}
-                            className="bg-red-600 text-white p-2 rounded hover:bg-red-500 flex items-center"
-                        >
-                            <FaTrash />
-                        </button>
-                        <button
-                            onClick={() => placeOrder(item.product_id._id, item.quantity)}
-                            disabled={isOutOfStock}
-                            className={`text-white py-2 px-4 rounded flex items-center ${isOutOfStock ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-500'}`}
-                        >
-                            <FaShoppingCart className="mr-1" /> Place Order
-                        </button>
-                    </div>
+          <div className="grid grid-cols-1 gap-6 pt-5 mx-auto justify-items-center lg:grid-cols-2 xl:grid-cols-3">
+            {sortedCart.map((item) => {
+              const isOutOfStock = item.product_id.quantity < item.quantity;
+              return (
+                <div key={item._id} className="w-full p-4 transition-transform transform border rounded-lg shadow-lg border-gray-300/20 hover:shadow-xl">
+                  <Link className='w-full' to={`../product/${item.product_id._id}`}>
+                    <img
+                      src={item.image || '../bazaar.gif'}
+                      alt={item.product_id.name}
+                      className="object-cover w-full h-32 mb-2 rounded"
+                    />
+                    <h3 className="text-lg font-bold">{item.product_id.name.length > 30 ? item.product_id.name.substr(0, 30) + "..." : item.product_id.name}</h3>
+                    <p className="mt-2"><span className="font-semibold">Price:</span> ₹{item.product_id.price}</p>
+                    <p className="mt-2"><span className="font-semibold">Quantity:</span> {item.quantity}</p>
+                    <p className="mt-2">
+                      <span className="font-semibold">Total Payable:</span> ₹{item.product_id.price * item.quantity}
+                    </p>
+                    <p className="mt-2"><span className="font-semibold">Added:</span> {timeAgo(item.createdAt)}</p>
+                    {isOutOfStock && (
+                      <p className="mt-2 text-xl font-bold text-red-600"><span className="flex items-center">Out of Stock&nbsp;<FaBoxOpen /></span></p>
+                    )}
+                  </Link>
+                  <div className="flex justify-end mt-4 space-x-2">
+                    <button
+                      onClick={() => removeFromCart(item._id)}
+                      className="flex items-center p-2 text-white bg-red-600 rounded hover:bg-red-500"
+                    >
+                      <FaTrash />
+                    </button>
+                    <button
+                      onClick={() => placeOrder(item.product_id._id, item.quantity)}
+                      disabled={isOutOfStock}
+                      className={`text-white py-2 px-4 rounded flex items-center ${isOutOfStock ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-500'}`}
+                    >
+                      <FaShoppingCart className="mr-1" /> Place Order
+                    </button>
+                  </div>
                 </div>
-            );
-        })}
-    </div>
-    </>
-)}
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 }
