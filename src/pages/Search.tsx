@@ -7,12 +7,13 @@ import ProductCard from '../components/ProductCard';
 import { ProductCardSkeleton } from '../components/ProductCardSkeleton';
 import { AiFillHeart } from 'react-icons/ai';
 import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
+import { Product } from './Home';
 
 function Search() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("keyword");
   const navigate = useNavigate();
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortField, setSortField] = useState<'price' | 'date'>('price');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -105,8 +106,8 @@ function Search() {
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-                {sortedProducts.map((product: any) => (
-                  <ProductCard key={product._id} product={product} />
+                {sortedProducts.map((product: Product, index: number) => (
+                  <ProductCard key={product._id} product={product} index={index} />
                 ))}
               </div>
             )}
