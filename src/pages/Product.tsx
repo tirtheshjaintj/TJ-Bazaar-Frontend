@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import axiosInstance from '../config/axiosConfig';
@@ -69,7 +71,7 @@ const Product: React.FC = () => {
         setReviews(response.data.data);
       }
     } catch (error) {
-      //console.error("Error fetching reviews:", error);
+      console.error("Error fetching reviews:", error);
     }
   };
 
@@ -130,6 +132,7 @@ const Product: React.FC = () => {
           toast.success(response.data.message);
         }
       } catch (error: any) {
+        console.log(error);
         setInWishlist(false);
       }
     }
@@ -250,7 +253,6 @@ const Product: React.FC = () => {
     if (user) {
       try {
         const response = await axiosInstance.get(`/cart/check_cart/${product?._id}`);
-        ////console.log(response);
         if (response.data.status) {
           setInCart(true);
           toast.success("Product already in your Cart");

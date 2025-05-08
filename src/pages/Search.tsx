@@ -46,6 +46,7 @@ function Search() {
   useEffect(() => {
     if (searchQuery) {
       search();
+      document.title = `Searching for ${searchQuery}`;
       window.scrollTo(0, 0);
     }
   }, [searchQuery]);
