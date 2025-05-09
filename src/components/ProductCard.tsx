@@ -13,7 +13,7 @@ interface ProductCardProps {
   product: Product;
   index: number;
 }
-export async function share(product_id: any, product_name: any) {
+export const share = (product_id: any, product_name: any) => {
   const productUrl = `${window.location.origin}/product/${product_id}`;
   const shareText = `Check out this awesome TJ Bazaar product: ${product_name}!\nHere at \n► ${productUrl} ◄\n`;
   await navigator.clipboard.writeText(shareText);
