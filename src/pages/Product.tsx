@@ -9,7 +9,7 @@ import { Carousel } from 'flowbite-react';
 import Navbar from "../components/user/Navbar";
 import Modal from 'react-modal';
 import { FaBagShopping } from 'react-icons/fa6';
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight, FaBoxOpen, FaHeart, FaRegHeart, FaShare } from 'react-icons/fa';
+import { FaAngleLeft, FaAngleRight, FaArrowAltCircleLeft, FaArrowAltCircleRight, FaBoxOpen, FaHeart, FaRegHeart, FaShare } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import ReviewForm from '../components/ReviewForm';
 import ReviewList from '../components/ReviewList';
@@ -375,7 +375,17 @@ const ProductPage: React.FC = () => {
               <div className="absolute z-10 flex items-center justify-center w-12 h-12 text-3xl  rounded-full cursor-pointer top-14 left-2 bg-gray-50/20"
                 onClick={() => share(product?._id, product?.name)}
               ><FaShare /></div>
-              <Carousel slideInterval={3000} className="h-[30em] p-0 transition-all duration-700 ease-in-out">
+              <Carousel slideInterval={5000} className="h-[30em] p-0 transition-all duration-700 ease-in-out"
+                leftControl={
+                  <span className="text-3xl inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-black hover:bg-white focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800/50 dark:text-white/50 dark:hover:bg-gray-700">
+                    <FaAngleLeft />
+                  </span>
+                }
+                rightControl={
+                  <span className=" text-3xl inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-black hover:bg-white focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800/50 dark:text-white/50 dark:hover:bg-gray-700">
+                    <FaAngleRight />
+                  </span>
+                }>
                 {product?.media.map((image, index) => (
                   <div key={index} className="relative w-full h-full">
                     <Link to={`../product/${product?._id}`}>

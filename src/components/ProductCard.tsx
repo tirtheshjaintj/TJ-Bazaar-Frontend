@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, Carousel, Dropdown } from "flowbite-react";
 import { useState } from "react";
-import { FaHeart, FaRegHeart, FaShare } from "react-icons/fa";
+import { FaAngleLeft, FaAngleRight, FaHeart, FaRegHeart, FaShare } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../config/axiosConfig";
 import toast from "react-hot-toast";
@@ -93,7 +93,17 @@ export default function ProductCard({ product, index }: ProductCardProps) {
 
           {/* Image/Carousel Section */}
           <div className="flex-grow h-[20em] backdrop-blur-3xl shadow-md rounded-xl">
-            <Carousel slideInterval={3000} className="h-[20em] p-0 transition-all duration-700 ease-in-out">
+            <Carousel slideInterval={5000} className="h-[20em] p-0 transition-all duration-700 ease-in-out"
+              leftControl={
+                <span className="text-2xl inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-black hover:bg-white focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800/50 dark:text-white/50 dark:hover:bg-gray-700">
+                  <FaAngleLeft />
+                </span>
+              }
+              rightControl={
+                <span className=" text-2xl inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-black hover:bg-white focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800/50 dark:text-white/50 dark:hover:bg-gray-700">
+                  <FaAngleRight />
+                </span>
+              }>
               {product.media.map((image: string, index: number) => (
                 <div key={index} className="relative w-full h-full">
                   <Link to={`../product/${product._id}`}>
