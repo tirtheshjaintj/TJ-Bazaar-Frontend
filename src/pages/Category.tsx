@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import Navbar from '../components/user/Navbar';
 import axiosInstance from '../config/axiosConfig';
@@ -5,21 +6,32 @@ import ProductCard from '../components/ProductCard';
 import { ProductCardSkeleton } from '../components/ProductCardSkeleton';
 import { useParams } from 'react-router-dom';
 import { FaSearch, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
-import { Category, Product } from './Home';
+import { Category, Product, ProductsByCategory } from './Home';
+import { useProductContext } from '../context/ProductContext';
 
 function CategoryPage() {
   const { id } = useParams<{ id: string }>();
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [category, setCategory] = useState<Category>();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState<'price' | 'date'>('price');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-
+  const ProductContext = useProductContext();
   const getProductsByCategory = async () => {
     try {
-      if (Object.keys(products).length == 0) {
+      const productFind = (
+        Object.values(ProductContext.products as unknown as ProductsByCategory)
+          .flat()
+          .filter((product: any) => `${product.category_id._id}` === id) || []
+      ) as Product[];
+
+      setProducts(productFind);
+      setCategory(productFind[0]?.category_id ?? null);
+
+
+      if (productFind.length == 0) {
         setLoading(true);
         setError(null);
         const response = await axiosInstance.get(`/product/category/${id}`);
@@ -27,6 +39,7 @@ function CategoryPage() {
           setProducts(response.data.products);
           setCategory(response.data.category);
         }
+        console.log("Loading");
       }
 
     } catch (error) {

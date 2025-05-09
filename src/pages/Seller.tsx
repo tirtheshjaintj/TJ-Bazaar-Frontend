@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import Navbar from '../components/user/Navbar';
 import axiosInstance from '../config/axiosConfig';
@@ -5,31 +6,41 @@ import ProductCard from '../components/ProductCard';
 import { ProductCardSkeleton } from '../components/ProductCardSkeleton';
 import { useParams } from 'react-router-dom';
 import { FaSearch, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
-import { Product } from './Home';
+import { Product, ProductsByCategory, Seller } from './Home';
+import { useProductContext } from '../context/ProductContext';
 
-interface Seller {
-  name: string;
-  _id: string;
-}
 
-function Seller() {
+
+function SellerPage() {
   const { id } = useParams<{ id: string }>();
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [seller, setSeller] = useState<Seller>();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState<'price' | 'date'>('price');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-
+  const ProductContext = useProductContext();
   const getProductsBySeller = async () => {
     try {
-      setLoading(true);
-      setError(null);
-      const response = await axiosInstance.get(`/product/seller/${id}`);
-      if (response.data.status) {
-        setProducts(response.data.products);
-        setSeller(response.data.seller);
+      const productFind = (
+        Object.values(ProductContext.products as unknown as ProductsByCategory)
+          .flat()
+          .filter((product: any) => `${product.seller_id._id}` === id) || []
+      ) as Product[];
+
+      setProducts(productFind);
+      setSeller(productFind[0]?.seller_id ?? null);
+      console.log(productFind);
+
+      if (productFind.length == 0) {
+        setLoading(true);
+        setError(null);
+        const response = await axiosInstance.get(`/product/seller/${id}`);
+        if (response.data.status) {
+          setProducts(response.data.products);
+          setSeller(response.data.seller);
+        }
       }
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -126,4 +137,4 @@ function Seller() {
   );
 }
 
-export default Seller;
+export default SellerPage;

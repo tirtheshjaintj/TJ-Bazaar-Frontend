@@ -10,11 +10,12 @@ const ProductCard = lazy(() => import('../components/ProductCard')); // Lazy loa
 export interface Category {
   _id: string;
   name: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
 }
 
+export interface Seller {
+  name: string;
+  _id: string;
+}
 export interface Product {
   _id: string;
   name: string;
@@ -23,7 +24,7 @@ export interface Product {
   quantity: number;
   media: string[];
   category_id: Category; // Add category_id
-  seller_id: string;      // Add seller_id
+  seller_id: Seller;      // Add seller_id
   tags: string[];         // Add tags
   createdAt: string;      // Add createdAt
   updatedAt: string;      // Add updatedAt
@@ -34,9 +35,10 @@ export interface ProductsByCategory {
   [categoryName: string]: Product[];
 }
 
+
 function Home() {
   const [visibleProducts, setVisibleProducts] = useState<{ [key: string]: number }>({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null); // Error state
   const { products, setProducts } = useProductContext();
   // Fetch products from API
@@ -48,6 +50,7 @@ function Home() {
         const response = await axiosInstance.get(`/product/get/products`);
         setProducts(response.data.data);
       }
+
     } catch (error) {
       console.error("Error fetching products:", error);
       setError("Failed to load products. Please try again later.");
@@ -112,7 +115,7 @@ function Home() {
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <Suspense fallback={<ProductCardSkeleton />}>
-                  {productList.slice(0, visibleProducts[categoryName] || 0).map((product: Product, index: number) => (
+                  {productList.slice(0, visibleProducts[categoryName] || 3).map((product: Product, index: number) => (
                     <ProductCard key={product._id} product={product} index={index} />
                   ))}
                 </Suspense>

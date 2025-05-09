@@ -14,38 +14,19 @@ import { useSelector } from 'react-redux';
 import ReviewForm from '../components/ReviewForm';
 import ReviewList from '../components/ReviewList';
 import AverageRating from '../components/AverageRating';
+import { useProductContext } from '../context/ProductContext';
+import { Product } from './Home';
 const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_API_KEY;
 
-interface Category {
-  name: string;
-  _id: string;
-}
 
-
-interface Seller {
-  name: string;
-  _id: string;
-}
-
-interface ProductData {
-  _id: string;
-  name: string;
-  description: string;
-  price: number;
-  quantity: number;
-  tags: string[];
-  media: string[];
-  category_id: Category;
-  seller_id: Seller;
-}
 
 // Set up Modal accessibility
 Modal.setAppElement('#root');
 
-const Product: React.FC = () => {
+const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [product, setProduct] = useState<ProductData | null>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isloading, setIsLoading] = useState<boolean>(false);
   const [isCartloading, setIsCartLoading] = useState<boolean>(false);
@@ -61,12 +42,12 @@ const Product: React.FC = () => {
   const [averageRating, setAverageRating] = useState<number>(0);
   // Ref for the media preview strip
   const previewRef = useRef<HTMLDivElement>(null);
-
+  const { products } = useProductContext();
 
   const fetchReviews = async () => {
     try {
       const response = await axiosInstance.get(`/review/${id}`);
-      //console.log(response.data);
+      ////console.log(response.data);
       if (response.data.status) {
         setReviews(response.data.data);
       }
@@ -77,10 +58,10 @@ const Product: React.FC = () => {
 
   useEffect(() => {
     if (reviews.length > 0) {
-      //console.log(reviews);
+      ////console.log(reviews);
       const total = reviews.reduce((acc, review: any) => acc + review.rating, 0);
       const average = total / reviews.length;
-      //console.log(average);
+      ////console.log(average);
       setAverageRating(average);
     }
   }, [reviews]);
@@ -115,7 +96,7 @@ const Product: React.FC = () => {
         }
       } catch (error: any) {
         const error_msg = error.data?.message || "Server Error";
-        //console.log(error);
+        ////console.log(error);
         toast.error(error_msg);
       }
     } else if (!user) {
@@ -132,7 +113,7 @@ const Product: React.FC = () => {
           toast.success(response.data.message);
         }
       } catch (error: any) {
-        console.log(error);
+        //console.log(error);
         setInWishlist(false);
       }
     }
@@ -141,10 +122,19 @@ const Product: React.FC = () => {
 
 
   const getProduct = async () => {
-    setLoading(true);
     try {
-      const response = await axiosInstance.get(`/product/${id}`);
-      setProduct(response.data.data);
+      const productFind = (Object.values(products)
+        .flat()
+        .find((product) => `${product._id}` === id) || null) as Product | null;
+
+      setProduct(productFind);
+
+
+      if (!productFind) {
+        setLoading(true);
+        const response = await axiosInstance.get(`/product/${id}`);
+        setProduct(response.data.data);
+      }
     } catch (error) {
       setError(true);
       toast.error("Product Not Found");
@@ -172,7 +162,7 @@ const Product: React.FC = () => {
         }
 
       } catch (error) {
-        ////console.log("error: ", error);
+        //////console.log("error: ", error);
         toast.error("Cannot add Product to Cart");
       } finally {
         setIsCartLoading(false);
@@ -194,7 +184,7 @@ const Product: React.FC = () => {
             });
             return response.data.paymentInit;
           } catch (error) {
-            ////console.log("error: ", error);
+            //////console.log("error: ", error);
           } finally {
             setIsLoading(false);
           }
@@ -258,7 +248,7 @@ const Product: React.FC = () => {
           toast.success("Product already in your Cart");
         }
       } catch (error) {
-        ////console.log(error);
+        //////console.log(error);
       }
     }
   }
@@ -540,4 +530,4 @@ const Product: React.FC = () => {
   );
 }
 
-export default Product;
+export default ProductPage;
