@@ -23,7 +23,6 @@ export async function share(product_id: any, product_name: any) {
       await navigator.share({
         title: `TJ Bazaar 🛒 ${product_name}`,
         text: shareText,
-        url: productUrl
       });
       return;
     } catch (err) {
