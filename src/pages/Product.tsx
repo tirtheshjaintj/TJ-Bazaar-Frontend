@@ -9,13 +9,14 @@ import { Carousel } from 'flowbite-react';
 import Navbar from "../components/user/Navbar";
 import Modal from 'react-modal';
 import { FaBagShopping } from 'react-icons/fa6';
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight, FaBoxOpen, FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight, FaBoxOpen, FaHeart, FaRegHeart, FaShare } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import ReviewForm from '../components/ReviewForm';
 import ReviewList from '../components/ReviewList';
 import AverageRating from '../components/AverageRating';
 import { useProductContext } from '../context/ProductContext';
 import { Product } from './Home';
+import { share } from '../components/ProductCard';
 const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_API_KEY;
 
 
@@ -371,6 +372,9 @@ const ProductPage: React.FC = () => {
               >
                 {(inWishlist) ? <FaHeart /> : <FaRegHeart />}
               </div>
+              <div className="absolute z-10 flex items-center justify-center w-12 h-12 text-3xl  rounded-full cursor-pointer top-14 left-2 bg-gray-50/20"
+                onClick={() => share(product?._id, product?.name)}
+              ><FaShare /></div>
               <Carousel slideInterval={3000} className="h-[30em] p-0 transition-all duration-700 ease-in-out">
                 {product?.media.map((image, index) => (
                   <div key={index} className="relative w-full h-full">

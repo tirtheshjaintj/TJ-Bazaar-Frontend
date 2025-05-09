@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, Carousel, Dropdown } from "flowbite-react";
 import { useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaShare } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../config/axiosConfig";
 import toast from "react-hot-toast";
@@ -12,6 +12,25 @@ import { motion } from "framer-motion";
 interface ProductCardProps {
   product: Product;
   index: number;
+}
+export async function share(product_id: any, product_name: any) {
+  const productUrl = `${window.location.origin}/product/${product_id}`;
+  const shareText = `Check out this awesome TJ Bazaar product: ${product_name}!\nHere at \n► ${productUrl} ◄\n`;
+  await navigator.clipboard.writeText(shareText);
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: `TJ Bazaar 🛒 ${product_name}`,
+        text: shareText,
+        url: productUrl
+      });
+      return;
+    } catch (err) {
+      console.error('Error sharing with Web Share API:', err);
+    }
+  }
+
 }
 
 export default function ProductCard({ product, index }: ProductCardProps) {
@@ -39,6 +58,8 @@ export default function ProductCard({ product, index }: ProductCardProps) {
       navigate("../user/dashboard");
     }
   }
+
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -62,6 +83,12 @@ export default function ProductCard({ product, index }: ProductCardProps) {
               >
                 {(inWishlist) ? "Added" : "Wishlist"}
               </Dropdown.Item>
+              <Dropdown.Item
+                icon={FaShare}
+                onClick={() => share(product._id, product.name)}>
+                Share
+              </Dropdown.Item>
+
             </Dropdown>
           </div>
 
@@ -114,3 +141,4 @@ export default function ProductCard({ product, index }: ProductCardProps) {
 
   );
 }
+
