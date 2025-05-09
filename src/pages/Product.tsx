@@ -367,22 +367,23 @@ const ProductPage: React.FC = () => {
         <div className="flex flex-col items-center w-full min-h-screen pt-12 md:flex-row">
           <div className="md:w-1/2">
             <div className="flex-grow h-full backdrop-blur-3xl rounded-xl">
-              <div className="absolute z-10 flex items-center justify-center w-12 h-12 text-3xl text-red-500 rounded-full cursor-pointer top-14 right-2 bg-gray-50/20"
+              <div className="absolute z-10 flex items-center justify-center w-12 h-12 text-3xl text-red-500 rounded-full cursor-pointer top-16  right-2 bg-gray-50/20"
                 onClick={(inWishlist) ? removeFromWishlist : addToWishlist}
               >
                 {(inWishlist) ? <FaHeart /> : <FaRegHeart />}
               </div>
-              <div className="absolute z-10 flex items-center justify-center w-12 h-12 text-3xl  rounded-full cursor-pointer top-14 left-2 bg-gray-50/20"
+              <div className="absolute z-10 flex items-center justify-center w-12 h-12 text-3xl  rounded-full cursor-pointer top-16 left-2 text-red-600 bg-gray-50/20"
                 onClick={() => share(product?._id, product?.name)}
+                title="Share"
               ><FaShare /></div>
               <Carousel slideInterval={5000} className="h-[30em] p-0 transition-all duration-700 ease-in-out"
                 leftControl={
-                  <span className="text-3xl inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-black hover:bg-white focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800/50 dark:text-white/50 dark:hover:bg-gray-700">
+                  <span className="text-3xl inline-flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full bg-white/50 text-black/50 focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800/50 dark:text-white/50">
                     <FaAngleLeft />
                   </span>
                 }
                 rightControl={
-                  <span className=" text-3xl inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-black hover:bg-white focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800/50 dark:text-white/50 dark:hover:bg-gray-700">
+                  <span className="text-3xl inline-flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full bg-white/50 text-black/50 focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800/50 dark:text-white/50">
                     <FaAngleRight />
                   </span>
                 }>

@@ -95,12 +95,12 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           <div className="flex-grow h-[20em] backdrop-blur-3xl shadow-md rounded-xl">
             <Carousel slideInterval={5000} className="h-[20em] p-0 transition-all duration-700 ease-in-out"
               leftControl={
-                <span className="text-2xl inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-black hover:bg-white focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800/50 dark:text-white/50 dark:hover:bg-gray-700">
+                <span className="text-2xl inline-flex h-7 w-7 md:h-10 md:w-10 items-center justify-center rounded-full bg-white/50 text-black/50 focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800/50 dark:text-white/50">
                   <FaAngleLeft />
                 </span>
               }
               rightControl={
-                <span className=" text-2xl inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-black hover:bg-white focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800/50 dark:text-white/50 dark:hover:bg-gray-700">
+                <span className="text-2xl inline-flex h-7 w-7 md:h-10 md:w-10 items-center justify-center rounded-full bg-white/50 text-black/50 focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800/50 dark:text-white/50">
                   <FaAngleRight />
                 </span>
               }>
