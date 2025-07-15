@@ -5,23 +5,23 @@ import Cookies from "universal-cookie";
 import { addSeller } from "../../store/sellerSlice";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-let deferredPrompt:any = null;
+let deferredPrompt: any = null;
 
 export default function Nav() {
   const navigate = useNavigate();
   const cookie = new Cookies();
   const dispatch = useDispatch();
   const seller = useSelector((state: any) => state.seller);
-  const signOut=()=>{
-    cookie.remove('seller_token', { path: '/'});
-      navigate("/seller/login");
-      dispatch(addSeller(null));
+  const signOut = () => {
+    cookie.remove('seller_token', { path: '/' });
+    navigate("/seller/login");
+    dispatch(addSeller(null));
   }
 
   const [isInstallable, setIsInstallable] = useState(false);
 
   useEffect(() => {
-    const handleBeforeInstallPrompt = (e:any) => {
+    const handleBeforeInstallPrompt = (e: any) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
       // Store the event for triggering later
@@ -60,9 +60,9 @@ export default function Nav() {
   return (
     <Navbar fluid rounded className="bg-white/50 fixed w-full z-10 lg:relative dark:bg-gray-900/50 backdrop-blur-3xl">
       <Link to="/" className="flex" onClick={isInstallable ? install : undefined}>
-      <img src="/bazaar.gif" className="mr-3 h-12" alt="Flowbite React Logo" />
+        <img src="/bazaar.gif" className="mr-3 h-12" alt="Flowbite React Logo" />
         <h1 className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white cursor-pointer">
-        TJ Bazaar&nbsp;
+          TJ Bazaar&nbsp;
         </h1>
       </Link>
       <div className="flex md:order-2">
@@ -78,10 +78,10 @@ export default function Nav() {
             <span className="block truncate text-sm font-medium">{`${seller?.email}`}</span>
           </Dropdown.Header>
           <Link to={"../seller/dashboard"}>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
+            <Dropdown.Item>Dashboard</Dropdown.Item>
           </Link>
           <Link to={"../user/dashboard"}>
-          <Dropdown.Item>Become User</Dropdown.Item>
+            <Dropdown.Item>Become User</Dropdown.Item>
           </Link>
           <Dropdown.Divider />
           <Dropdown.Item onClick={signOut}>Sign out</Dropdown.Item>

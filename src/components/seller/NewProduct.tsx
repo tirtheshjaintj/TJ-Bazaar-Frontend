@@ -37,7 +37,7 @@ const NewProduct: React.FC = () => {
   }, []);
 
   const handleImageChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    
+
     const files = Array.from(event.target.files || []);
 
     if (files.length + images.length > 10) {

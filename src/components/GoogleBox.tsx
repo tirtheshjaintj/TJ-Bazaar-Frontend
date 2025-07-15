@@ -1,48 +1,35 @@
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
-import { jwtDecode } from 'jwt-decode'; // Adjusted import for correct TS usage
 import Cookie from "universal-cookie";
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../config/axiosConfig';
+import { addUser } from '../store/userSlice';
+import { addSeller } from '../store/sellerSlice';
+import { useDispatch } from 'react-redux';
 
 interface GoogleBoxProps {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   type: `user` | `seller`;
+};
 
-}
-
-interface DecodedToken {
-  name?: string;
-  email: string;
-  sub: string; // Represents the Google user ID
-}
 
 const GoogleBox: React.FC<GoogleBoxProps> = ({ setIsLoading, type }) => {
   const cookie = new Cookie();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
     try {
-      if (!credentialResponse.credential) {
-        throw new Error("No credential provided.");
-      }
 
-      // Decode the token
-      const decodedToken = jwtDecode<DecodedToken>(credentialResponse.credential);
-
-      // Destructure the necessary fields with a default for the name
-      const { name = "Anonymous", email, sub: google_id } = decodedToken;
-
-      // Remove all special characters and numbers from the name
-      const sanitized_name = name.replace(/[^a-zA-Z\s]/g, "").trim();
 
       setIsLoading(true); // Set loading state
-
+      if (!credentialResponse.credential) {
+        toast.error('Login Error');
+        setIsLoading(false);
+        return;
+      }
       // Send POST request to the backend
       const response = await axiosInstance.post(`/${type}/google_login`, {
-        email,
-        name: sanitized_name,
-        google_id,
+        token: credentialResponse.credential
       });
 
       if (response.data.status) {
@@ -54,7 +41,11 @@ const GoogleBox: React.FC<GoogleBoxProps> = ({ setIsLoading, type }) => {
             path: '/',
             expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year expiry
           });
-
+          if (type == "user") {
+            dispatch(addUser(response?.data.user));
+          } else {
+            dispatch(addSeller(response?.data.user));
+          }
           // Navigate to user dashboard
           navigate(`/${type}/dashboard`);
         }
