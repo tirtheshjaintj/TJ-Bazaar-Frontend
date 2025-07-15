@@ -102,11 +102,9 @@ export default function Nav() {
   useEffect(() => {
     if (debounceTimer) {
       clearTimeout(debounceTimer);
-      setShowSuggestion(false);
     }
     const timer = setTimeout(() => {
       fetchSuggestions(searchKeyword);
-      setShowSuggestion(true);
     }, 300);
 
     setDebounceTimer(timer);
@@ -132,16 +130,13 @@ export default function Nav() {
   };
 
   const handleFocus = () => {
-    // Show suggestions when the input is focused
-    if (suggestions.length > 0) {
-      setShowSuggestion(true);
-    }
+    setShowSuggestion(true);
   };
 
   const handleSuggestionClick = (suggestion: any) => {
     setIsSearchOpen(false);
     setShowSuggestion(false); // Hide suggestions after navigating
-    navigate(`../product/${suggestion._id}`);
+    navigate(`../product/${suggestion._id}?keyword=${searchKeyword}`);
   };
 
   return (
