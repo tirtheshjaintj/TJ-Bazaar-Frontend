@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '../components/user/Navbar';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import axiosInstance from '../config/axiosConfig';
 import toast from 'react-hot-toast';
 import ProductCard from '../components/ProductCard';
@@ -51,12 +51,9 @@ function Search() {
     }
   }, [searchQuery]);
 
-  // Filter and sort products
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchQuery?.toLowerCase() || '')
-  );
 
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
+
+  const sortedProducts = [...products].sort((a, b) => {
     let comparison = 0;
     if (sortField === 'price') {
       comparison = a.price - b.price;

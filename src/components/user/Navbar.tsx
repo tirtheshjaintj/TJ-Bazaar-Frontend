@@ -72,6 +72,7 @@ export default function Nav() {
     e.preventDefault();
     if (searchKeyword.trim()) {
       setSearchParams({ keyword: searchKeyword.trim() });
+      setShowSuggestion(false);
       navigate(`/search?keyword=${encodeURIComponent(searchKeyword.trim())}`);
     }
   };
