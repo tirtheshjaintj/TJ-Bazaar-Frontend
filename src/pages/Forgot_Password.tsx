@@ -47,22 +47,22 @@ const Forgot_Password: React.FC<Prop> = ({ type }) => {
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if(email){
-    try {
-      setLoading(true); // Start loading
-      const response=await axiosInstance.post(`/${type}/forgot-password`, { email, userType: type });
-      console.log(response);
-      toast.success('OTP sent to your email!');
-      setResendDisabled(true); // Disable the resend button
-      setStep(2); // Move to the next step
-      setTimer(60); // Start the timer
-    } catch (error:any) {
-      console.log(error);
-      toast.error('Failed to send OTP. Your account not available');
-    } finally {
-      setLoading(false); // End loading
+    if (email) {
+      try {
+        setLoading(true); // Start loading
+        const response = await axiosInstance.post(`/${type}/forgot-password`, { email, userType: type });
+        console.log(response);
+        toast.success('OTP sent to your email!');
+        setResendDisabled(true); // Disable the resend button
+        setStep(2); // Move to the next step
+        setTimer(60); // Start the timer
+      } catch (error: any) {
+        console.log(error);
+        toast.error('Failed to send OTP. Your account not available');
+      } finally {
+        setLoading(false); // End loading
+      }
     }
-  }
   };
 
   const handleShowNewPasswordToggle = () => {
@@ -127,7 +127,7 @@ const Forgot_Password: React.FC<Prop> = ({ type }) => {
   }, [resendDisabled]);
 
   useEffect(() => {
-    document.title = `TJ Bazaar🛒: Change ${type.charAt(0).toUpperCase()+type.slice(1)} Password`;
+    document.title = `TJ Bazaar🛒: Change ${type.charAt(0).toUpperCase() + type.slice(1)} Password`;
     window.scrollTo(0, 0);
   }, []);
 
@@ -137,20 +137,20 @@ const Forgot_Password: React.FC<Prop> = ({ type }) => {
       setEmail(user.email);
       // Check if email is not empty before submitting
       if (user.email) {
-        handleEmailSubmit({ preventDefault: () => {} } as React.FormEvent);
+        handleEmailSubmit({ preventDefault: () => { } } as React.FormEvent);
       }
     }
   }, [user]);
-  
+
   useEffect(() => {
     if (type === "seller" && seller && seller.email) {
       setEmail(seller.email);
-     if (seller.email) {
-        handleEmailSubmit({ preventDefault: () => {} } as React.FormEvent);
+      if (seller.email) {
+        handleEmailSubmit({ preventDefault: () => { } } as React.FormEvent);
       }
     }
   }, [seller]);
-  
+
 
 
 

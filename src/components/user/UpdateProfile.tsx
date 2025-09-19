@@ -82,7 +82,7 @@ function UpdateProfile({ user_data }: Prop) {
         }
       }
     } catch (error: any) {
-        console.log(error);
+      console.log(error);
       toast.error(`Error updating profile: ${error.response?.data?.message || 'Unknown error'}`);
     }
     setIsSubmitting(false);
@@ -129,7 +129,7 @@ function UpdateProfile({ user_data }: Prop) {
           />
           {errors.address && <p className="text-red-600 text-sm mt-1">{errors.address}</p>}
         </div>
-       
+
         <div className="flex justify-end">
           <button
             type="submit"
@@ -137,7 +137,7 @@ function UpdateProfile({ user_data }: Prop) {
             disabled={isSubmitting}
           >
             {!isSubmitting ? (
-              <div className='flex items-center'>Update Profile&nbsp;<FaPencilAlt/></div>
+              <div className='flex items-center'>Update Profile&nbsp;<FaPencilAlt /></div>
             ) : (
               <div className="flex items-center justify-center">
                 <div className='flex items-center'>Updating Profile&nbsp;</div><div className="spinner border-t-transparent border-solid animate-spin rounded-full border-white border-4 h-6 w-6"></div>
@@ -147,14 +147,14 @@ function UpdateProfile({ user_data }: Prop) {
         </div>
       </form>
       <br />
-      <Link to={"../user/forgot"} className="flex">
-          <button
-            type="submit"
-            className="py-2 px-4 bg-red-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-          >
-          <span className="flex items-center justify-center">Change Password&nbsp;<FaLock/></span>
-          </button>
-        </Link>
+      <Link to={"/user/forgot"} className="flex">
+        <button
+          type="submit"
+          className="py-2 px-4 bg-red-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 dark:text-white dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+        >
+          <span className="flex items-center justify-center">Change Password&nbsp;<FaLock /></span>
+        </button>
+      </Link>
     </div>
   );
 }

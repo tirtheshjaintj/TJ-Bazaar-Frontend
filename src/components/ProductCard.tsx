@@ -52,9 +52,9 @@ export default function ProductCard({ product, index }: ProductCardProps) {
         toast.error(error_msg);
       }
     } else if (!user) {
-      navigate("../user/login");
+      navigate("/user/login");
     } else if (inWishlist) {
-      navigate("../user/dashboard");
+      navigate("/user/dashboard");
     }
   }
 
@@ -70,7 +70,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
       <Card className="relative w-full h-full m-0 bg-transparent shadow-lg rounded-3xl z-1 dark:bg-transparent hover:shadow-2xl">
         <div className="flex flex-col w-full h-full pt-2">
           {/* Dropdown at top-right corner */}
-          <div className="absolute top-0 right-0 p-2 rounded-full shadow-2xl">
+          <div className="absolute top-0 right-0 p-2 rounded-full shadow-2xl">``
             <Dropdown label={
               <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
                 <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />

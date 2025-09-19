@@ -83,7 +83,7 @@ const ProductPage: React.FC = () => {
         toast.error(error_msg);
       }
     } else if (!user) {
-      navigate("../user/login");
+      navigate("/user/login");
     }
   }
 
@@ -101,7 +101,7 @@ const ProductPage: React.FC = () => {
         toast.error(error_msg);
       }
     } else if (!user) {
-      navigate("../user/login");
+      navigate("/user/login");
     }
   }
 
@@ -159,17 +159,16 @@ const ProductPage: React.FC = () => {
             toast.success("Product added in your Cart");
           }
         } else {
-          navigate("../user/dashboard");
+          navigate("/user/dashboard/cart");
         }
 
       } catch (error) {
-        //////console.log("error: ", error);
         toast.error("Cannot add Product to Cart");
       } finally {
         setIsCartLoading(false);
       }
     } else {
-      navigate("../user/login");
+      navigate("/user/login");
     }
   };
 
@@ -236,7 +235,7 @@ const ProductPage: React.FC = () => {
         toast.error("Sorry, cannot process the order right now.");
       }
     } else {
-      navigate("../user/login");
+      navigate("/user/login");
     }
   };
 
@@ -258,7 +257,7 @@ const ProductPage: React.FC = () => {
 
   useEffect(() => {
     if (!id || id.trim() === "") {
-      navigate("../");
+      navigate("/");
     } else {
       getProduct();
     }
@@ -508,7 +507,7 @@ const ProductPage: React.FC = () => {
                 disabled={(product?.quantity === 0) || isloading}
                 onClick={addToCart}
               >
-                {(inCart) ? <Link to={"../user/dashboard"}>Go To Cart</Link> : <span>Add Cart</span>} <AiOutlineShoppingCart className="ml-2" /> {isCartloading && <span className='spinner'></span>}
+                {(inCart) ? <Link to={"/user/dashboard/cart"}>Go To Cart</Link> : <span>Add Cart</span>} <AiOutlineShoppingCart className="ml-2" /> {isCartloading && <span className='spinner'></span>}
               </button>
               <button
                 className="flex items-center justify-center w-full px-4 py-2 text-white transition bg-green-600 rounded hover:bg-green-700"

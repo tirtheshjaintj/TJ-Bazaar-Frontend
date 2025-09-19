@@ -23,22 +23,77 @@ const router = createBrowserRouter([
     path: "",
     element: <App />,
     children: [
+      // Public routes
       { path: "/", element: <Home /> },
       { path: "/search", element: <Search /> },
       { path: "/product/:id", element: <Product /> },
       { path: "/category/:id", element: <Category /> },
-      { path: "/seller/:id", element: <Seller /> },
-      { path: "/seller/login", element: <Login type="seller" /> },
-      { path: "/seller/signup", element: <Seller_Signup /> },
-      { path: "/seller/forgot", element: <Forgot_Password type="seller" /> },
-      { path: "/seller/dashboard", element: <Seller_Dashboard /> },
-      { path: "/user/login", element: <Login type="user" /> },
-      { path: "/user/signup", element: <User_Signup /> },
-      { path: "/user/forgot", element: <Forgot_Password type="user" /> },
-      { path: "/user/dashboard", element: <User_Dashboard /> },
+      // Seller routes
+      {
+        path: "seller",
+        children: [
+          { path: "login", element: <Login type="seller" /> },
+          { path: "signup", element: <Seller_Signup /> },
+          { path: "forgot", element: <Forgot_Password type="seller" /> },
+          {
+            path: "dashboard", children: [
+              { index: true, element: <Seller_Dashboard url_tab={0} /> },
+              {
+                path: "new",
+                element: <Seller_Dashboard url_tab={0} />
+              }, {
+                path: "products",
+                element: <Seller_Dashboard url_tab={1} />
+              }, {
+                path: "orders",
+                element: <Seller_Dashboard url_tab={2} />
+              }, {
+                path: "profile",
+                element: <Seller_Dashboard url_tab={3} />
+              }, {
+                path: "*",
+                element: <Seller_Dashboard url_tab={0} />
+              },
+            ]
+          },
+          { path: ":id", element: <Seller /> }, // seller profile
+        ],
+      },
+
+      // User routes
+      {
+        path: "user",
+        children: [
+          { path: "login", element: <Login type="user" /> },
+          { path: "signup", element: <User_Signup /> },
+          { path: "forgot", element: <Forgot_Password type="user" /> },
+          {
+            path: "dashboard", children: [
+              { index: true, element: <User_Dashboard url_tab={0} /> },
+              {
+                path: "orders",
+                element: <User_Dashboard url_tab={0} />
+              }, {
+                path: "cart",
+                element: <User_Dashboard url_tab={1} />
+              }, {
+                path: "wishlist",
+                element: <User_Dashboard url_tab={2} />
+              }, {
+                path: "profile",
+                element: <User_Dashboard url_tab={3} />
+              }, {
+                path: "*",
+                element: <User_Dashboard url_tab={0} />
+              },
+            ]
+          },
+        ],
+      },
     ],
   },
 ]);
+
 
 createRoot(document.getElementById('root')!).render(
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_ID}>

@@ -123,6 +123,8 @@ const NewProduct: React.FC = () => {
     }
   }, [name, description, price, quantity, tags, categoryId, images]);
 
+
+
   const resetForm = () => {
     setName('');
     setDescription('');

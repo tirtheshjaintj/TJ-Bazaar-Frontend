@@ -12,22 +12,17 @@ import Cart from '../../components/user/Cart';
 import WishList from '../../components/user/WishList';
 import { addUser } from '../../store/userSlice';
 
-function User_Dashboard() {
+function User_Dashboard({ url_tab }: { url_tab: number }) {
   const cookie = new Cookie();
   const navigate = useNavigate();
   const user = useSelector((state: any) => state.user);
-  const token = cookie.get('user_token');
-  const [tab, setTab] = useState<number>(0);
+  const [tab, setTab] = useState<number>(url_tab || 0);
   const [openTab, setOpenTab] = useState<boolean>(false);
   const [cartCount, setCartCount] = useState<number>(0);
   const [wishlistCount, setWishlistCount] = useState<number>(0);
   const dispatch = useDispatch();
 
   const getUser = async () => {
-    if (!token) {
-      navigate("/");
-      return;
-    }
     try {
       const response = await axiosInstance.get(`/user/getUser`, {
         withCredentials: true, // Keep this if you need credentials
@@ -42,7 +37,7 @@ function User_Dashboard() {
     } catch (error: any) {
       console.log(error);
       cookie.remove('user_token');
-      navigate("/");
+      navigate("/user/login");
     }
   };
 
@@ -69,17 +64,13 @@ function User_Dashboard() {
   }
 
   useEffect(() => {
+    console.log(url_tab);
     document.title = "TJ Bazaar🛒 User Dashboard";
     if (!user) {
       getUser();
-    }
-    if (!token) {
-      navigate('../user/login');
     } else {
-      if (user) {
-        getCartCount();
-        getWishlistCount();
-      }
+      getCartCount();
+      getWishlistCount();
     }
     window.scrollTo(0, 0);
   }, [user, getUser]);

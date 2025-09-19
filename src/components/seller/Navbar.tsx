@@ -5,6 +5,7 @@ import Cookies from "universal-cookie";
 import { addSeller } from "../../store/sellerSlice";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import axiosInstanceSeller from "../../config/axiosConfigSeller";
 let deferredPrompt: any = null;
 
 export default function Nav() {
@@ -12,8 +13,9 @@ export default function Nav() {
   const cookie = new Cookies();
   const dispatch = useDispatch();
   const seller = useSelector((state: any) => state.seller);
-  const signOut = () => {
+  const signOut = async () => {
     cookie.remove('seller_token', { path: '/' });
+    await axiosInstanceSeller.post("/seller/logout");
     navigate("/seller/login");
     dispatch(addSeller(null));
   }
@@ -77,10 +79,10 @@ export default function Nav() {
             <span className="block text-sm">{`${seller?.name}`}</span>
             <span className="block truncate text-sm font-medium">{`${seller?.email}`}</span>
           </Dropdown.Header>
-          <Link to={"../seller/dashboard"}>
+          <Link to={"/seller/dashboard"}>
             <Dropdown.Item>Dashboard</Dropdown.Item>
           </Link>
-          <Link to={"../user/dashboard"}>
+          <Link to={"/user/dashboard"}>
             <Dropdown.Item>Become User</Dropdown.Item>
           </Link>
           <Dropdown.Divider />

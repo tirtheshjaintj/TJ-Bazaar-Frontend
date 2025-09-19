@@ -24,8 +24,9 @@ export default function Nav() {
   const [debounceTimer, setDebounceTimer] = useState<any>(null);
   const inputRef = useRef<HTMLInputElement | null>(null); // Create a ref for the input
 
-  const signOut = () => {
+  const signOut = async () => {
     cookie.remove('user_token', { path: '/' });
+    await axiosInstance.post("/user/logout");
     navigate("/user/login");
     dispatch(addUser(null));
   };
@@ -213,12 +214,12 @@ export default function Nav() {
                   <span className="block text-sm">{`${user?.name}`}</span>
                   <span className="block text-sm font-medium truncate">{`${user?.email}`}</span>
                 </Dropdown.Header>
-                <Link to={"../user/dashboard"}>
+                <Link to={"/user/dashboard"}>
                   <Dropdown.Item>
                     Dashboard
                   </Dropdown.Item>
                 </Link>
-                <Link to={"../seller/dashboard"}>
+                <Link to={"/seller/dashboard"}>
                   <Dropdown.Item>
                     Become Seller
                   </Dropdown.Item>
@@ -228,12 +229,12 @@ export default function Nav() {
               </>
             ) : (
               <>
-                <Link to={"../user/dashboard"}>
+                <Link to={"/user/dashboard"}>
                   <Dropdown.Item>
                     Become User
                   </Dropdown.Item>
                 </Link>
-                <Link to={"../seller/dashboard"}>
+                <Link to={"/seller/dashboard"}>
                   <Dropdown.Item>
                     Become Seller
                   </Dropdown.Item>

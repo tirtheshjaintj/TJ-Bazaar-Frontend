@@ -39,7 +39,7 @@ function Search() {
 
   useEffect(() => {
     if (!searchQuery || searchQuery.trim() === "") {
-      navigate("../");
+      navigate("/");
     }
   }, [searchQuery, navigate]);
 

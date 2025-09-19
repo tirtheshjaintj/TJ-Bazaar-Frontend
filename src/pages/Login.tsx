@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import Cookie from "universal-cookie";
 import Navbar from "../components/user/Navbar";
 import GoogleBox from "../components/GoogleBox";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/userSlice";
 import { addSeller } from "../store/sellerSlice";
 type event = React.ChangeEvent<HTMLInputElement>;
@@ -21,6 +21,8 @@ function Login({ type }: Prop) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.user);
+  const seller = useSelector((state: any) => state.seller);
 
   const navigate = useNavigate();
   const cookie = new Cookie();
@@ -72,6 +74,10 @@ function Login({ type }: Prop) {
     }
   };
 
+  useEffect(() => {
+    if (user && type == "user") navigate("/user/dashboard");
+    if (seller && type == "seller") navigate("/seller/dashboard");
+  }, [user]);
 
   return (
     <>

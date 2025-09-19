@@ -21,10 +21,6 @@ function App() {
   const dispatch = useDispatch();
 
   const getUser = async () => {
-    const userToken = cookie.get('user_token');
-    if (!userToken) {
-      return; // Exit if the seller token is not available
-    }
     try {
       const response = await axiosInstance.get(`/user/getUser`, {
         withCredentials: true, // Keep this if you need credentials
@@ -43,10 +39,6 @@ function App() {
   };
 
   const getSeller = async () => {
-    const sellerToken = cookie.get('seller_token');
-    if (!sellerToken) {
-      return; // Exit if the seller token is not available
-    }
     try {
       const response = await axiosInstanceSeller.get(`/seller/getSeller`);
       const sellerData = response.data;

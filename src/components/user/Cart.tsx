@@ -128,7 +128,7 @@ function Cart({ getCartCount }: any) {
         toast.error("Sorry, cannot process the order right now.");
       }
     } else {
-      navigate("../user/login");
+      navigate("/user/login");
     }
   };
 

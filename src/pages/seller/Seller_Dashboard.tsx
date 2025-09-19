@@ -14,49 +14,45 @@ import MyOrders from '../../components/seller/MyOrders';
 import { addSeller } from '../../store/sellerSlice';
 import axiosInstanceSeller from '../../config/axiosConfigSeller';
 
-function Seller_Dashboard() {
+function Seller_Dashboard({ url_tab }: { url_tab: number }) {
   const cookie = new Cookie();
   const navigate = useNavigate();
-  const [tab, setTab] = useState<number>(0);
+  const [tab, setTab] = useState<number>(url_tab || 0);
   const seller = useSelector((state: any) => state.seller);
   const [openTab, setOpenTab] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const dispatch = useDispatch();
 
   const getSeller = async () => {
-    const sellerToken = cookie.get('seller_token');
-    if (!sellerToken) {
-      return;
-    }
-
     try {
       const response = await axiosInstanceSeller.get(`/seller/getSeller`);
       const sellerData = response.data;
+      console.log(response);
       if (sellerData.status) {
         dispatch(addSeller(sellerData.data));
       } else {
         cookie.remove('seller_token');
       }
     } catch (error: any) {
+      navigate("/seller/login");
       console.log(error);
     }
   };
 
   useEffect(() => {
     document.title = `TJ Bazaar🛒 Seller Dashboard`;
-    const token = cookie.get('seller_token');
-    if (!token) navigate('/seller/login');
     if (!seller) getSeller();
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
+    if (!seller) navigate("/seller/login");
     if (seller) {
       toast.success(`Welcome, ${seller?.name}! Let's start selling`);
     }
   }, [seller]);
 
-  return (
+  return seller && (
     <div>
       <Navbar />
       <div className='flex items-center justify-center min-w-screen'>
