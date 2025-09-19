@@ -3,7 +3,6 @@ import axiosInstance from '../../config/axiosConfig';
 import { FaSearch, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { AiFillHeart } from 'react-icons/ai';
-import Cookie from "universal-cookie";
 import { useSelector } from 'react-redux';
 
 interface Product {
