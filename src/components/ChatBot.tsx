@@ -341,79 +341,89 @@ const Chatbot: React.FC = () => {
               )}
             </div>
 
-            {/* Input + Mic + Image + Send */}
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-col px-4 py-3 bg-white border border-gray-200 shadow-md dark:bg-gray-900 rounded-xl dark:border-gray-700"
-            >
-              {/* Image Preview */}
-              {previewUrl && (
-                <div className="relative w-32">
-                  <img
-                    src={previewUrl}
-                    alt="preview"
-                    className="rounded-lg border max-h-24 object-cover"
-                  />
-                  <button
-                    type="button"
-                    onClick={removeImage}
-                    className="absolute top-1 right-1 bg-black text-white rounded-full p-1"
-                  >
-                    <FaTimes />
-                  </button>
-                </div>
-              )}
+       {/* Input + Mic + Image + Send */}
+<form
+  onSubmit={handleSubmit}
+  className="flex flex-col gap-3 p-3 bg-white border border-gray-200 shadow-md dark:bg-gray-900 rounded-2xl dark:border-gray-700"
+>
+  {/* Image Preview */}
+  {previewUrl && (
+    <div className="relative w-fit">
+      <img
+        src={previewUrl}
+        alt="preview"
+        className="object-cover border rounded-xl max-h-28 max-w-[140px]"
+      />
 
-              <div className="flex items-center">
-                {/* Mic Button */}
-                <motion.button
-                  type="button"
-                  onClick={toggleListening}
-                  className="p-3 mr-2 rounded-full text-white"
-                  animate={
-                    listening
-                      ? { scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }
-                      : {}
-                  }
-                  transition={
-                    listening ? { repeat: Infinity, duration: 1.2 } : {}
-                  }
-                  style={{
-                    backgroundColor: listening ? '#ef4444' : '#3b82f6',
-                  }}
-                >
-                  {listening ? <FaMicrophoneSlash /> : <FaMicrophone />}
-                </motion.button>
+      <button
+        type="button"
+        onClick={removeImage}
+        className="absolute p-1 text-white bg-black rounded-full top-1 right-1"
+      >
+        <FaTimes size={12} />
+      </button>
+    </div>
+  )}
 
-                <input
-                  type="text"
-                  style={{ outline: 'none' }}
-                  className="flex-grow p-3 text-base text-gray-900 placeholder-gray-500 bg-transparent border-none rounded-lg dark:placeholder-gray-400 dark:text-gray-100"
-                  placeholder="Type or speak your message..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                />
+  {/* Input Row */}
+  <div className="flex items-center w-full gap-2">
+    {/* Mic Button */}
+    <motion.button
+      type="button"
+      onClick={toggleListening}
+      className="flex items-center justify-center flex-shrink-0 w-11 h-11 text-white rounded-full"
+      animate={
+        listening
+          ? { scale: [1, 1.15, 1], opacity: [1, 0.7, 1] }
+          : {}
+      }
+      transition={
+        listening ? { repeat: Infinity, duration: 1.2 } : {}
+      }
+      style={{
+        backgroundColor: listening ? '#ef4444' : '#3b82f6',
+      }}
+    >
+      {listening ? (
+        <FaMicrophoneSlash size={18} />
+      ) : (
+        <FaMicrophone size={18} />
+      )}
+    </motion.button>
 
-                {/* Image Upload */}
-                <label className="p-3 ml-2 text-gray-600 bg-gray-200 rounded-lg cursor-pointer dark:bg-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700">
-                  <FaImage />
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageChange}
-                  />
-                </label>
+    {/* Input Wrapper */}
+    <div className="flex items-center flex-1 min-w-0 px-3 bg-gray-100 dark:bg-gray-800 rounded-xl">
+      <input
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Type or speak your message..."
+        style={{ outline: 'none' }}
+        className="w-full py-3 text-sm sm:text-base text-gray-900 placeholder-gray-500 bg-transparent border-none dark:text-gray-100 dark:placeholder-gray-400"
+      />
 
-                {/* Send Button */}
-                <button
-                  type="submit"
-                  className="px-4 py-2 ml-2 text-white transition bg-blue-600 rounded-lg hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-500"
-                >
-                  <FaPaperPlane />
-                </button>
-              </div>
-            </form>
+      {/* Image Upload */}
+      <label className="flex items-center justify-center flex-shrink-0 ml-2 text-gray-600 transition cursor-pointer dark:text-gray-300 hover:scale-105">
+        <FaImage size={18} />
+
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleImageChange}
+        />
+      </label>
+    </div>
+
+    {/* Send Button */}
+    <button
+      type="submit"
+      className="flex items-center justify-center flex-shrink-0 w-11 h-11 text-white transition bg-blue-600 rounded-xl hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-500"
+    >
+      <FaPaperPlane size={16} />
+    </button>
+  </div>
+</form>
           </motion.div>
         )}
       </AnimatePresence>
