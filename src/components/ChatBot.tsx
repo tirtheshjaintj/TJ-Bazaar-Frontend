@@ -158,6 +158,13 @@ const Chatbot: React.FC = () => {
       setLoading(true);
       const formData = new FormData();
       formData.append('prompt', input);
+      const currentUrl = window.location.href;
+      const productRegex = /\/product\/([a-fA-F0-9]{24})(?:[#/?]|$)/;
+      const match = currentUrl.match(productRegex);
+      if (match && match[1]) {
+        const productId = match[1];
+        formData.append("productId", productId);
+      }
       formData.append('history', JSON.stringify(updatedMessages));
       if (selectedImage) {
         formData.append('image', selectedImage);
@@ -170,7 +177,7 @@ const Chatbot: React.FC = () => {
       const botMessage: Message = {
         sender: 'AI',
         text: response.data.toString(),
-      };
+      };  
       const updatedMessagesWithBot = [...updatedMessages, botMessage];
 
       setMessages(updatedMessagesWithBot);
