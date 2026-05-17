@@ -28,7 +28,7 @@ export default function ProductCard({ product, onUpdate}: any) {
   // };
 
   const handleView=()=>{
-    navigate(`../product/${product._id}`);
+    navigate(`/product/${product._id}`);
   }
 
 

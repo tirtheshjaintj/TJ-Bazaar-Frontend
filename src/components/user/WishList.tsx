@@ -196,7 +196,7 @@ function WishList({ getWishlistCount }: any) {
       <div className="grid gap-6 justify-items-center grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mx-auto">
         {sortedWishlist.map((item) => (
           <div key={item._id} className="border border-gray-300/20 w-full rounded-lg shadow-lg p-4">
-            <Link to={`../product/${item.product_id._id}`} className="block mb-4">
+            <Link to={`/product/${item.product_id._id}`} className="block mb-4">
               <img
                 src={item.image || '../bazaar.gif'}
                 alt={item.product_id.name}

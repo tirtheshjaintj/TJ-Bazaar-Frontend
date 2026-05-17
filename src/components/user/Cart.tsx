@@ -237,7 +237,7 @@ function Cart({ getCartCount }: any) {
               const isOutOfStock = item.product_id.quantity < item.quantity;
               return (
                 <div key={item._id} className="w-full p-4 transition-transform transform border rounded-lg shadow-lg border-gray-300/20 hover:shadow-xl">
-                  <Link className='w-full' to={`../product/${item.product_id._id}`}>
+                  <Link className='w-full' to={`/product/${item.product_id._id}`}>
                     <img
                       src={item.image || '../bazaar.gif'}
                       alt={item.product_id.name}

@@ -137,7 +137,7 @@ export default function Nav() {
   const handleSuggestionClick = (suggestion: any) => {
     setIsSearchOpen(false);
     setShowSuggestion(false); // Hide suggestions after navigating
-    navigate(`../product/${suggestion._id}?keyword=${searchKeyword}`);
+    navigate(`/product/${suggestion._id}?keyword=${searchKeyword}`);
   };
 
   return (

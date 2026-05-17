@@ -155,7 +155,7 @@ function Orders() {
           ))
         ) : currentOrders.length > 0 ? (
           currentOrders.map((order) => (
-            <Link className='w-full' key={order.order_id} to={`../product/${order.product.id}`}>
+            <Link className='w-full' key={order.order_id} to={`/product/${order.product.id}`}>
               <div className="w-full p-4 transition-transform transform border rounded-lg shadow-lg border-gray-300/20 S hover:scale-105 hover:shadow-xl">
                 <img src={order.product.image} alt={order.product.name} className="object-cover w-full h-32 rounded-md" />
                 <h2 className="mt-2 text-lg font-bold">{order.product.name.slice(0, 30) + "..."}</h2>

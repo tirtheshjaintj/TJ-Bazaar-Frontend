@@ -106,7 +106,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
               }>
               {product.media.map((image: string, index: number) => (
                 <div key={index} className="relative w-full h-full">
-                  <Link to={`../product/${product._id}`}>
+                  <Link to={`/product/${product._id}`}>
                     <img
                       src={image}
                       alt={`Product image ${index + 1}`}
@@ -121,7 +121,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
               ))}
             </Carousel>
           </div>
-          <Link to={`../product/${product._id}`}>
+          <Link to={`/product/${product._id}`}>
             {/* Text/Description Section */}
             <div className="flex-grow pt-5">
               <h5 className="mb-2 text-2xl font-semibold text-center">

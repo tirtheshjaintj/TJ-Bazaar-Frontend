@@ -388,7 +388,7 @@ const ProductPage: React.FC = () => {
                 }>
                 {product?.media.map((image, index) => (
                   <div key={index} className="relative w-full h-full">
-                    <Link to={`../product/${product?._id}`}>
+                    <Link to={`/product/${product?._id}`}>
                       <img
                         src={image}
                         alt={`Product image ${index + 1}`}
