@@ -403,7 +403,7 @@ const Chatbot: React.FC = () => {
       />
 
       {/* Image Upload */}
-      <label className="flex items-center justify-center flex-shrink-0 ml-2 text-gray-600 transition cursor-pointer dark:text-gray-300 hover:scale-105">
+      {/* <label className="flex items-center justify-center flex-shrink-0 ml-2 text-gray-600 transition cursor-pointer dark:text-gray-300 hover:scale-105">
         <FaImage size={18} />
 
         <input
@@ -412,7 +412,7 @@ const Chatbot: React.FC = () => {
           className="hidden"
           onChange={handleImageChange}
         />
-      </label>
+      </label> */}
     </div>
 
     {/* Send Button */}
