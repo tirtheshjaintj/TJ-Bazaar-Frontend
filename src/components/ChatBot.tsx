@@ -388,7 +388,6 @@ const Chatbot: React.FC = () => {
   const chatRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
-  const sparkleContainerRef = useRef<HTMLDivElement>(null);
   const styleInjected = useRef(false);
 
   /* ── Inject global CSS once ── */
