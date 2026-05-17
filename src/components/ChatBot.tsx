@@ -8,7 +8,7 @@ import {
   FaMicrophoneSlash,
   FaVolumeUp,
   FaVolumeMute,
-  FaImage,
+  // FaImage,
   FaTimes,
 } from 'react-icons/fa';
 import axiosInstance from '../config/axiosConfig';
@@ -108,26 +108,26 @@ const Chatbot: React.FC = () => {
   };
 
   // Handle Image Selection
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
+  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files[0]) {
+  //     const file = e.target.files[0];
 
-      // ✅ Check if file is an image
-      if (!file.type.startsWith("image/")) {
-        Swal.fire({
-          icon: "error",
-          title: "Invalid File",
-          text: "Please upload a valid image file (jpg, png, gif, etc.)",
-          confirmButtonColor: "#3085d6",
-        });
-        e.target.value = ""; // reset input
-        return;
-      }
+  //     // ✅ Check if file is an image
+  //     if (!file.type.startsWith("image/")) {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Invalid File",
+  //         text: "Please upload a valid image file (jpg, png, gif, etc.)",
+  //         confirmButtonColor: "#3085d6",
+  //       });
+  //       e.target.value = ""; // reset input
+  //       return;
+  //     }
 
-      setSelectedImage(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    }
-  };
+  //     setSelectedImage(file);
+  //     setPreviewUrl(URL.createObjectURL(file));
+  //   }
+  // };
 
   const removeImage = () => {
     setSelectedImage(null);
