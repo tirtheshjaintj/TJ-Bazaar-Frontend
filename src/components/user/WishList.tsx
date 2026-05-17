@@ -105,20 +105,43 @@ function WishList({ getWishlistCount }: any) {
     return sortOrder === 'asc' ? comparison : -comparison;
   });
 
-  const timeAgo = (dateString: string) => {
-    const now = new Date();
-    const then = new Date(dateString);
-    const diffInSeconds = Math.floor((now.getTime() - then.getTime()) / 1000);
+const timeAgo = (dateString: string) => {
+  const now = new Date();
+  const then = new Date(dateString);
 
-    const minutes = Math.floor(diffInSeconds / 60);
-    const hours = Math.floor(diffInSeconds / 3600);
-    const days = Math.floor(diffInSeconds / 86400);
+  const diffInSeconds = Math.floor(
+    (now.getTime() - then.getTime()) / 1000
+  );
 
-    if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
-    if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    return 'Just now';
-  };
+  const minute = 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+  const month = day * 30;
+  const year = day * 365;
+
+  const years = Math.floor(diffInSeconds / year);
+  const months = Math.floor(diffInSeconds / month);
+  const days = Math.floor(diffInSeconds / day);
+  const hours = Math.floor(diffInSeconds / hour);
+  const minutes = Math.floor(diffInSeconds / minute);
+
+  if (years > 0)
+    return `${years} year${years > 1 ? "s" : ""} ago`;
+
+  if (months > 0)
+    return `${months} month${months > 1 ? "s" : ""} ago`;
+
+  if (days > 0)
+    return `${days} day${days > 1 ? "s" : ""} ago`;
+
+  if (hours > 0)
+    return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+
+  if (minutes > 0)
+    return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+
+  return "Just now";
+};
 
   useEffect(() => {
     document.title = `TJ Bazaar🛒: User Wishlist`;
